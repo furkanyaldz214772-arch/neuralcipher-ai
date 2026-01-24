@@ -213,7 +213,7 @@ export default function Home() {
               lg:hidden fixed top-[73px] left-0 right-0 z-40
               bg-[#0A0E27]/98 backdrop-blur-2xl border-b border-[#64FFDA]/20
               transform transition-all duration-300 ease-in-out
-              ${isMobileMenuOpen ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'}
+              ${isMobileMenuOpen ? 'translate-y-0 opacity-100 visible' : '-translate-y-full opacity-0 invisible pointer-events-none'}
             `}>
               <div className="max-w-7xl mx-auto px-6 py-4 space-y-1">
                 <a 
