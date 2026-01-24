@@ -380,11 +380,11 @@ export default function Home() {
               </div>
             </div>
             
-            {/* CTA Buttons - Ultra Modern */}
-            <div className="flex items-center gap-2 flex-shrink-0">
+            {/* CTA Buttons - Ultra Modern - Desktop Only */}
+            <div className="hidden lg:flex items-center gap-2 flex-shrink-0">
               <Link 
                 href="/demo" 
-                className="hidden sm:flex items-center gap-1.5 px-4 py-2 text-sm text-[#64FFDA] hover:text-white transition-all duration-300 font-bold rounded-lg bg-[#64FFDA]/10 border border-[#64FFDA]/30 hover:bg-[#64FFDA]/20 hover:border-[#64FFDA]/50"
+                className="flex items-center gap-1.5 px-4 py-2 text-sm text-[#64FFDA] hover:text-white transition-all duration-300 font-bold rounded-lg bg-[#64FFDA]/10 border border-[#64FFDA]/30 hover:bg-[#64FFDA]/20 hover:border-[#64FFDA]/50"
               >
                 Demo
               </Link>
@@ -393,12 +393,12 @@ export default function Home() {
                 <>
                   <Link 
                     href={getDashboardLink()} 
-                    className="hidden sm:flex items-center gap-1.5 px-4 py-2 text-sm text-white hover:text-[#64FFDA] transition-all duration-300 font-semibold rounded-lg hover:bg-white/5"
+                    className="flex items-center gap-1.5 px-4 py-2 text-sm text-white hover:text-[#64FFDA] transition-all duration-300 font-semibold rounded-lg hover:bg-white/5"
                   >
                     Dashboard
                   </Link>
                   
-                  <div className="hidden sm:flex items-center gap-2 px-3 py-2 rounded-lg bg-white/5 border border-gray-700">
+                  <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-white/5 border border-gray-700">
                     <div className="w-7 h-7 rounded-full bg-gradient-to-br from-[#64FFDA] to-[#3B82F6] flex items-center justify-center">
                       <span className="text-xs font-bold text-white">
                         {user.email.charAt(0).toUpperCase()}
@@ -411,7 +411,7 @@ export default function Home() {
                   
                   <button
                     onClick={handleLogout}
-                    className="hidden sm:flex items-center gap-1.5 px-4 py-2 text-sm text-gray-400 hover:text-red-400 transition-all duration-300 font-semibold rounded-lg hover:bg-red-500/10"
+                    className="flex items-center gap-1.5 px-4 py-2 text-sm text-gray-400 hover:text-red-400 transition-all duration-300 font-semibold rounded-lg hover:bg-red-500/10"
                   >
                     <FiLogOut className="text-sm" />
                     Logout
@@ -421,7 +421,7 @@ export default function Home() {
                 <>
                   <Link 
                     href="/auth/login" 
-                    className="hidden sm:flex items-center gap-1.5 px-4 py-2 text-sm text-white hover:text-[#64FFDA] transition-all duration-300 font-semibold rounded-lg hover:bg-white/5"
+                    className="flex items-center gap-1.5 px-4 py-2 text-sm text-white hover:text-[#64FFDA] transition-all duration-300 font-semibold rounded-lg hover:bg-white/5"
                   >
                     Sign In
                   </Link>
