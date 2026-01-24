@@ -46,16 +46,13 @@ export default function LanguageSwitcher() {
 
   return (
     <div className="relative z-50">
-      {/* Language Button */}
+      {/* Language Button - Compact with Flag Only */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2 px-3 py-2 rounded-lg bg-white/5 border border-gray-700 hover:border-[#64FFDA]/50 transition-all duration-200 group"
+        className="flex items-center justify-center w-9 h-9 rounded-lg bg-white/5 border border-gray-700 hover:border-[#64FFDA]/50 transition-all duration-200 group hover:scale-110"
+        title={`Current: ${currentLanguage.nativeName}`}
       >
         <span className="text-xl">{currentLanguage.flag}</span>
-        <span className="hidden sm:inline text-sm text-gray-300 group-hover:text-white transition-colors">
-          {currentLanguage.code.toUpperCase()}
-        </span>
-        <FiGlobe className="text-gray-400 group-hover:text-[#64FFDA] transition-colors" />
       </button>
 
       {/* Dropdown Menu */}
