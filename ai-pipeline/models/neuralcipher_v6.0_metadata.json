@@ -1,0 +1,54 @@
+{
+  "version": "v6.0",
+  "training_date": "2026-01-21T13:26:30.956679",
+  "training_samples": 11070,
+  "datasets": [
+    {
+      "name": "Oxford Parkinson's",
+      "samples": 195
+    },
+    {
+      "name": "Telemonitoring",
+      "samples": 5875
+    },
+    {
+      "name": "Synthetic",
+      "samples": 5000
+    }
+  ],
+  "features": 9,
+  "algorithm": "Random Forest",
+  "hyperparameters": {
+    "n_estimators": 300,
+    "max_depth": 25,
+    "min_samples_split": 5,
+    "min_samples_leaf": 2
+  },
+  "performance": {
+    "train_accuracy": 0.995483288166215,
+    "test_accuracy": 0.9480578139114725,
+    "roc_auc": 0.983489827856025,
+    "sensitivity": 0.9823943661971831,
+    "specificity": 0.8333333333333334,
+    "f1_score": 0.9667917990181922,
+    "precision": 0.9516770892552586,
+    "recall": 0.9823943661971831,
+    "confusion_matrix": {
+      "tn": 425,
+      "fp": 85,
+      "fn": 30,
+      "tp": 1674
+    }
+  },
+  "cross_validation": {
+    "scores": [
+      0.9245709123757905,
+      0.8852755194218609,
+      0.9448961156278229,
+      0.9363143631436315,
+      0.9060523938572719
+    ],
+    "mean": 0.9194218608852754,
+    "std": 0.021473343020767498
+  }
+}

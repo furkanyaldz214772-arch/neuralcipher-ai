@@ -1,0 +1,107 @@
+{
+  "accuracy": 0.9230769230769231,
+  "precision": 0.9333333333333333,
+  "recall": 0.9655172413793104,
+  "f1_score": 0.9491525423728815,
+  "auc_roc": 0.9620689655172414,
+  "sensitivity": 0.9655172413793104,
+  "specificity": 0.8,
+  "confusion_matrix": {
+    "tn": 8,
+    "fp": 2,
+    "fn": 1,
+    "tp": 28
+  },
+  "cv_mean": 0.8848790322580646,
+  "cv_std": 0.03154710482914296,
+  "feature_importance": [
+    {
+      "feature": "PPE",
+      "importance": 0.16329692634801898
+    },
+    {
+      "feature": "spread1",
+      "importance": 0.11199194023412087
+    },
+    {
+      "feature": "MDVP:Flo(Hz)",
+      "importance": 0.0639856583530857
+    },
+    {
+      "feature": "NHR",
+      "importance": 0.06328221287041423
+    },
+    {
+      "feature": "MDVP:Fo(Hz)",
+      "importance": 0.060711285064318686
+    },
+    {
+      "feature": "Jitter:DDP",
+      "importance": 0.05914433156740682
+    },
+    {
+      "feature": "MDVP:Fhi(Hz)",
+      "importance": 0.047788665599285546
+    },
+    {
+      "feature": "spread2",
+      "importance": 0.04663551210521064
+    },
+    {
+      "feature": "MDVP:RAP",
+      "importance": 0.042108327720675236
+    },
+    {
+      "feature": "Shimmer:APQ5",
+      "importance": 0.03720898315529164
+    },
+    {
+      "feature": "D2",
+      "importance": 0.03311089258798978
+    },
+    {
+      "feature": "Shimmer:DDA",
+      "importance": 0.029070679778779054
+    },
+    {
+      "feature": "MDVP:Shimmer",
+      "importance": 0.028314439958348057
+    },
+    {
+      "feature": "MDVP:APQ",
+      "importance": 0.027286036097821716
+    },
+    {
+      "feature": "DFA",
+      "importance": 0.026471720615591908
+    },
+    {
+      "feature": "MDVP:PPQ",
+      "importance": 0.024991239174831526
+    },
+    {
+      "feature": "Shimmer:APQ3",
+      "importance": 0.024792247984065062
+    },
+    {
+      "feature": "RPDE",
+      "importance": 0.024662749552177
+    },
+    {
+      "feature": "HNR",
+      "importance": 0.02350622023412503
+    },
+    {
+      "feature": "MDVP:Jitter(Abs)",
+      "importance": 0.023028856787642823
+    },
+    {
+      "feature": "MDVP:Shimmer(dB)",
+      "importance": 0.021409408418291278
+    },
+    {
+      "feature": "MDVP:Jitter(%)",
+      "importance": 0.017201665792508442
+    }
+  ]
+}

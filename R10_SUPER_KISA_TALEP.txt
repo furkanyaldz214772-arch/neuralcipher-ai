@@ -1,0 +1,31 @@
+BAŞLIK:
+Startup için Production Sunucu (Web + Mobil + AI)
+
+---
+
+AÇIKLAMA:
+
+Full-stack web/mobil uygulamam için sunucu arıyorum.
+
+📦 STACK:
+Next.js + React + Python/FastAPI + PostgreSQL + Redis + AI/ML
+
+💻 İHTİYAÇ:
+• 4-8 vCPU, 8-16 GB RAM, 100-200 GB SSD
+• Ubuntu 22.04, Docker desteği
+• Nginx + SSL, otomatik backup
+• Kolay ölçekleme
+
+📊 KULLANIM:
+Başlangıç: 100-500 kullanıcı → Hedef: 10,000+ kullanıcı
+
+💰 BÜTÇE:
+500-1,000 TL/ay (başlangıç), esnek ölçekleme
+
+✅ ARANILAN:
+Güvenilir, ölçeklenebilir, Türkçe destek, startup dostu
+
+🚀 DURUM:
+Kod hazır (~21K satır), 3 gün içinde deploy etmek istiyorum.
+
+Önerilerinizi bekliyorum! 🙏

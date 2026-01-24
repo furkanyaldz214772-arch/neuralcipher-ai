@@ -1,0 +1,110 @@
+{
+  "newTest": {
+    "title": "Neuen Test starten",
+    "subtitle": "Wählen Sie Ihr Testniveau und beginnen Sie mit der Stimmanalyse",
+    "selectLevel": "Testniveau auswählen",
+    "levels": {
+      "quick": {
+        "name": "Schnelltest",
+        "duration": "30 Sekunden",
+        "tests": "1 Test",
+        "description": "Schnelle Bewertung mit einem einzigen Stimmtest"
+      },
+      "standard": {
+        "name": "Standardtest",
+        "duration": "2 Minuten",
+        "tests": "4 Tests",
+        "description": "Detaillierte Analyse mit vier Stimmtests"
+      },
+      "comprehensive": {
+        "name": "Umfassender Test",
+        "duration": "5 Minuten",
+        "tests": "8 Tests",
+        "description": "Vollständige Bewertung mit acht Testprotokollen"
+      },
+      "clinical": {
+        "name": "Klinischer Test",
+        "duration": "10 Minuten",
+        "tests": "16 Tests",
+        "description": "Professionelle klinische Analyse"
+      }
+    },
+    "preparation": {
+      "title": "Vorbereitung vor dem Test",
+      "subtitle": "Befolgen Sie diese Schritte für optimale Ergebnisse",
+      "steps": {
+        "quietEnvironment": "Finden Sie eine ruhige Umgebung",
+        "checkMicrophone": "Überprüfen Sie, ob Ihr Mikrofon funktioniert",
+        "comfortablePosition": "Sitzen Sie in einer bequemen Position",
+        "followInstructions": "Befolgen Sie die Anweisungen auf dem Bildschirm sorgfältig"
+      }
+    },
+    "backToDashboard": "Zurück zum Dashboard",
+    "startTest": "Test starten"
+  },
+  "recording": {
+    "title": "Aufnahme läuft",
+    "instructions": "Sprechen Sie klar und deutlich in Ihr Mikrofon",
+    "timeRemaining": "Verbleibende Zeit",
+    "stop": "Stoppen",
+    "pause": "Pause",
+    "resume": "Fortsetzen",
+    "cancel": "Abbrechen",
+    "microphoneAccess": "Mikrofonzugriff erforderlich",
+    "allowMicrophone": "Bitte erlauben Sie den Mikrofonzugriff, um fortzufahren"
+  },
+  "processing": {
+    "title": "Verarbeitung läuft",
+    "analyzing": "Analysiere Ihre Stimmprobe...",
+    "extractingFeatures": "Extrahiere Biomarker...",
+    "calculatingRisk": "Berechne Risikobewertung...",
+    "generatingReport": "Erstelle Bericht...",
+    "almostDone": "Fast fertig...",
+    "pleaseWait": "Bitte warten Sie, während wir Ihre Ergebnisse verarbeiten"
+  },
+  "results": {
+    "title": "Testergebnisse",
+    "riskScore": "Risikobewertung",
+    "confidence": "Konfidenz",
+    "testDate": "Testdatum",
+    "testLevel": "Testniveau",
+    "biomarkers": "Biomarker",
+    "recommendations": "Empfehlungen",
+    "downloadReport": "Bericht herunterladen",
+    "shareWithDoctor": "Mit Arzt teilen",
+    "takeAnotherTest": "Weiteren Test machen",
+    "viewHistory": "Verlauf anzeigen",
+    "riskLevels": {
+      "low": "Niedriges Risiko",
+      "moderate": "Mäßiges Risiko",
+      "high": "Hohes Risiko"
+    },
+    "interpretation": {
+      "low": "Ihre Stimmanalyse zeigt keine signifikanten Anzeichen von Parkinson-Biomarkern. Regelmäßige Überwachung wird empfohlen.",
+      "moderate": "Ihre Stimmanalyse zeigt einige Anzeichen, die eine weitere Bewertung erfordern könnten. Konsultieren Sie einen Arzt.",
+      "high": "Ihre Stimmanalyse zeigt signifikante Anzeichen, die eine sofortige medizinische Bewertung erfordern. Bitte konsultieren Sie umgehend einen Neurologen."
+    }
+  },
+  "history": {
+    "title": "Testverlauf",
+    "subtitle": "Gesamt {count} Testaufzeichnungen",
+    "filters": {
+      "search": "Suchen",
+      "searchPlaceholder": "Tests suchen...",
+      "testLevel": "Testniveau",
+      "status": "Status",
+      "all": "Alle",
+      "completed": "Abgeschlossen",
+      "processing": "Verarbeitung läuft",
+      "failed": "Fehlgeschlagen"
+    },
+    "stats": {
+      "totalTests": "Gesamttests",
+      "averageScore": "Durchschnittsbewertung",
+      "latestTest": "Letzter Test",
+      "completed": "Abgeschlossen"
+    },
+    "noTests": "Keine Tests gefunden",
+    "takeFirstTest": "Machen Sie Ihren ersten Test"
+  }
+}

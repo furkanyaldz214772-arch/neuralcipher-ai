@@ -1,0 +1,150 @@
+{
+  "model_version": "v3.0",
+  "trained_at": "2026-01-20T23:43:40.550324",
+  "dataset": "UCI Parkinson's + UCI Telemonitoring (Smart Combined)",
+  "total_samples": 6070,
+  "uci_samples": 195,
+  "telemonitoring_samples": 5875,
+  "feature_count": 22,
+  "features": [
+    "MDVP:Fo(Hz)",
+    "MDVP:Fhi(Hz)",
+    "MDVP:Flo(Hz)",
+    "MDVP:Jitter(%)",
+    "MDVP:Jitter(Abs)",
+    "MDVP:RAP",
+    "MDVP:PPQ",
+    "Jitter:DDP",
+    "MDVP:Shimmer",
+    "MDVP:Shimmer(dB)",
+    "Shimmer:APQ3",
+    "Shimmer:APQ5",
+    "MDVP:APQ",
+    "Shimmer:DDA",
+    "NHR",
+    "HNR",
+    "RPDE",
+    "DFA",
+    "spread1",
+    "spread2",
+    "D2",
+    "PPE"
+  ],
+  "training_samples": 4856,
+  "test_samples": 1214,
+  "metrics": {
+    "train_accuracy": 0.9330724876441515,
+    "test_accuracy": 0.7314662273476112,
+    "oob_score": 0.7432042833607908,
+    "cv_mean": 0.7392904519120334,
+    "cv_std": 0.010106398731815753,
+    "roc_auc": 0.8159154422199419,
+    "sensitivity": 0.7806748466257669,
+    "specificity": 0.6743772241992882,
+    "precision": 0.7355491329479769,
+    "f1_score": 0.7574404761904762,
+    "confusion_matrix": [
+      [
+        379,
+        183
+      ],
+      [
+        143,
+        509
+      ]
+    ]
+  },
+  "feature_importance": [
+    {
+      "feature": "DFA",
+      "importance": 0.10841991342428603
+    },
+    {
+      "feature": "HNR",
+      "importance": 0.07299782804801275
+    },
+    {
+      "feature": "spread1",
+      "importance": 0.0654941122957169
+    },
+    {
+      "feature": "MDVP:Jitter(Abs)",
+      "importance": 0.06317182349381516
+    },
+    {
+      "feature": "MDVP:APQ",
+      "importance": 0.06251721800762103
+    },
+    {
+      "feature": "PPE",
+      "importance": 0.05969027114356947
+    },
+    {
+      "feature": "D2",
+      "importance": 0.058711449273276345
+    },
+    {
+      "feature": "RPDE",
+      "importance": 0.05474641462722892
+    },
+    {
+      "feature": "spread2",
+      "importance": 0.04778897549203683
+    },
+    {
+      "feature": "Shimmer:DDA",
+      "importance": 0.04448427440926187
+    },
+    {
+      "feature": "NHR",
+      "importance": 0.04378028006658309
+    },
+    {
+      "feature": "Shimmer:APQ3",
+      "importance": 0.04253043032307988
+    },
+    {
+      "feature": "MDVP:Shimmer(dB)",
+      "importance": 0.04075855450988326
+    },
+    {
+      "feature": "Shimmer:APQ5",
+      "importance": 0.04033234030411
+    },
+    {
+      "feature": "MDVP:PPQ",
+      "importance": 0.03991398748484466
+    },
+    {
+      "feature": "MDVP:Shimmer",
+      "importance": 0.03776101843565503
+    },
+    {
+      "feature": "Jitter:DDP",
+      "importance": 0.036485056325407716
+    },
+    {
+      "feature": "MDVP:Jitter(%)",
+      "importance": 0.03602481136699175
+    },
+    {
+      "feature": "MDVP:RAP",
+      "importance": 0.03418906278306218
+    },
+    {
+      "feature": "MDVP:Flo(Hz)",
+      "importance": 0.003877142446189647
+    },
+    {
+      "feature": "MDVP:Fhi(Hz)",
+      "importance": 0.003209461672862649
+    },
+    {
+      "feature": "MDVP:Fo(Hz)",
+      "importance": 0.0031155740665049394
+    }
+  ],
+  "model_file": "neuralcipher_v3.0.pkl",
+  "scaler_file": "neuralcipher_v3.0_scaler.pkl",
+  "note": "Smart combined: Telemonitoring converted to UCI format with feature engineering"
+}

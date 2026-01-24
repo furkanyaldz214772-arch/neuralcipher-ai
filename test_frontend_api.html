@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Frontend API Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 { color: #333; }
+        button {
+            background: #0066cc;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px 5px;
+        }
+        button:hover { background: #0052a3; }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f9f9f9;
+            border-left: 4px solid #0066cc;
+            border-radius: 5px;
+        }
+        .success { border-left-color: #28a745; }
+        .error { border-left-color: #dc3545; }
+        pre {
+            background: #f4f4f4;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        .test-item {
+            padding: 10px;
+            margin: 10px 0;
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧪 Frontend API Test</h1>
+        <p>Test backend API endpoints from browser</p>
+        
+        <div>
+            <button onclick="testLogin()">1. Test Login</button>
+            <button onclick="testGetTests()">2. Get Tests</button>
+            <button onclick="testGetResults()">3. Get Results</button>
+            <button onclick="testAll()">🚀 Run All Tests</button>
+        </div>
+        
+        <div id="output"></div>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:8000';
+        let token = null;
+        let testId = null;
+
+        function log(message, type = 'info') {
+            const output = document.getElementById('output');
+            const div = document.createElement('div');
+            div.className = `result ${type}`;
+            div.innerHTML = message;
+            output.appendChild(div);
+        }
+
+        async function testLogin() {
+            log('🔐 Testing login...', 'info');
+            
+            try {
+                const response = await fetch(`${API_URL}/api/v1/auth/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        email: 'patient@test.com',
+                        password: 'Patient123!@#'
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${await response.text()}`);
+                }
+
+                const data = await response.json();
+                token = data.access_token;
+                
+                log(`✅ Login successful!<br>Token: ${token.substring(0, 50)}...`, 'success');
+                return true;
+            } catch (error) {
+                log(`❌ Login failed: ${error.message}`, 'error');
+                return false;
+            }
+        }
+
+        async function testGetTests() {
+            if (!token) {
+                log('⚠️ Please login first', 'error');
+                return false;
+            }
+
+            log('📋 Fetching test list...', 'info');
+            
+            try {
+                const response = await fetch(`${API_URL}/api/v1/tests`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${await response.text()}`);
+                }
+
+                const tests = await response.json();
+                
+                let html = `✅ Found ${tests.length} tests:<br><br>`;
+                tests.slice(0, 5).forEach(test => {
+                    html += `<div class="test-item">
+                        <strong>ID:</strong> ${test.id} | 
+                        <strong>Status:</strong> ${test.status} | 
+                        <strong>Risk:</strong> ${test.risk_score}% | 
+                        <strong>Date:</strong> ${test.test_date.substring(0, 19)}
+                    </div>`;
+                });
+                
+                log(html, 'success');
+                
+                // Save first completed test ID
+                const completed = tests.find(t => t.status === 'completed');
+                if (completed) {
+                    testId = completed.id;
+                    log(`💾 Saved test ID ${testId} for results test`, 'info');
+                }
+                
+                return true;
+            } catch (error) {
+                log(`❌ Failed to get tests: ${error.message}`, 'error');
+                return false;
+            }
+        }
+
+        async function testGetResults() {
+            if (!token) {
+                log('⚠️ Please login first', 'error');
+                return false;
+            }
+
+            if (!testId) {
+                log('⚠️ Please get tests first to find a test ID', 'error');
+                return false;
+            }
+
+            log(`📊 Fetching results for test ${testId}...`, 'info');
+            
+            try {
+                const response = await fetch(`${API_URL}/api/v1/tests/${testId}/results`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${await response.text()}`);
+                }
+
+                const results = await response.json();
+                
+                let html = `✅ Results retrieved successfully!<br><br>`;
+                html += `<strong>Test ID:</strong> ${results.test_id}<br>`;
+                html += `<strong>Risk Score:</strong> ${results.risk_score}%<br>`;
+                html += `<strong>Risk Category:</strong> ${results.risk_category}<br>`;
+                html += `<strong>Confidence:</strong> ${(results.confidence * 100).toFixed(1)}%<br><br>`;
+                
+                html += `<strong>Biomarkers:</strong><br>`;
+                html += `<pre>${JSON.stringify(results.biomarkers, null, 2)}</pre>`;
+                
+                html += `<strong>Interpretation:</strong><br>`;
+                html += `<pre>${JSON.stringify(results.interpretation, null, 2)}</pre>`;
+                
+                log(html, 'success');
+                return true;
+            } catch (error) {
+                log(`❌ Failed to get results: ${error.message}`, 'error');
+                return false;
+            }
+        }
+
+        async function testAll() {
+            document.getElementById('output').innerHTML = '';
+            log('🚀 Running all tests...', 'info');
+            
+            const loginOk = await testLogin();
+            if (!loginOk) return;
+            
+            await new Promise(r => setTimeout(r, 500));
+            const testsOk = await testGetTests();
+            if (!testsOk) return;
+            
+            await new Promise(r => setTimeout(r, 500));
+            const resultsOk = await testGetResults();
+            
+            if (loginOk && testsOk && resultsOk) {
+                log('🎉 ALL TESTS PASSED!', 'success');
+                log(`<br>✅ Frontend can successfully communicate with backend<br>
+                     ✅ Login works<br>
+                     ✅ Test list works<br>
+                     ✅ Test results work<br><br>
+                     <strong>Next step:</strong> Check http://localhost:3000/history in your browser`, 'success');
+            }
+        }
+    </script>
+</body>
+</html>

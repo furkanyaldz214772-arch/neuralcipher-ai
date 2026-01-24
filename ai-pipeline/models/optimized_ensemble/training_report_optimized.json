@@ -1,0 +1,18 @@
+{
+  "start_time": "2026-01-21T23:16:01.656879",
+  "total_duration_hours": 0.0012151761849721273,
+  "models": {
+    "brain_3d_cnn": {
+      "error": "list index out of range"
+    },
+    "image_2d_cnn": {
+      "error": "as_list() is not defined on an unknown TensorShape."
+    }
+  },
+  "ensemble_performance": {},
+  "system_info": {
+    "gpu_count": 0,
+    "mixed_precision": "FP16",
+    "optimization_level": "Maximum"
+  }
+}

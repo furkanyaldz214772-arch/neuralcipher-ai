@@ -1,0 +1,67 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  db:
+    image: postgres:15-alpine
+    container_name: neuralcipher-db
+    environment:
+      POSTGRES_USER: neuralcipher
+      POSTGRES_PASSWORD: neuralcipher_password_2024
+      POSTGRES_DB: neuralcipher_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U neuralcipher"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Backend API
+  backend:
+    build: ./backend
+    container_name: neuralcipher-backend
+    environment:
+      DATABASE_URL: postgresql://neuralcipher:neuralcipher_password_2024@db:5432/neuralcipher_db
+      SECRET_KEY: super-secret-key-change-in-production
+      ENVIRONMENT: development
+      DEBUG: "True"
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/app
+      - uploads_data:/app/uploads
+    depends_on:
+      db:
+        condition: service_healthy
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+
+  # MongoDB
+  mongodb:
+    image: mongo:7-jammy
+    container_name: neuralcipher-mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    environment:
+      MONGO_INITDB_DATABASE: neuralcipher
+
+  # Redis
+  redis:
+    image: redis:7-alpine
+    container_name: neuralcipher-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes
+
+volumes:
+  postgres_data:
+  mongodb_data:
+  redis_data:
+  uploads_data:
+

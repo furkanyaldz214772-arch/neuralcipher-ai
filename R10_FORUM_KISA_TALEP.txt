@@ -1,0 +1,79 @@
+BAŞLIK:
+Full-Stack Web + Mobil Uygulama için Production Sunucu
+
+---
+
+AÇIKLAMA:
+
+Merhaba,
+
+Production'a hazır full-stack web ve mobil uygulamam için sunucu arıyorum.
+
+🎯 PROJE ÖZELLİKLERİ:
+• Modern web uygulaması (Next.js + React)
+• Mobil uygulama (iOS + Android)
+• RESTful API backend (Python/FastAPI)
+• AI/ML model entegrasyonu
+• PostgreSQL + Redis veritabanı
+• Real-time özellikler
+
+💻 SUNUCU GEREKSİNİMLERİ:
+
+Minimum:
+• 4 vCPU, 8 GB RAM, 100 GB SSD
+• Ubuntu 22.04 LTS
+• 5 TB/ay bant genişliği
+
+Önerilen:
+• 8 vCPU, 16 GB RAM, 200 GB SSD
+• Sınırsız bant genişliği
+
+🔧 YAZILIM İHTİYAÇLARI:
+• Nginx/Apache + SSL
+• Node.js 18+ & Python 3.11+
+• PostgreSQL 14+ & Redis 7+
+• Docker & Docker Compose (opsiyonel)
+
+🌐 ÖNEMLİ ÖZELLİKLER:
+• Firewall & DDoS koruması
+• Otomatik backup & snapshot
+• Kolay CPU/RAM yükseltme
+• SSH/SFTP erişimi
+• Monitoring & log yönetimi
+
+📊 BEKLENEN KULLANIM:
+• Başlangıç: 100-500 kullanıcı, 10-50 GB/ay
+• Büyüme: 1,000-5,000 kullanıcı, 100-500 GB/ay
+• Hedef: 10,000+ kullanıcı, 1+ TB/ay
+
+💰 BÜTÇE:
+• Başlangıç: 500-1,000 TL/ay
+• Büyüme: 1,000-2,000 TL/ay
+• Esnek ödeme (aylık/yıllık)
+
+🎁 BONUS (Olursa Süper):
+• Kullanıcı dostu kontrol paneli
+• 7/24 Türkçe destek
+• Ücretsiz SSL & domain
+• One-click kurulumlar
+• CDN entegrasyonu
+
+✅ ARANILAN:
+• Güvenilir uptime (%99.5+)
+• Kolay ölçekleme
+• Hızlı destek
+• Şeffaf fiyatlandırma
+• Startup dostu
+
+📋 PROJE DURUMU:
+✅ Geliştirme tamamlandı (~21,000 satır kod)
+✅ Local testler başarılı
+✅ Docker containerization hazır
+⏳ 3 gün içinde production'da olmak istiyorum
+
+🚀 HEDEF:
+Küçük başlayıp, büyüdükçe ölçekleme yapacağım. Bu yüzden esnek ve ölçeklenebilir bir çözüm arıyorum.
+
+Önerilerinizi bekliyorum! 🙏
+
+Not: Teknik detaylar veya özel gereksinimler için mesaj atabilirsiniz.

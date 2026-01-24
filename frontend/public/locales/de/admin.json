@@ -1,0 +1,184 @@
+{
+  "dashboard": {
+    "title": "Admin-Dashboard",
+    "subtitle": "Systemübersicht und Verwaltung",
+    "stats": {
+      "totalUsers": "Gesamtbenutzer",
+      "activeTests": "Aktive Tests",
+      "revenue": "Umsatz",
+      "systemHealth": "Systemzustand"
+    },
+    "quickActions": {
+      "title": "Schnellaktionen",
+      "userManagement": "Benutzerverwaltung",
+      "subscriptions": "Abonnements",
+      "analytics": "Analysen",
+      "systemSettings": "Systemeinstellungen"
+    }
+  },
+  "users": {
+    "title": "Benutzerverwaltung",
+    "subtitle": "Alle Benutzer verwalten",
+    "filters": {
+      "search": "Benutzer suchen...",
+      "role": "Rolle",
+      "status": "Status",
+      "all": "Alle",
+      "active": "Aktiv",
+      "inactive": "Inaktiv",
+      "suspended": "Gesperrt"
+    },
+    "table": {
+      "name": "Name",
+      "email": "E-Mail",
+      "role": "Rolle",
+      "status": "Status",
+      "joined": "Beigetreten",
+      "actions": "Aktionen"
+    },
+    "actions": {
+      "view": "Anzeigen",
+      "edit": "Bearbeiten",
+      "suspend": "Sperren",
+      "delete": "Löschen"
+    },
+    "roles": {
+      "patient": "Patient",
+      "doctor": "Arzt",
+      "hospital": "Krankenhaus",
+      "admin": "Administrator"
+    }
+  },
+  "subscriptions": {
+    "title": "Abonnements",
+    "subtitle": "Alle Abonnements verwalten",
+    "filters": {
+      "search": "Abonnements suchen...",
+      "plan": "Plan",
+      "status": "Status",
+      "all": "Alle",
+      "active": "Aktiv",
+      "expired": "Abgelaufen",
+      "cancelled": "Gekündigt"
+    },
+    "table": {
+      "user": "Benutzer",
+      "plan": "Plan",
+      "status": "Status",
+      "amount": "Betrag",
+      "startDate": "Startdatum",
+      "endDate": "Enddatum",
+      "actions": "Aktionen"
+    },
+    "actions": {
+      "view": "Anzeigen",
+      "edit": "Bearbeiten",
+      "cancel": "Kündigen",
+      "renew": "Erneuern"
+    },
+    "plans": {
+      "free": "Kostenlos",
+      "premium": "Premium",
+      "enterprise": "Enterprise"
+    },
+    "modal": {
+      "viewTitle": "Abonnementdetails",
+      "editTitle": "Abonnement bearbeiten",
+      "userInfo": "Benutzerinformationen",
+      "subscriptionDetails": "Abonnementdetails",
+      "timeline": "Zeitlinie",
+      "paymentStatus": "Zahlungsstatus",
+      "save": "Speichern",
+      "cancel": "Abbrechen"
+    }
+  },
+  "analytics": {
+    "title": "Analysen",
+    "subtitle": "Systemanalysen und Berichte",
+    "overview": {
+      "title": "Übersicht",
+      "totalRevenue": "Gesamtumsatz",
+      "newUsers": "Neue Benutzer",
+      "activeSubscriptions": "Aktive Abonnements",
+      "testCompleted": "Abgeschlossene Tests"
+    },
+    "charts": {
+      "userGrowth": "Benutzerwachstum",
+      "revenueOverTime": "Umsatz im Zeitverlauf",
+      "testActivity": "Testaktivität",
+      "subscriptionDistribution": "Abonnementverteilung"
+    }
+  },
+  "settings": {
+    "title": "Systemeinstellungen",
+    "subtitle": "Systemkonfiguration verwalten",
+    "tabs": {
+      "general": "Allgemein",
+      "email": "E-Mail",
+      "security": "Sicherheit",
+      "api": "API",
+      "features": "Funktionen"
+    },
+    "general": {
+      "title": "Allgemeine Einstellungen",
+      "siteName": "Seitenname",
+      "siteDescription": "Seitenbeschreibung",
+      "contactEmail": "Kontakt-E-Mail",
+      "supportEmail": "Support-E-Mail",
+      "maintenanceMode": "Wartungsmodus",
+      "maintenanceModeDesc": "Website für Wartungsarbeiten deaktivieren",
+      "allowRegistration": "Registrierung zulassen",
+      "allowRegistrationDesc": "Neue Benutzerregistrierungen aktivieren"
+    },
+    "email": {
+      "title": "E-Mail-Einstellungen",
+      "smtpHost": "SMTP-Host",
+      "smtpPort": "SMTP-Port",
+      "smtpUser": "SMTP-Benutzer",
+      "smtpPassword": "SMTP-Passwort",
+      "fromEmail": "Absender-E-Mail",
+      "fromName": "Absendername",
+      "enableNotifications": "E-Mail-Benachrichtigungen",
+      "enableNotificationsDesc": "E-Mail-Benachrichtigungen an Benutzer senden"
+    },
+    "security": {
+      "title": "Sicherheitseinstellungen",
+      "twoFactorRequired": "2FA erforderlich",
+      "twoFactorRequiredDesc": "Zwei-Faktor-Authentifizierung für alle Benutzer erforderlich",
+      "passwordMinLength": "Passwort-Mindestlänge",
+      "sessionTimeout": "Sitzungs-Timeout (Minuten)",
+      "maxLoginAttempts": "Maximale Anmeldeversuche",
+      "lockoutDuration": "Sperrungsdauer (Minuten)",
+      "requireStrongPassword": "Starkes Passwort erforderlich",
+      "requireStrongPasswordDesc": "Passwörter müssen Groß-/Kleinbuchstaben, Zahlen und Sonderzeichen enthalten"
+    },
+    "api": {
+      "title": "API-Einstellungen",
+      "apiKey": "API-Schlüssel",
+      "rateLimit": "Ratenlimit (Anfragen/Minute)",
+      "webhookUrl": "Webhook-URL",
+      "enableApiAccess": "API-Zugriff aktivieren",
+      "enableApiAccessDesc": "Externen API-Zugriff auf das System zulassen",
+      "apiDocumentation": "API-Dokumentation",
+      "regenerateKey": "Schlüssel neu generieren"
+    },
+    "features": {
+      "title": "Funktionseinstellungen",
+      "enableMessaging": "Nachrichtensystem",
+      "enableMessagingDesc": "Nachrichtensystem zwischen Ärzten und Patienten aktivieren",
+      "enableAppointments": "Terminbuchung",
+      "enableAppointmentsDesc": "Online-Terminbuchungssystem aktivieren",
+      "enableReports": "Berichtserstellung",
+      "enableReportsDesc": "PDF-Berichtserstellung und -export aktivieren",
+      "enableSubscriptions": "Abonnements",
+      "enableSubscriptionsDesc": "Abonnementpläne und Zahlungen aktivieren"
+    },
+    "actions": {
+      "save": "Änderungen speichern",
+      "cancel": "Abbrechen",
+      "reset": "Zurücksetzen",
+      "saved": "Einstellungen gespeichert",
+      "error": "Fehler beim Speichern der Einstellungen"
+    }
+  }
+}

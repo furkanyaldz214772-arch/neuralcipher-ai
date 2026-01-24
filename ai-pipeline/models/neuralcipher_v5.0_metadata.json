@@ -1,0 +1,50 @@
+{
+  "version": "v5.0",
+  "training_date": "2026-01-21T12:59:18.977465",
+  "training_samples": 11070,
+  "datasets": [
+    {
+      "name": "Oxford Parkinson's",
+      "samples": 195
+    },
+    {
+      "name": "Synthetic High Quality",
+      "samples": 5000
+    }
+  ],
+  "features": 22,
+  "algorithm": "Random Forest",
+  "hyperparameters": {
+    "n_estimators": 200,
+    "max_depth": 20,
+    "min_samples_split": 5,
+    "min_samples_leaf": 2
+  },
+  "performance": {
+    "train_accuracy": 0.9959095283926853,
+    "test_accuracy": 0.9932627526467758,
+    "roc_auc": 0.9992401497460988,
+    "sensitivity": 0.9886578449905482,
+    "specificity": 0.9980392156862745,
+    "f1_score": 0.9933523266856601,
+    "precision": 0.9980916030534351,
+    "recall": 0.9886578449905482,
+    "confusion_matrix": {
+      "tn": 509,
+      "fp": 1,
+      "fn": 6,
+      "tp": 523
+    }
+  },
+  "cross_validation": {
+    "scores": [
+      0.9345524542829644,
+      0.9932627526467758,
+      0.9942252165543792,
+      0.9942252165543792,
+      0.9923002887391723
+    ],
+    "mean": 0.9817131857555342,
+    "std": 0.023591166429033347
+  }
+}

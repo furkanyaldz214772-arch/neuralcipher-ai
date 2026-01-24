@@ -1,0 +1,150 @@
+{
+  "dashboard": {
+    "title": "Krankenhaus-Dashboard",
+    "subtitle": "Systemübersicht und Verwaltung",
+    "stats": {
+      "totalPatients": "Gesamtpatienten",
+      "medicalStaff": "Medizinisches Personal",
+      "testsToday": "Tests heute",
+      "systemHealth": "Systemzustand"
+    },
+    "quickActions": {
+      "title": "Schnellaktionen",
+      "viewPatients": "Patienten anzeigen",
+      "viewStaff": "Personal anzeigen",
+      "analytics": "Analysen",
+      "settings": "Einstellungen"
+    }
+  },
+  "patients": {
+    "title": "Alle Patienten",
+    "subtitle": "Patientenverwaltung",
+    "filters": {
+      "search": "Patienten suchen...",
+      "department": "Abteilung",
+      "riskLevel": "Risikoniveau",
+      "status": "Status",
+      "all": "Alle"
+    },
+    "table": {
+      "name": "Name",
+      "age": "Alter",
+      "department": "Abteilung",
+      "assignedDoctor": "Zugewiesener Arzt",
+      "lastTest": "Letzter Test",
+      "riskScore": "Risikobewertung",
+      "actions": "Aktionen"
+    },
+    "actions": {
+      "viewDetails": "Details anzeigen",
+      "assignDoctor": "Arzt zuweisen",
+      "viewReports": "Berichte anzeigen"
+    },
+    "addPatient": "Patient hinzufügen",
+    "importPatients": "Patienten importieren"
+  },
+  "staff": {
+    "title": "Medizinisches Personal",
+    "subtitle": "Personalverwaltung",
+    "filters": {
+      "search": "Personal suchen...",
+      "role": "Rolle",
+      "department": "Abteilung",
+      "status": "Status"
+    },
+    "table": {
+      "name": "Name",
+      "role": "Rolle",
+      "department": "Abteilung",
+      "patients": "Patienten",
+      "status": "Status",
+      "actions": "Aktionen"
+    },
+    "roles": {
+      "doctor": "Arzt",
+      "nurse": "Krankenschwester",
+      "technician": "Techniker",
+      "admin": "Administrator"
+    },
+    "actions": {
+      "viewDetails": "Details anzeigen",
+      "editPermissions": "Berechtigungen bearbeiten",
+      "viewSchedule": "Zeitplan anzeigen"
+    },
+    "addStaff": "Personal hinzufügen"
+  },
+  "analytics": {
+    "title": "Analysen",
+    "subtitle": "Krankenhausanalysen und Berichte",
+    "overview": {
+      "title": "Übersicht",
+      "totalTests": "Gesamttests",
+      "averageRiskScore": "Durchschnittliche Risikobewertung",
+      "departmentPerformance": "Abteilungsleistung",
+      "resourceUtilization": "Ressourcennutzung"
+    },
+    "charts": {
+      "testVolume": "Testvolumen",
+      "riskDistribution": "Risikoverteilung",
+      "departmentActivity": "Abteilungsaktivität",
+      "staffPerformance": "Personalleistung"
+    },
+    "reports": {
+      "monthly": "Monatsbericht",
+      "quarterly": "Quartalsbericht",
+      "annual": "Jahresbericht",
+      "custom": "Benutzerdefinierter Bericht"
+    }
+  },
+  "settings": {
+    "title": "Einstellungen",
+    "subtitle": "Krankenhauseinstellungen verwalten",
+    "general": {
+      "title": "Allgemeine Einstellungen",
+      "hospitalName": "Krankenhausname",
+      "address": "Adresse",
+      "phone": "Telefon",
+      "email": "E-Mail",
+      "website": "Website"
+    },
+    "departments": {
+      "title": "Abteilungen",
+      "addDepartment": "Abteilung hinzufügen",
+      "editDepartment": "Abteilung bearbeiten",
+      "deleteDepartment": "Abteilung löschen"
+    },
+    "integration": {
+      "title": "Integration",
+      "apiKey": "API-Schlüssel",
+      "webhookUrl": "Webhook-URL",
+      "ehrIntegration": "EHR-Integration"
+    },
+    "billing": {
+      "title": "Abrechnung",
+      "subscriptionPlan": "Abonnementplan",
+      "paymentMethod": "Zahlungsmethode",
+      "billingHistory": "Abrechnungsverlauf"
+    }
+  },
+  "patientDetail": {
+    "title": "Patientendetails",
+    "overview": "Übersicht",
+    "testHistory": "Testverlauf",
+    "assignedDoctor": "Zugewiesener Arzt",
+    "department": "Abteilung",
+    "admissionDate": "Aufnahmedatum",
+    "medicalRecords": "Krankenakten",
+    "prescriptions": "Verschreibungen",
+    "appointments": "Termine",
+    "notes": "Notizen"
+  },
+  "staffDetail": {
+    "title": "Personaldetails",
+    "personalInfo": "Persönliche Informationen",
+    "professionalInfo": "Berufliche Informationen",
+    "assignedPatients": "Zugewiesene Patienten",
+    "schedule": "Zeitplan",
+    "performance": "Leistung",
+    "permissions": "Berechtigungen"
+  }
+}

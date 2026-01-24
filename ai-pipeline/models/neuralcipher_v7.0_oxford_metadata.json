@@ -1,0 +1,152 @@
+{
+  "version": "v7.0_oxford",
+  "created_at": "2026-01-21T19:30:18.294242",
+  "dataset": "Oxford Parkinson's Dataset",
+  "total_samples": 195,
+  "training_samples": 156,
+  "test_samples": 39,
+  "parkinson_samples": 147,
+  "healthy_samples": 48,
+  "features": 22,
+  "feature_names": [
+    "MDVP:Fo(Hz)",
+    "MDVP:Fhi(Hz)",
+    "MDVP:Flo(Hz)",
+    "MDVP:Jitter(%)",
+    "MDVP:Jitter(Abs)",
+    "MDVP:RAP",
+    "MDVP:PPQ",
+    "Jitter:DDP",
+    "MDVP:Shimmer",
+    "MDVP:Shimmer(dB)",
+    "Shimmer:APQ3",
+    "Shimmer:APQ5",
+    "MDVP:APQ",
+    "Shimmer:DDA",
+    "NHR",
+    "HNR",
+    "RPDE",
+    "DFA",
+    "spread1",
+    "spread2",
+    "D2",
+    "PPE"
+  ],
+  "model_type": "RandomForestClassifier",
+  "model_params": {
+    "n_estimators": 200,
+    "max_depth": 10,
+    "min_samples_split": 5,
+    "min_samples_leaf": 2,
+    "class_weight": "balanced"
+  },
+  "performance": {
+    "train_accuracy": 1.0,
+    "test_accuracy": 0.9230769230769231,
+    "test_precision": 0.9333333333333333,
+    "test_recall": 0.9655172413793104,
+    "test_f1": 0.9491525423728815,
+    "cv_mean": 0.8721774193548388,
+    "cv_std": 0.043942363631694424
+  },
+  "confusion_matrix": [
+    [
+      8,
+      2
+    ],
+    [
+      1,
+      28
+    ]
+  ],
+  "feature_importance": [
+    {
+      "feature": "PPE",
+      "importance": 0.15061612794067186
+    },
+    {
+      "feature": "spread1",
+      "importance": 0.11936834706845363
+    },
+    {
+      "feature": "Shimmer:APQ5",
+      "importance": 0.07447851240106501
+    },
+    {
+      "feature": "MDVP:APQ",
+      "importance": 0.05709174247653631
+    },
+    {
+      "feature": "MDVP:Shimmer",
+      "importance": 0.05620496494367604
+    },
+    {
+      "feature": "MDVP:RAP",
+      "importance": 0.04797978456420114
+    },
+    {
+      "feature": "spread2",
+      "importance": 0.04773307753067915
+    },
+    {
+      "feature": "Jitter:DDP",
+      "importance": 0.04413161129269489
+    },
+    {
+      "feature": "MDVP:Fhi(Hz)",
+      "importance": 0.04171153744212928
+    },
+    {
+      "feature": "MDVP:Fo(Hz)",
+      "importance": 0.04062575346989855
+    },
+    {
+      "feature": "Shimmer:DDA",
+      "importance": 0.03868956087852003
+    },
+    {
+      "feature": "D2",
+      "importance": 0.03741015799902139
+    },
+    {
+      "feature": "NHR",
+      "importance": 0.03737758013804425
+    },
+    {
+      "feature": "Shimmer:APQ3",
+      "importance": 0.029671388850143407
+    },
+    {
+      "feature": "MDVP:Flo(Hz)",
+      "importance": 0.02813147154517573
+    },
+    {
+      "feature": "MDVP:Shimmer(dB)",
+      "importance": 0.02805561456018017
+    },
+    {
+      "feature": "MDVP:Jitter(%)",
+      "importance": 0.024023499577041852
+    },
+    {
+      "feature": "HNR",
+      "importance": 0.022665847772620564
+    },
+    {
+      "feature": "DFA",
+      "importance": 0.022126724233569917
+    },
+    {
+      "feature": "RPDE",
+      "importance": 0.01983094798692611
+    },
+    {
+      "feature": "MDVP:PPQ",
+      "importance": 0.018665164788037245
+    },
+    {
+      "feature": "MDVP:Jitter(Abs)",
+      "importance": 0.013410582540713631
+    }
+  ]
+}

@@ -1,0 +1,168 @@
+{
+  "contact": {
+    "title": "Kontaktieren Sie uns",
+    "subtitle": "Haben Sie Fragen? Wir sind hier, um zu helfen",
+    "form": {
+      "name": "Name",
+      "email": "E-Mail",
+      "subject": "Betreff",
+      "message": "Nachricht",
+      "send": "Nachricht senden",
+      "sending": "Wird gesendet...",
+      "success": "Nachricht erfolgreich gesendet!",
+      "error": "Fehler beim Senden der Nachricht. Bitte versuchen Sie es erneut."
+    },
+    "info": {
+      "email": {
+        "title": "E-Mail",
+        "value": "support@neuralcipher.ai"
+      },
+      "phone": {
+        "title": "Telefon",
+        "value": "+49 (0) 123 456 789"
+      },
+      "address": {
+        "title": "Adresse",
+        "value": "123 Innovation Drive, San Francisco, CA 94105, USA"
+      },
+      "hours": {
+        "title": "Öffnungszeiten",
+        "value": "Mo-Fr: 9:00 - 18:00 Uhr"
+      }
+    }
+  },
+  "about": {
+    "title": "Über uns",
+    "mission": {
+      "title": "Unsere Mission",
+      "description": "Demokratisierung der Parkinson-Früherkennung durch zugängliche, KI-gestützte Stimmanalysetechnologie."
+    },
+    "vision": {
+      "title": "Unsere Vision",
+      "description": "Eine Welt, in der Parkinson Jahre vor dem Auftreten von Symptomen erkannt wird."
+    },
+    "values": {
+      "title": "Unsere Werte",
+      "items": [
+        {
+          "title": "Patient zuerst",
+          "description": "Das Wohlergehen der Patienten ist unser Leitstern"
+        },
+        {
+          "title": "Datenschutz & Sicherheit",
+          "description": "Gesundheitsdaten sind heilig. Wir setzen auf Verschlüsselung auf Bankniveau"
+        },
+        {
+          "title": "Wissenschaftliche Strenge",
+          "description": "Jede Behauptung wird durch peer-reviewed Forschung gestützt"
+        }
+      ]
+    }
+  },
+  "pricing": {
+    "title": "Preise",
+    "subtitle": "Einfache, transparente Preise",
+    "comingSoon": "Demnächst verfügbar",
+    "plans": {
+      "free": {
+        "name": "Kostenlos",
+        "price": "0€",
+        "period": "für immer",
+        "features": [
+          "1 Test pro Monat",
+          "Grundlegende Risikobewertung",
+          "E-Mail-Support",
+          "Mobiler Zugang"
+        ]
+      },
+      "premium": {
+        "name": "Premium",
+        "price": "29€",
+        "period": "pro Monat",
+        "features": [
+          "Unbegrenzte Tests",
+          "Detaillierte Biomarker-Analyse",
+          "Trendverfolgung",
+          "Prioritäts-Support",
+          "PDF-Berichte",
+          "Mit Arzt teilen"
+        ]
+      },
+      "enterprise": {
+        "name": "Enterprise",
+        "price": "Individuell",
+        "period": "Kontaktieren Sie uns",
+        "features": [
+          "Unbegrenzte Benutzer",
+          "API-Zugang",
+          "Dedizierter Support",
+          "Individuelle Integration",
+          "HIPAA-Konformität",
+          "Schulung & Onboarding"
+        ]
+      }
+    }
+  },
+  "dashboard": {
+    "welcome": "Willkommen zurück",
+    "latestTest": "Letzter Test",
+    "riskScore": "Risikobewertung",
+    "totalTests": "Gesamttests",
+    "nextTest": "Nächster Test",
+    "quickActions": "Schnellaktionen",
+    "recentTests": "Letzte Tests",
+    "viewAll": "Alle anzeigen"
+  },
+  "profile": {
+    "title": "Profil",
+    "subtitle": "Persönliche Informationen anzeigen und bearbeiten",
+    "personalInfo": "Persönliche Informationen",
+    "accountInfo": "Kontoinformationen",
+    "security": "Sicherheit",
+    "firstName": "Vorname",
+    "lastName": "Nachname",
+    "dateOfBirth": "Geburtsdatum",
+    "gender": "Geschlecht",
+    "phone": "Telefon",
+    "address": "Adresse",
+    "email": "E-Mail",
+    "accountType": "Kontotyp",
+    "emailVerified": "E-Mail verifiziert",
+    "twoFactorAuth": "2FA aktiv",
+    "changePassword": "Passwort ändern",
+    "enableTwoFactor": "Zwei-Faktor-Authentifizierung",
+    "save": "Speichern",
+    "cancel": "Abbrechen",
+    "edit": "Bearbeiten"
+  },
+  "history": {
+    "title": "Testverlauf",
+    "subtitle": "Alle Ihre Tests anzeigen",
+    "filters": {
+      "search": "Tests suchen...",
+      "testLevel": "Teststufe",
+      "status": "Status",
+      "sortBy": "Sortieren nach"
+    },
+    "stats": {
+      "totalTests": "Gesamttests",
+      "averageScore": "Durchschnittliche Bewertung",
+      "latestTest": "Letzter Test",
+      "completed": "Abgeschlossen"
+    },
+    "noTests": "Keine Tests gefunden",
+    "takeFirstTest": "Machen Sie Ihren ersten Test"
+  },
+  "results": {
+    "title": "Testergebnisse",
+    "riskAssessment": "Risikobewertung",
+    "biomarkers": "Stimmbiomarker",
+    "recommendations": "Empfehlungen",
+    "nextSteps": "Nächste Schritte",
+    "downloadPDF": "PDF herunterladen",
+    "shareWithDoctor": "Mit Arzt teilen",
+    "takeAnotherTest": "Weiteren Test machen",
+    "viewHistory": "Verlauf anzeigen",
+    "consultDoctor": "Arzt konsultieren"
+  }
+}

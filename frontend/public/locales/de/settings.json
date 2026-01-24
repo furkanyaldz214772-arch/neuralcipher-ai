@@ -1,0 +1,148 @@
+{
+  "title": "Einstellungen",
+  "subtitle": "Verwalten Sie Ihre Kontoeinstellungen und Sicherheit",
+  "tabs": {
+    "general": {
+      "label": "Allgemein",
+      "description": "Sprache, Zeitzone & Einstellungen"
+    },
+    "notifications": {
+      "label": "Benachrichtigungen",
+      "description": "E-Mail & Push-Benachrichtigungen"
+    },
+    "security": {
+      "label": "Sicherheit",
+      "description": "Passwort & Authentifizierung"
+    },
+    "privacy": {
+      "label": "Datenschutz",
+      "description": "Daten & Datenschutzkontrollen"
+    }
+  },
+  "general": {
+    "languageRegion": {
+      "title": "Sprache & Region",
+      "subtitle": "Passen Sie Ihre Lokalisierungseinstellungen an",
+      "language": "Sprache",
+      "timezone": "Zeitzone",
+      "dateFormat": "Datumsformat"
+    },
+    "displayPreferences": {
+      "title": "Anzeigeeinstellungen",
+      "subtitle": "Passen Sie Ihr visuelles Erlebnis an",
+      "darkMode": "Dunkler Modus",
+      "darkModeDesc": "Immer aktiviert für besseren Augenkomfort",
+      "animations": "Animationen",
+      "animationsDesc": "Sanfte Übergänge und Effekte"
+    },
+    "resetToDefault": "Auf Standard zurücksetzen",
+    "saveChanges": "Änderungen speichern"
+  },
+  "notifications": {
+    "title": "Benachrichtigungseinstellungen",
+    "subtitle": "Wählen Sie aus, worüber Sie benachrichtigt werden möchten",
+    "channels": {
+      "email": "E-Mail",
+      "push": "Push",
+      "sms": "SMS",
+      "thisWeek": "Diese Woche"
+    },
+    "types": {
+      "emailNotifications": {
+        "title": "E-Mail-Benachrichtigungen",
+        "description": "E-Mails für neue Testergebnisse und Updates erhalten"
+      },
+      "pushNotifications": {
+        "title": "Push-Benachrichtigungen",
+        "description": "Browser-Benachrichtigungen für Echtzeit-Updates"
+      },
+      "highRiskAlerts": {
+        "title": "Hochrisiko-Warnungen",
+        "description": "Sofortige Warnungen bei Hochrisiko-Erkennungen"
+      },
+      "weeklySummary": {
+        "title": "Wöchentliche Zusammenfassung",
+        "description": "Wöchentliche E-Mail mit Ihren Gesundheitsstatistiken"
+      },
+      "systemUpdates": {
+        "title": "System-Updates",
+        "description": "Benachrichtigungen über neue Funktionen und Verbesserungen"
+      }
+    },
+    "testNotifications": "Benachrichtigungen testen",
+    "saveChanges": "Änderungen speichern"
+  },
+  "security": {
+    "title": "Sicherheitseinstellungen",
+    "subtitle": "Verwalten Sie Ihre Kontosicherheit",
+    "securityScore": {
+      "title": "Sicherheitsbewertung",
+      "subtitle": "Ihr Kontosicherheitsniveau",
+      "strong": "Stark",
+      "moderate": "Mäßig",
+      "weak": "Schwach"
+    },
+    "options": {
+      "changePassword": {
+        "title": "Passwort ändern",
+        "description": "Zuletzt geändert: vor {days} Tagen",
+        "status": "Aktualisierung empfohlen"
+      },
+      "twoFactorAuth": {
+        "title": "Zwei-Faktor-Authentifizierung",
+        "description": "Zusätzliche Sicherheit für Ihr Konto",
+        "status": "Aktiv"
+      },
+      "activeSessions": {
+        "title": "Aktive Sitzungen",
+        "description": "{count} Geräte derzeit angemeldet",
+        "status": "{count} Geräte"
+      },
+      "loginAlerts": {
+        "title": "Anmeldewarnungen",
+        "description": "Benachrichtigung bei neuen Anmeldungen erhalten",
+        "status": "Aktiviert"
+      }
+    },
+    "loginHistory": {
+      "title": "Anmeldeverlauf",
+      "subtitle": "Letzte Kontoaktivität",
+      "viewAll": "Alle anzeigen",
+      "current": "Aktuell",
+      "active": "Aktiv",
+      "expired": "Abgelaufen"
+    }
+  },
+  "privacy": {
+    "title": "Datenschutzeinstellungen",
+    "subtitle": "Kontrollieren Sie Ihre Daten und Privatsphäre",
+    "dataCollection": {
+      "title": "Datenerfassung",
+      "analytics": "Analyse-Cookies",
+      "analyticsDesc": "Helfen Sie uns, unseren Service zu verbessern",
+      "marketing": "Marketing-Cookies",
+      "marketingDesc": "Personalisierte Empfehlungen erhalten"
+    },
+    "dataSharing": {
+      "title": "Datenweitergabe",
+      "shareWithDoctors": "Mit Ärzten teilen",
+      "shareWithDoctorsDesc": "Erlauben Sie Ärzten, auf Ihre Testergebnisse zuzugreifen",
+      "anonymousResearch": "Anonyme Forschung",
+      "anonymousResearchDesc": "Tragen Sie zur Parkinson-Forschung bei"
+    },
+    "dataExport": {
+      "title": "Datenexport",
+      "downloadData": "Meine Daten herunterladen",
+      "downloadDataDesc": "Alle Ihre Daten in einem maschinenlesbaren Format erhalten"
+    },
+    "accountDeletion": {
+      "title": "Konto löschen",
+      "deleteAccount": "Konto löschen",
+      "deleteAccountDesc": "Ihr Konto und alle Daten dauerhaft löschen"
+    }
+  },
+  "messages": {
+    "saved": "Gespeichert!",
+    "saveChanges": "Änderungen speichern"
+  }
+}

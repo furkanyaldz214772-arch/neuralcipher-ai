@@ -1,0 +1,12 @@
+{
+  "model_version": "v1.0",
+  "trained_at": "2026-01-21T14:33:15.987958",
+  "feature_count": 59,
+  "training_samples": 200,
+  "metrics": {
+    "train_accuracy": 1.0,
+    "note": "Sentetik veri ile e\u011fitildi - ger\u00e7ek veri ile g\u00fcncellenecek"
+  },
+  "model_file": "neuralcipher_v1.0.pkl",
+  "scaler_file": "neuralcipher_v1.0_scaler.pkl"
+}

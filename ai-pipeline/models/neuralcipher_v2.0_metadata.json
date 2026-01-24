@@ -1,0 +1,100 @@
+{
+  "model_version": "v2.0",
+  "trained_at": "2026-01-20T23:30:57.265535",
+  "dataset": "UCI Parkinson's + UCI Telemonitoring (6,070 samples)",
+  "total_samples": 6070,
+  "feature_count": 13,
+  "features": [
+    "D2",
+    "DFA",
+    "HNR",
+    "MDVP:Fhi(Hz)",
+    "MDVP:Flo(Hz)",
+    "MDVP:Fo(Hz)",
+    "MDVP:Shimmer(dB)",
+    "NHR",
+    "PPE",
+    "RPDE",
+    "Shimmer(dB)",
+    "Shimmer:DDA",
+    "spread1"
+  ],
+  "metrics": {
+    "train_accuracy": 0.9915568369028006,
+    "test_accuracy": 0.6968698517298187,
+    "cv_mean": 0.719523379656118,
+    "cv_std": 0.01481047844827016,
+    "roc_auc": 0.7882234788114315,
+    "sensitivity": 0.7745398773006135,
+    "specificity": 0.6067615658362989,
+    "precision": 0.6955922865013774,
+    "f1_score": 0.7329462989840347,
+    "confusion_matrix": [
+      [
+        341,
+        221
+      ],
+      [
+        147,
+        505
+      ]
+    ]
+  },
+  "feature_importance": [
+    {
+      "feature": "DFA",
+      "importance": 0.1797004510447765
+    },
+    {
+      "feature": "HNR",
+      "importance": 0.1477097917922005
+    },
+    {
+      "feature": "RPDE",
+      "importance": 0.1380290128742498
+    },
+    {
+      "feature": "PPE",
+      "importance": 0.12992135408586084
+    },
+    {
+      "feature": "Shimmer:DDA",
+      "importance": 0.1291047496834701
+    },
+    {
+      "feature": "NHR",
+      "importance": 0.12172664464239609
+    },
+    {
+      "feature": "Shimmer(dB)",
+      "importance": 0.11894047047088795
+    },
+    {
+      "feature": "spread1",
+      "importance": 0.010822229714165733
+    },
+    {
+      "feature": "MDVP:Shimmer(dB)",
+      "importance": 0.006980821790577637
+    },
+    {
+      "feature": "D2",
+      "importance": 0.004711362491585143
+    },
+    {
+      "feature": "MDVP:Flo(Hz)",
+      "importance": 0.004628497982350464
+    },
+    {
+      "feature": "MDVP:Fhi(Hz)",
+      "importance": 0.003922626503790532
+    },
+    {
+      "feature": "MDVP:Fo(Hz)",
+      "importance": 0.0038019869236887455
+    }
+  ],
+  "model_file": "neuralcipher_v2.0.pkl",
+  "scaler_file": "neuralcipher_v2.0_scaler.pkl",
+  "note": "Trained with 6,070 samples using all features with median imputation"
+}

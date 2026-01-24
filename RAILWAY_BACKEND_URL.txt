@@ -1,0 +1,16 @@
+🚀 RAILWAY BACKEND URL
+========================
+
+Production Backend: https://web-production-c00o0.up.railway.app
+
+API Endpoints:
+- Health Check: https://web-production-c00o0.up.railway.app/health
+- API Docs: https://web-production-c00o0.up.railway.app/docs
+- API Root: https://web-production-c00o0.up.railway.app/api/v1
+
+Frontend Configuration:
+- NEXT_PUBLIC_API_URL=https://web-production-c00o0.up.railway.app
+
+Status: ✅ ACTIVE
+Deployment: Successful
+Date: 24 Ocak 2026

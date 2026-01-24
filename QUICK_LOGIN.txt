@@ -1,0 +1,27 @@
+🔐 QUICK LOGIN REFERENCE
+========================
+
+🏥 HOSPITAL
+Email:    hospital@test.com
+Password: Hospital123!@#
+
+👤 PATIENT
+Email:    patient@test.com
+Password: Patient123!@#
+
+👨‍⚕️ DOCTOR
+Email:    doctor@test.com
+Password: Doctor123!@#
+
+👑 ADMIN
+Email:    admin@test.com
+Password: Admin123!@#
+
+🌐 URLs
+=======
+Login:    http://localhost:3001/auth/login
+Frontend: http://localhost:3001
+Backend:  http://localhost:8000
+API Docs: http://localhost:8000/docs
+
+✅ ALL WORKING!

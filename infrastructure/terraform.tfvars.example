@@ -1,0 +1,18 @@
+# NeuralCipher.ai - Terraform Variables
+# Copy this file to terraform.tfvars and fill in your values
+
+aws_region = "us-east-1"
+environment = "production"
+
+# VPC
+vpc_cidr = "10.0.0.0/16"
+
+# RDS
+rds_instance_class    = "db.t3.medium"
+rds_allocated_storage = 100
+
+# DocumentDB
+documentdb_instance_class = "db.t3.medium"
+
+# Redis
+redis_node_type = "cache.t3.medium"

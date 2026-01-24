@@ -1,0 +1,62 @@
+{
+  "version": "9.0",
+  "model_type": "Voting Ensemble",
+  "training_date": "2026-01-21T21:04:13.402984",
+  "dataset": {
+    "total_samples": 795,
+    "parkinson_samples": 447,
+    "healthy_samples": 348,
+    "sources": [
+      "Oxford (195)",
+      "Sample 100 (100)",
+      "Sample 500 (500)"
+    ],
+    "balance_ratio": "1.28:1"
+  },
+  "features": {
+    "count": 22,
+    "names": [
+      "MDVP:Fo(Hz)",
+      "MDVP:Fhi(Hz)",
+      "MDVP:Flo(Hz)",
+      "MDVP:Jitter(%)",
+      "MDVP:Jitter(Abs)",
+      "MDVP:RAP",
+      "MDVP:PPQ",
+      "Jitter:DDP",
+      "MDVP:Shimmer",
+      "MDVP:Shimmer(dB)",
+      "Shimmer:APQ3",
+      "Shimmer:APQ5",
+      "MDVP:APQ",
+      "Shimmer:DDA",
+      "NHR",
+      "HNR",
+      "RPDE",
+      "DFA",
+      "spread1",
+      "spread2",
+      "D2",
+      "PPE"
+    ]
+  },
+  "performance": {
+    "accuracy": 1.0,
+    "f1_score": 1.0,
+    "auc_roc": 1.0,
+    "cv_mean": 0.9827132936507936,
+    "precision": 1.0,
+    "recall": 1.0
+  },
+  "confusion_matrix": {
+    "true_negative": 70,
+    "false_positive": 0,
+    "false_negative": 0,
+    "true_positive": 89
+  },
+  "comparison_with_v8": {
+    "v8_accuracy": 0.9487,
+    "v9_accuracy": 1.0,
+    "improvement": "5.13%"
+  }
+}
