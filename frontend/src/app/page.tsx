@@ -44,6 +44,7 @@ const FAQItem = ({ question, answer, delay }: any) => {
 
 export default function Home() {
   const [isContactOpen, setIsContactOpen] = useState(false)
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const { user, isAuthenticated, logout } = useAuthStore()
   const router = useRouter()
 
@@ -72,6 +73,22 @@ export default function Home() {
       <nav className="navbar-modern fixed top-0 w-full z-50 backdrop-blur-2xl bg-[#0A0E27]/90 border-b border-[#64FFDA]/20">
         <div className="max-w-7xl mx-auto px-6 py-3">
           <div className="flex items-center justify-between gap-8">
+            {/* Mobile Menu Button */}
+            <button
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="lg:hidden p-2 text-white hover:text-[#64FFDA] transition-colors"
+              aria-label="Toggle menu"
+            >
+              {isMobileMenuOpen ? (
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              ) : (
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+              )}
+            </button>
             {/* Modern Logo Section */}
             <Link href="/" className="flex items-center gap-3 group flex-shrink-0">
               {/* Neural Network Logo Icon */}
@@ -183,6 +200,119 @@ export default function Home() {
               </div>
             </Link>
             
+            {/* Mobile Menu Overlay */}
+            {isMobileMenuOpen && (
+              <div
+                className="lg:hidden fixed inset-0 bg-black/50 z-40"
+                onClick={() => setIsMobileMenuOpen(false)}
+              />
+            )}
+
+            {/* Mobile Menu */}
+            <div className={`
+              lg:hidden fixed top-[73px] left-0 right-0 z-40
+              bg-[#0A0E27]/98 backdrop-blur-2xl border-b border-[#64FFDA]/20
+              transform transition-all duration-300 ease-in-out
+              ${isMobileMenuOpen ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'}
+            `}>
+              <div className="max-w-7xl mx-auto px-6 py-4 space-y-1">
+                <a 
+                  href="#" 
+                  className="block px-4 py-3 text-gray-300 hover:text-[#64FFDA] hover:bg-white/5 rounded-lg transition-colors font-medium"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  Home
+                </a>
+                <a 
+                  href="#features" 
+                  className="block px-4 py-3 text-gray-300 hover:text-[#64FFDA] hover:bg-white/5 rounded-lg transition-colors font-medium"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  Features
+                </a>
+                <a 
+                  href="#science" 
+                  className="block px-4 py-3 text-gray-300 hover:text-[#64FFDA] hover:bg-white/5 rounded-lg transition-colors font-medium"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  Science
+                </a>
+                <a 
+                  href="#doctors" 
+                  className="block px-4 py-3 text-gray-300 hover:text-[#64FFDA] hover:bg-white/5 rounded-lg transition-colors font-medium"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  Doctors
+                </a>
+                <Link 
+                  href="/pricing" 
+                  className="block px-4 py-3 text-gray-300 hover:text-[#64FFDA] hover:bg-white/5 rounded-lg transition-colors font-medium"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  Pricing
+                </Link>
+                <Link 
+                  href="/contributors" 
+                  className="block px-4 py-3 text-gray-300 hover:text-[#64FFDA] hover:bg-white/5 rounded-lg transition-colors font-medium"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  Contributors
+                </Link>
+                <Link 
+                  href="/contact" 
+                  className="block px-4 py-3 text-gray-300 hover:text-[#64FFDA] hover:bg-white/5 rounded-lg transition-colors font-medium"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  Contact
+                </Link>
+                <Link 
+                  href="/demo" 
+                  className="block px-4 py-3 text-gray-300 hover:text-[#64FFDA] hover:bg-white/5 rounded-lg transition-colors font-medium"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  Demo
+                </Link>
+                
+                {isAuthenticated && user ? (
+                  <>
+                    <Link 
+                      href={getDashboardLink()} 
+                      className="block px-4 py-3 text-gray-300 hover:text-[#64FFDA] hover:bg-white/5 rounded-lg transition-colors font-medium"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                      Dashboard
+                    </Link>
+                    <button
+                      onClick={() => {
+                        handleLogout()
+                        setIsMobileMenuOpen(false)
+                      }}
+                      className="w-full text-left px-4 py-3 text-red-400 hover:bg-red-500/10 rounded-lg transition-colors font-medium"
+                    >
+                      Logout
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <Link 
+                      href="/auth/login" 
+                      className="block px-4 py-3 text-gray-300 hover:text-[#64FFDA] hover:bg-white/5 rounded-lg transition-colors font-medium"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                      Sign In
+                    </Link>
+                    <Link 
+                      href="/auth/register" 
+                      className="block px-4 py-3 text-[#64FFDA] bg-[#64FFDA]/10 hover:bg-[#64FFDA]/20 rounded-lg transition-colors font-bold"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                      Start Test
+                    </Link>
+                  </>
+                )}
+              </div>
+            </div>
+
             {/* Navigation Links - Modern Style */}
             <div className="hidden lg:flex items-center gap-0.5 flex-1 justify-center">
               <a href="#" className="px-3 py-2 text-sm text-gray-300 hover:text-[#64FFDA] transition-colors font-medium rounded-lg hover:bg-white/5">
