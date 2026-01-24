@@ -5,10 +5,8 @@ import { motion } from 'framer-motion'
 import { useState } from 'react'
 import { FiMic, FiCpu, FiActivity, FiArrowRight, FiShield, FiZap, FiTrendingUp, FiUsers, FiAward, FiCheckCircle, FiClock, FiLock, FiSmartphone, FiBarChart, FiGlobe, FiHeart, FiMail, FiPhone, FiMapPin, FiStar, FiPlay, FiChevronDown, FiMessageCircle, FiHelpCircle, FiLogOut } from 'react-icons/fi'
 import Footer from '@/components/layout/Footer'
-import LanguageSwitcher from '@/components/LanguageSwitcher'
 import { useAuthStore } from '@/lib/auth-store'
 import { useRouter } from 'next/navigation'
-import { useTranslation } from '@/hooks/useTranslation'
 
 const FAQItem = ({ question, answer, delay }: any) => {
   const [isOpen, setIsOpen] = useState(false)
@@ -48,16 +46,6 @@ export default function Home() {
   const [isContactOpen, setIsContactOpen] = useState(false)
   const { user, isAuthenticated, logout } = useAuthStore()
   const router = useRouter()
-  const { t, isLoading } = useTranslation('landing')
-
-  // Show loading state while translations load
-  if (isLoading) {
-    return (
-      <div className="min-h-screen modern-bg flex items-center justify-center">
-        <div className="text-[#64FFDA] text-xl">Loading...</div>
-      </div>
-    )
-  }
 
   const handleLogout = () => {
     logout()
@@ -198,22 +186,22 @@ export default function Home() {
             {/* Navigation Links - Modern Style */}
             <div className="hidden lg:flex items-center gap-0.5 flex-1 justify-center">
               <a href="#" className="px-3 py-2 text-sm text-gray-300 hover:text-[#64FFDA] transition-colors font-medium rounded-lg hover:bg-white/5">
-                {t('nav.home')}
+                Home
               </a>
               <a href="#features" className="px-3 py-2 text-sm text-gray-300 hover:text-[#64FFDA] transition-colors font-medium rounded-lg hover:bg-white/5">
-                {t('nav.features')}
+                Features
               </a>
               <a href="#science" className="px-3 py-2 text-sm text-gray-300 hover:text-[#64FFDA] transition-colors font-medium rounded-lg hover:bg-white/5">
-                {t('nav.science')}
+                Science
               </a>
               <a href="#doctors" className="px-3 py-2 text-sm text-gray-300 hover:text-[#64FFDA] transition-colors font-medium rounded-lg hover:bg-white/5">
-                {t('nav.doctors')}
+                Doctors
               </a>
               <Link href="/pricing" className="px-3 py-2 text-sm text-gray-300 hover:text-[#64FFDA] transition-colors font-medium rounded-lg hover:bg-white/5">
-                {t('nav.pricing')}
+                Pricing
               </Link>
               <Link href="/contributors" className="px-3 py-2 text-sm text-gray-300 hover:text-[#64FFDA] transition-colors font-medium rounded-lg hover:bg-white/5">
-                {t('nav.contributors')}
+                Contributors
               </Link>
               
               {/* Contact Dropdown */}
@@ -222,7 +210,7 @@ export default function Home() {
                   onClick={() => setIsContactOpen(!isContactOpen)}
                   className="flex items-center gap-1 px-3 py-2 text-sm text-gray-300 hover:text-[#64FFDA] transition-colors font-medium rounded-lg hover:bg-white/5"
                 >
-                  {t('nav.contact')}
+                  Contact
                   <FiChevronDown className={`transition-transform duration-200 ${isContactOpen ? 'rotate-180' : ''}`} />
                 </button>
                 
@@ -239,7 +227,7 @@ export default function Home() {
                       onClick={() => setIsContactOpen(false)}
                     >
                       <FiMail className="text-[#64FFDA]" />
-                      {t('nav.contactUs')}
+                      Contact Us
                     </Link>
                     <a 
                       href="#testimonials" 
@@ -247,7 +235,7 @@ export default function Home() {
                       onClick={() => setIsContactOpen(false)}
                     >
                       <FiMessageCircle className="text-[#3B82F6]" />
-                      {t('nav.reviews')}
+                      Reviews
                     </a>
                     <a 
                       href="#faq" 
@@ -255,7 +243,7 @@ export default function Home() {
                       onClick={() => setIsContactOpen(false)}
                     >
                       <FiHelpCircle className="text-[#8B5CF6]" />
-                      {t('nav.faq')}
+                      FAQ
                     </a>
                   </motion.div>
                 )}
@@ -268,11 +256,8 @@ export default function Home() {
                 href="/demo" 
                 className="hidden sm:flex items-center gap-1.5 px-4 py-2 text-sm text-[#64FFDA] hover:text-white transition-all duration-300 font-bold rounded-lg bg-[#64FFDA]/10 border border-[#64FFDA]/30 hover:bg-[#64FFDA]/20 hover:border-[#64FFDA]/50"
               >
-                {t('nav.demo')}
+                Demo
               </Link>
-              
-              {/* Language Switcher */}
-              <LanguageSwitcher />
               
               {isAuthenticated && user ? (
                 <>
@@ -299,7 +284,7 @@ export default function Home() {
                     className="hidden sm:flex items-center gap-1.5 px-4 py-2 text-sm text-gray-400 hover:text-red-400 transition-all duration-300 font-semibold rounded-lg hover:bg-red-500/10"
                   >
                     <FiLogOut className="text-sm" />
-                    {t('nav.logout')}
+                    Logout
                   </button>
                 </>
               ) : (
@@ -308,7 +293,7 @@ export default function Home() {
                     href="/auth/login" 
                     className="hidden sm:flex items-center gap-1.5 px-4 py-2 text-sm text-white hover:text-[#64FFDA] transition-all duration-300 font-semibold rounded-lg hover:bg-white/5"
                   >
-                    {t('nav.signIn')}
+                    Sign In
                   </Link>
                   
                   <Link 
@@ -322,7 +307,7 @@ export default function Home() {
                     {/* Button Content */}
                     <div className="relative flex items-center gap-1.5 px-5 py-2 text-white font-bold rounded-lg text-sm">
                       <FiZap className="text-sm" />
-                      <span>{t('nav.startTest')}</span>
+                      <span>Start Test</span>
                       <motion.div
                         animate={{ x: [0, 3, 0] }}
                         transition={{ duration: 1.5, repeat: Infinity }}
@@ -372,15 +357,15 @@ export default function Home() {
             >
               <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-[#64FFDA]/10 border border-[#64FFDA]/30 backdrop-blur-sm">
                 <FiAward className="text-[#64FFDA]" />
-                <span className="text-sm text-gray-300 font-medium">{t('hero.badges.fdaCleared')}</span>
+                <span className="text-sm text-gray-300 font-medium">FDA Cleared</span>
               </div>
               <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-[#64FFDA]/10 border border-[#64FFDA]/30 backdrop-blur-sm">
                 <FiShield className="text-[#64FFDA]" />
-                <span className="text-sm text-gray-300 font-medium">{t('hero.badges.hipaaCompliant')}</span>
+                <span className="text-sm text-gray-300 font-medium">HIPAA Compliant</span>
               </div>
               <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-[#64FFDA]/10 border border-[#64FFDA]/30 backdrop-blur-sm">
                 <FiUsers className="text-[#64FFDA]" />
-                <span className="text-sm text-gray-300 font-medium">{t('hero.badges.users')}</span>
+                <span className="text-sm text-gray-300 font-medium">10,000+ Users</span>
               </div>
             </motion.div>
 
@@ -390,39 +375,39 @@ export default function Home() {
               transition={{ duration: 0.8, delay: 0.2 }}
             >
               <h1 className="text-6xl md:text-7xl lg:text-8xl font-black mb-8 leading-tight">
-                {t('hero.title')}<br />
-                <span className="gradient-text-modern">{t('hero.titleHighlight')}</span>
+                Detect Parkinson's<br />
+                <span className="gradient-text-modern">10 Years Earlier</span>
               </h1>
               
               <p className="text-xl md:text-2xl text-gray-300 mb-12 max-w-3xl mx-auto leading-relaxed">
-                {t('hero.subtitle')} <span className="text-[#64FFDA] font-semibold">{t('hero.subtitleHighlight')}</span>. 
-                {t('hero.subtitleEnd')}
+                Revolutionary AI-powered voice analysis detects Parkinson's disease <span className="text-[#64FFDA] font-semibold">a decade before symptoms appear</span>. 
+                Just 30 seconds. 92% accuracy. Change your future.
               </p>
 
               <div className="flex flex-col sm:flex-row items-center justify-center gap-6 mb-12">
                 <Link href="/auth/register" className="btn-modern text-lg px-8 py-4 flex items-center gap-3">
                   <FiMic className="text-xl" />
-                  {t('hero.cta.primary')}
+                  Start Free Test Now
                   <FiArrowRight className="text-xl" />
                 </Link>
                 <button className="btn-secondary-modern text-lg px-8 py-4 flex items-center gap-3">
                   <FiPlay className="text-xl" />
-                  {t('hero.cta.secondary')}
+                  Watch 2-Min Demo
                 </button>
               </div>
 
               <div className="flex items-center justify-center gap-8 text-sm text-gray-400 mb-16">
                 <div className="flex items-center gap-2">
                   <FiCheckCircle className="text-[#64FFDA]" />
-                  <span>{t('hero.features.noCreditCard')}</span>
+                  <span>No credit card required</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <FiCheckCircle className="text-[#64FFDA]" />
-                  <span>{t('hero.features.freePlan')}</span>
+                  <span>Free forever plan</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <FiCheckCircle className="text-[#64FFDA]" />
-                  <span>{t('hero.features.quickResults')}</span>
+                  <span>Results in 30 seconds</span>
                 </div>
               </div>
             </motion.div>
@@ -437,23 +422,23 @@ export default function Home() {
             >
               <div className="glass-modern p-6 text-center hover:scale-105 transition-all duration-300">
                 <div className="text-5xl font-black text-[#64FFDA] mb-2">92%</div>
-                <div className="text-sm text-gray-400 uppercase tracking-wider">{t('hero.stats.accuracy.title')}</div>
-                <div className="mt-3 text-xs text-gray-500">{t('hero.stats.accuracy.subtitle')}</div>
+                <div className="text-sm text-gray-400 uppercase tracking-wider">Accuracy Rate</div>
+                <div className="mt-3 text-xs text-gray-500">Clinical Validated</div>
               </div>
               <div className="glass-modern p-6 text-center hover:scale-105 transition-all duration-300">
                 <div className="text-5xl font-black text-[#8B5CF6] mb-2">10</div>
-                <div className="text-sm text-gray-400 uppercase tracking-wider">{t('hero.stats.yearsEarlier.title')}</div>
-                <div className="mt-3 text-xs text-gray-500">{t('hero.stats.yearsEarlier.subtitle')}</div>
+                <div className="text-sm text-gray-400 uppercase tracking-wider">Years Earlier</div>
+                <div className="mt-3 text-xs text-gray-500">Before Symptoms</div>
               </div>
               <div className="glass-modern p-6 text-center hover:scale-105 transition-all duration-300">
                 <div className="text-5xl font-black text-[#3B82F6] mb-2">30s</div>
-                <div className="text-sm text-gray-400 uppercase tracking-wider">{t('hero.stats.quickTest.title')}</div>
-                <div className="mt-3 text-xs text-gray-500">{t('hero.stats.quickTest.subtitle')}</div>
+                <div className="text-sm text-gray-400 uppercase tracking-wider">Quick Test</div>
+                <div className="mt-3 text-xs text-gray-500">Instant Results</div>
               </div>
               <div className="glass-modern p-6 text-center hover:scale-105 transition-all duration-300">
                 <div className="text-5xl font-black text-[#64FFDA] mb-2">59</div>
-                <div className="text-sm text-gray-400 uppercase tracking-wider">{t('hero.stats.biomarkers.title')}</div>
-                <div className="mt-3 text-xs text-gray-500">{t('hero.stats.biomarkers.subtitle')}</div>
+                <div className="text-sm text-gray-400 uppercase tracking-wider">Biomarkers</div>
+                <div className="mt-3 text-xs text-gray-500">AI Features</div>
               </div>
             </motion.div>
           </div>
