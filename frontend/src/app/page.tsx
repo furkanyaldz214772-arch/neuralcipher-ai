@@ -73,24 +73,27 @@ export default function Home() {
       <nav className="navbar-modern fixed top-0 w-full z-50 backdrop-blur-2xl bg-[#0A0E27]/90 border-b border-[#64FFDA]/20">
         <div className="max-w-7xl mx-auto px-6 py-3">
           <div className="flex items-center justify-between gap-8">
-            {/* Mobile Menu Button */}
-            <button
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="lg:hidden p-2 text-white hover:text-[#64FFDA] transition-colors"
-              aria-label="Toggle menu"
-            >
-              {isMobileMenuOpen ? (
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              ) : (
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-                </svg>
-              )}
-            </button>
-            {/* Modern Logo Section */}
-            <Link href="/" className="flex items-center gap-3 group flex-shrink-0">
+            {/* Logo and Mobile Menu Container */}
+            <div className="flex items-center gap-4">
+              {/* Mobile Menu Button - Left side */}
+              <button
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                className="lg:hidden p-2 text-white hover:text-[#64FFDA] transition-colors"
+                aria-label="Toggle menu"
+              >
+                {isMobileMenuOpen ? (
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                ) : (
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                  </svg>
+                )}
+              </button>
+              
+              {/* Modern Logo Section */}
+              <Link href="/" className="flex items-center gap-3 group flex-shrink-0">
               {/* Neural Network Logo Icon */}
               <motion.div 
                 className="relative w-10 h-10"
@@ -199,23 +202,43 @@ export default function Home() {
                 </span>
               </div>
             </Link>
+            </div>
             
             {/* Mobile Menu Overlay - Only show when menu is open */}
             {isMobileMenuOpen && (
               <div
-                className="lg:hidden fixed inset-0 bg-black/50 z-40"
+                className="lg:hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-40"
                 onClick={() => setIsMobileMenuOpen(false)}
               />
             )}
 
-            {/* Mobile Menu - Completely hidden when closed */}
+            {/* Mobile Menu - Full screen overlay */}
             <div className={`
-              lg:hidden fixed top-[73px] left-0 right-0 z-40
-              bg-[#0A0E27]/98 backdrop-blur-2xl border-b border-[#64FFDA]/20
+              lg:hidden fixed inset-0 z-50
+              bg-[#0A0E27]/98 backdrop-blur-2xl
               transform transition-all duration-300 ease-in-out
-              ${isMobileMenuOpen ? 'translate-y-0 opacity-100 visible pointer-events-auto' : '-translate-y-full opacity-0 invisible pointer-events-none'}
+              ${isMobileMenuOpen ? 'translate-x-0 opacity-100 visible pointer-events-auto' : 'translate-x-full opacity-0 invisible pointer-events-none'}
             `}>
-              <div className="max-w-7xl mx-auto px-6 py-4 space-y-1">
+              {/* Close button */}
+              <div className="flex items-center justify-between p-6 border-b border-[#64FFDA]/20">
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#64FFDA] to-[#3B82F6] flex items-center justify-center">
+                    <span className="text-white font-bold text-sm">NC</span>
+                  </div>
+                  <span className="text-xl font-bold text-white">NeuralCipher</span>
+                </div>
+                <button
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="p-2 text-white hover:text-[#64FFDA] transition-colors"
+                >
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
+
+              {/* Menu items */}
+              <div className="px-6 py-8 space-y-2 overflow-y-auto max-h-[calc(100vh-100px)]">
                 <a 
                   href="#" 
                   className="block px-4 py-3 text-gray-300 hover:text-[#64FFDA] hover:bg-white/5 rounded-lg transition-colors font-medium"
