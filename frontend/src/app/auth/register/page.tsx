@@ -326,7 +326,7 @@ export default function RegisterPage() {
       await register(email, password, role)
       setSuccess(true)
       setTimeout(() => {
-        router.push('/auth/verify-email')
+        router.push('/dashboard')
       }, 2000)
     } catch (err: any) {
       setError(err.response?.data?.detail || 'Registration failed. Please try again.')
