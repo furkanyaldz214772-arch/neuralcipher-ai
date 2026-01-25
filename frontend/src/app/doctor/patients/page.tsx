@@ -17,6 +17,34 @@ interface Patient {
   test_count: number
 }
 
+interface AddPatientForm {
+  email: string
+  first_name: string
+  last_name: string
+  phone: string
+  date_of_birth: string
+  gender: string
+  password: string
+}
+
+export default function DoctorPatientsPage() {
+  const router = useRouter()
+  const { user } = useAuthStore()
+  const [patients, setPatients] = useState<Patient[]>([])
+  const [loading, setLoading] = useState(true)
+  const [searchTerm, setSearchTerm] = useState('')
+  const [showAddModal, setShowAddModal] = useState(false)
+  const [addLoading, setAddLoading] = useState(false)
+  const [formData, setFormData] = useState<AddPatientForm>({
+    email: '',
+    first_name: '',
+    last_name: '',
+    phone: '',
+    date_of_birth: '',
+    gender: '',
+    password: ''
+  })
+
 export default function DoctorPatientsPage() {
   const router = useRouter()
   const { user } = useAuthStore()
@@ -40,6 +68,45 @@ export default function DoctorPatientsPage() {
       console.error('Failed to fetch patients:', error)
     } finally {
       setLoading(false)
+    }
+  }
+
+  const handleAddPatient = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setAddLoading(true)
+    
+    try {
+      await api.post('/api/v1/doctor/patients', formData)
+      setShowAddModal(false)
+      setFormData({
+        email: '',
+        first_name: '',
+        last_name: '',
+        phone: '',
+        date_of_birth: '',
+        gender: '',
+        password: ''
+      })
+      fetchPatients() // Refresh list
+      alert('Patient added successfully!')
+    } catch (error: any) {
+      alert(error.response?.data?.detail || 'Failed to add patient')
+    } finally {
+      setAddLoading(false)
+    }
+  }
+
+  const handleDeletePatient = async (patientId: number) => {
+    if (!confirm('Are you sure you want to remove this patient from your list?')) {
+      return
+    }
+    
+    try {
+      await api.delete(`/api/v1/doctor/patients/${patientId}`)
+      fetchPatients() // Refresh list
+      alert('Patient removed successfully!')
+    } catch (error: any) {
+      alert(error.response?.data?.detail || 'Failed to remove patient')
     }
   }
 
@@ -76,9 +143,21 @@ export default function DoctorPatientsPage() {
     <DashboardLayout>
       <div className="max-w-7xl mx-auto px-6 py-8">
         {/* Header */}
-        <div className="mb-6">
-          <h1 className="text-3xl font-sora font-bold text-white mb-2">My Patients</h1>
-          <p className="text-sm text-gray-400 font-roboto">Manage and monitor your patients</p>
+        <div className="mb-6 flex justify-between items-center">
+          <div>
+            <h1 className="text-3xl font-sora font-bold text-white mb-2">My Patients</h1>
+            <p className="text-sm text-gray-400 font-roboto">Manage and monitor your patients</p>
+          </div>
+          <button
+            onClick={() => setShowAddModal(true)}
+            className="px-6 py-3 rounded-lg font-medium font-sora transition-all duration-200 hover:scale-105"
+            style={{
+              background: 'linear-gradient(135deg, #64FFDA 0%, #00BFA5 100%)',
+              color: '#0F172A'
+            }}
+          >
+            + Add Patient
+          </button>
         </div>
 
         {/* Search Bar */}
@@ -216,17 +295,30 @@ export default function DoctorPatientsPage() {
                         </div>
                       </td>
                       <td className="px-6 py-4">
-                        <button
-                          onClick={() => router.push(`/doctor/patients/${patient.id}`)}
-                          className="px-4 py-2 rounded-lg text-sm font-medium font-sora transition-all duration-200 hover:scale-105"
-                          style={{
-                            background: 'rgba(100, 255, 218, 0.15)',
-                            border: '1px solid rgba(100, 255, 218, 0.4)',
-                            color: '#64FFDA'
-                          }}
-                        >
-                          View Details
-                        </button>
+                        <div className="flex gap-2">
+                          <button
+                            onClick={() => router.push(`/doctor/patients/${patient.id}`)}
+                            className="px-4 py-2 rounded-lg text-sm font-medium font-sora transition-all duration-200 hover:scale-105"
+                            style={{
+                              background: 'rgba(100, 255, 218, 0.15)',
+                              border: '1px solid rgba(100, 255, 218, 0.4)',
+                              color: '#64FFDA'
+                            }}
+                          >
+                            View
+                          </button>
+                          <button
+                            onClick={() => handleDeletePatient(patient.id)}
+                            className="px-4 py-2 rounded-lg text-sm font-medium font-sora transition-all duration-200 hover:scale-105"
+                            style={{
+                              background: 'rgba(239, 68, 68, 0.15)',
+                              border: '1px solid rgba(239, 68, 68, 0.4)',
+                              color: '#EF4444'
+                            }}
+                          >
+                            Remove
+                          </button>
+                        </div>
                       </td>
                     </tr>
                   ))
@@ -235,6 +327,170 @@ export default function DoctorPatientsPage() {
             </table>
           </div>
         </div>
+
+        {/* Add Patient Modal */}
+        {showAddModal && (
+          <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+            <div className="rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
+              style={{
+                background: 'rgba(15, 23, 42, 0.95)',
+                border: '1px solid rgba(100, 255, 218, 0.2)'
+              }}>
+              <div className="p-6">
+                <div className="flex justify-between items-center mb-6">
+                  <h2 className="text-2xl font-sora font-bold text-white">Add New Patient</h2>
+                  <button
+                    onClick={() => setShowAddModal(false)}
+                    className="text-gray-400 hover:text-white transition-colors"
+                  >
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                </div>
+
+                <form onSubmit={handleAddPatient} className="space-y-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-300 mb-2">First Name *</label>
+                      <input
+                        type="text"
+                        required
+                        value={formData.first_name}
+                        onChange={(e) => setFormData({...formData, first_name: e.target.value})}
+                        className="w-full px-4 py-3 rounded-lg text-white placeholder-gray-400 focus:outline-none font-roboto"
+                        style={{
+                          background: 'rgba(15, 23, 42, 0.4)',
+                          border: '1px solid rgba(100, 255, 218, 0.2)'
+                        }}
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-300 mb-2">Last Name *</label>
+                      <input
+                        type="text"
+                        required
+                        value={formData.last_name}
+                        onChange={(e) => setFormData({...formData, last_name: e.target.value})}
+                        className="w-full px-4 py-3 rounded-lg text-white placeholder-gray-400 focus:outline-none font-roboto"
+                        style={{
+                          background: 'rgba(15, 23, 42, 0.4)',
+                          border: '1px solid rgba(100, 255, 218, 0.2)'
+                        }}
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-300 mb-2">Email *</label>
+                    <input
+                      type="email"
+                      required
+                      value={formData.email}
+                      onChange={(e) => setFormData({...formData, email: e.target.value})}
+                      className="w-full px-4 py-3 rounded-lg text-white placeholder-gray-400 focus:outline-none font-roboto"
+                      style={{
+                        background: 'rgba(15, 23, 42, 0.4)',
+                        border: '1px solid rgba(100, 255, 218, 0.2)'
+                      }}
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-300 mb-2">Password *</label>
+                    <input
+                      type="password"
+                      required
+                      value={formData.password}
+                      onChange={(e) => setFormData({...formData, password: e.target.value})}
+                      className="w-full px-4 py-3 rounded-lg text-white placeholder-gray-400 focus:outline-none font-roboto"
+                      style={{
+                        background: 'rgba(15, 23, 42, 0.4)',
+                        border: '1px solid rgba(100, 255, 218, 0.2)'
+                      }}
+                      placeholder="Minimum 8 characters"
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-300 mb-2">Phone</label>
+                      <input
+                        type="tel"
+                        value={formData.phone}
+                        onChange={(e) => setFormData({...formData, phone: e.target.value})}
+                        className="w-full px-4 py-3 rounded-lg text-white placeholder-gray-400 focus:outline-none font-roboto"
+                        style={{
+                          background: 'rgba(15, 23, 42, 0.4)',
+                          border: '1px solid rgba(100, 255, 218, 0.2)'
+                        }}
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-300 mb-2">Date of Birth</label>
+                      <input
+                        type="date"
+                        value={formData.date_of_birth}
+                        onChange={(e) => setFormData({...formData, date_of_birth: e.target.value})}
+                        className="w-full px-4 py-3 rounded-lg text-white placeholder-gray-400 focus:outline-none font-roboto"
+                        style={{
+                          background: 'rgba(15, 23, 42, 0.4)',
+                          border: '1px solid rgba(100, 255, 218, 0.2)'
+                        }}
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-300 mb-2">Gender</label>
+                    <select
+                      value={formData.gender}
+                      onChange={(e) => setFormData({...formData, gender: e.target.value})}
+                      className="w-full px-4 py-3 rounded-lg text-white placeholder-gray-400 focus:outline-none font-roboto"
+                      style={{
+                        background: 'rgba(15, 23, 42, 0.4)',
+                        border: '1px solid rgba(100, 255, 218, 0.2)'
+                      }}
+                    >
+                      <option value="">Select Gender</option>
+                      <option value="male">Male</option>
+                      <option value="female">Female</option>
+                      <option value="other">Other</option>
+                    </select>
+                  </div>
+
+                  <div className="flex gap-3 pt-4">
+                    <button
+                      type="button"
+                      onClick={() => setShowAddModal(false)}
+                      className="flex-1 px-6 py-3 rounded-lg font-medium font-sora transition-all duration-200"
+                      style={{
+                        background: 'rgba(100, 255, 218, 0.1)',
+                        border: '1px solid rgba(100, 255, 218, 0.3)',
+                        color: '#64FFDA'
+                      }}
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      type="submit"
+                      disabled={addLoading}
+                      className="flex-1 px-6 py-3 rounded-lg font-medium font-sora transition-all duration-200 hover:scale-105 disabled:opacity-50"
+                      style={{
+                        background: 'linear-gradient(135deg, #64FFDA 0%, #00BFA5 100%)',
+                        color: '#0F172A'
+                      }}
+                    >
+                      {addLoading ? 'Adding...' : 'Add Patient'}
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </DashboardLayout>
   )
