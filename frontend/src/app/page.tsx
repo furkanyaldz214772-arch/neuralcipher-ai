@@ -70,7 +70,7 @@ export default function Home() {
   return (
     <main className="min-h-screen modern-bg">
       {/* Ultra Modern Premium Navbar */}
-      <nav className="navbar-modern fixed top-0 w-full z-50 backdrop-blur-2xl bg-[#0A0E27]/90 border-b border-[#64FFDA]/20">
+      <nav className={`navbar-modern fixed top-0 w-full backdrop-blur-2xl bg-[#0A0E27]/90 border-b border-[#64FFDA]/20 transition-all ${isMobileMenuOpen ? 'z-[55]' : 'z-50'}`}>
         <div className="max-w-7xl mx-auto px-6 py-3">
           <div className="flex items-center justify-between gap-8">
             {/* Logo and Mobile Menu Container */}
