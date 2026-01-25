@@ -889,12 +889,12 @@ export default function RegisterPage() {
         <div className="max-w-7xl mx-auto px-6 w-full">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
             
-            {/* Left Side - Marketing Content */}
+            {/* Marketing Content - SECOND ON MOBILE, FIRST ON DESKTOP */}
             <motion.div
               initial={{ opacity: 0, x: -30 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8 }}
-              className="space-y-8 lg:sticky lg:top-24"
+              className="space-y-8 lg:sticky lg:top-24 order-2 lg:order-1"
             >
               {/* Hero Section */}
               <div>
@@ -1062,12 +1062,12 @@ export default function RegisterPage() {
               </motion.div>
             </motion.div>
 
-            {/* Right Side - Registration Form */}
+            {/* Registration Form - FIRST ON MOBILE, SECOND ON DESKTOP */}
             <motion.div
               initial={{ opacity: 0, x: 30 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8 }}
-              className="glass-modern p-8 md:p-10"
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="glass-modern p-8 md:p-10 order-1 lg:order-2"
             >
           <div className="text-center mb-8">
             <h1 className="text-4xl font-black text-white mb-3">
@@ -1593,10 +1593,11 @@ export default function RegisterPage() {
               </Link>
             </p>
           </div>
-        </motion.div>
+            </motion.div>
+
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
 
       {/* Footer - Complete 5-Column Structure */}
       <footer className="border-t border-gray-800/50 py-16 relative z-10 mt-auto">

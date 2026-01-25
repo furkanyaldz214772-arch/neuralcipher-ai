@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Vercel deployment - remove static export
+  // Vercel deployment - remove static export for dynamic routes
   // output: 'export',
   
   // Production optimizations

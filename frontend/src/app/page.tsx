@@ -44,7 +44,6 @@ const FAQItem = ({ question, answer, delay }: any) => {
 
 export default function Home() {
   const [isContactOpen, setIsContactOpen] = useState(false)
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const { user, isAuthenticated, logout } = useAuthStore()
   const router = useRouter()
 
@@ -70,28 +69,11 @@ export default function Home() {
   return (
     <main className="min-h-screen modern-bg">
       {/* Ultra Modern Premium Navbar */}
-      <nav className={`navbar-modern fixed top-0 w-full backdrop-blur-2xl bg-[#0A0E27]/90 border-b border-[#64FFDA]/20 transition-all ${isMobileMenuOpen ? 'z-[55]' : 'z-50'}`}>
+      <nav className="navbar-modern fixed top-0 w-full backdrop-blur-2xl bg-[#0A0E27]/90 border-b border-[#64FFDA]/20 z-50">
         <div className="max-w-7xl mx-auto px-6 py-3">
           <div className="flex items-center justify-between gap-8">
-            {/* Logo and Mobile Menu Container */}
-            <div className="flex items-center gap-4">
-              {/* Mobile Menu Button - Left side */}
-              <button
-                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="lg:hidden p-2 text-white hover:text-[#64FFDA] transition-colors"
-                aria-label="Toggle menu"
-              >
-                {isMobileMenuOpen ? (
-                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                  </svg>
-                ) : (
-                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-                  </svg>
-                )}
-              </button>
-              
+            {/* Logo Container */}
+            <div className="flex items-center">
               {/* Modern Logo Section */}
               <Link href="/" className="flex items-center gap-3 group flex-shrink-0">
               {/* Neural Network Logo Icon */}
@@ -204,136 +186,15 @@ export default function Home() {
             </Link>
             </div>
             
-            {/* Mobile Menu Overlay - Dark background behind menu */}
-            {isMobileMenuOpen && (
-              <div
-                className="lg:hidden fixed inset-0 bg-[#0A0E27] z-[60]"
-                onClick={() => setIsMobileMenuOpen(false)}
-              />
-            )}
-
-            {/* Mobile Menu - Full screen overlay with SOLID background */}
-            <div className={`
-              lg:hidden fixed inset-0 z-[70]
-              bg-[#0A0E27]
-              transform transition-all duration-300 ease-in-out
-              ${isMobileMenuOpen ? 'translate-x-0 opacity-100 visible pointer-events-auto' : 'translate-x-full opacity-0 invisible pointer-events-none'}
-            `}>
-              {/* Close button */}
-              <div className="flex items-center justify-between p-6 border-b border-[#64FFDA]/20">
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#64FFDA] to-[#3B82F6] flex items-center justify-center">
-                    <span className="text-white font-bold text-sm">NC</span>
-                  </div>
-                  <span className="text-xl font-bold text-white">NeuralCipher</span>
-                </div>
-                <button
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className="p-2 text-white hover:text-[#64FFDA] transition-colors"
-                >
-                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                  </svg>
-                </button>
-              </div>
-
-              {/* Menu items */}
-              <div className="px-6 py-8 space-y-2 overflow-y-auto max-h-[calc(100vh-100px)]">
-                <a 
-                  href="#" 
-                  className="block px-4 py-3 text-gray-300 hover:text-[#64FFDA] hover:bg-white/5 rounded-lg transition-colors font-medium"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  Home
-                </a>
-                <a 
-                  href="#features" 
-                  className="block px-4 py-3 text-gray-300 hover:text-[#64FFDA] hover:bg-white/5 rounded-lg transition-colors font-medium"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  Features
-                </a>
-                <a 
-                  href="#science" 
-                  className="block px-4 py-3 text-gray-300 hover:text-[#64FFDA] hover:bg-white/5 rounded-lg transition-colors font-medium"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  Science
-                </a>
-                <a 
-                  href="#doctors" 
-                  className="block px-4 py-3 text-gray-300 hover:text-[#64FFDA] hover:bg-white/5 rounded-lg transition-colors font-medium"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  Doctors
-                </a>
-                <Link 
-                  href="/pricing" 
-                  className="block px-4 py-3 text-gray-300 hover:text-[#64FFDA] hover:bg-white/5 rounded-lg transition-colors font-medium"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  Pricing
-                </Link>
-                <Link 
-                  href="/contributors" 
-                  className="block px-4 py-3 text-gray-300 hover:text-[#64FFDA] hover:bg-white/5 rounded-lg transition-colors font-medium"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  Contributors
-                </Link>
-                <Link 
-                  href="/contact" 
-                  className="block px-4 py-3 text-gray-300 hover:text-[#64FFDA] hover:bg-white/5 rounded-lg transition-colors font-medium"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  Contact
-                </Link>
-                <Link 
-                  href="/demo" 
-                  className="block px-4 py-3 text-gray-300 hover:text-[#64FFDA] hover:bg-white/5 rounded-lg transition-colors font-medium"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  Demo
-                </Link>
-                
-                {isAuthenticated && user ? (
-                  <>
-                    <Link 
-                      href={getDashboardLink()} 
-                      className="block px-4 py-3 text-gray-300 hover:text-[#64FFDA] hover:bg-white/5 rounded-lg transition-colors font-medium"
-                      onClick={() => setIsMobileMenuOpen(false)}
-                    >
-                      Dashboard
-                    </Link>
-                    <button
-                      onClick={() => {
-                        handleLogout()
-                        setIsMobileMenuOpen(false)
-                      }}
-                      className="w-full text-left px-4 py-3 text-red-400 hover:bg-red-500/10 rounded-lg transition-colors font-medium"
-                    >
-                      Logout
-                    </button>
-                  </>
-                ) : (
-                  <>
-                    <Link 
-                      href="/auth/login" 
-                      className="block px-4 py-3 text-gray-300 hover:text-[#64FFDA] hover:bg-white/5 rounded-lg transition-colors font-medium"
-                      onClick={() => setIsMobileMenuOpen(false)}
-                    >
-                      Sign In
-                    </Link>
-                    <Link 
-                      href="/auth/register" 
-                      className="block px-4 py-3 text-[#64FFDA] bg-[#64FFDA]/10 hover:bg-[#64FFDA]/20 rounded-lg transition-colors font-bold"
-                      onClick={() => setIsMobileMenuOpen(false)}
-                    >
-                      Start Test
-                    </Link>
-                  </>
-                )}
-              </div>
+            {/* Mobile Start Test Button - Right side */}
+            <div className="lg:hidden">
+              <Link 
+                href="/auth/register"
+                className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-[#64FFDA] to-[#3B82F6] text-white font-bold rounded-lg text-sm hover:opacity-90 transition-opacity"
+              >
+                <FiZap className="text-sm" />
+                Start Test
+              </Link>
             </div>
 
             {/* Navigation Links - Modern Style */}
