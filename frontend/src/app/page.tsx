@@ -204,18 +204,18 @@ export default function Home() {
             </Link>
             </div>
             
-            {/* Mobile Menu Overlay - Only show when menu is open */}
+            {/* Mobile Menu Overlay - Dark background behind menu */}
             {isMobileMenuOpen && (
               <div
-                className="lg:hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-40"
+                className="lg:hidden fixed inset-0 bg-[#0A0E27] z-[60]"
                 onClick={() => setIsMobileMenuOpen(false)}
               />
             )}
 
-            {/* Mobile Menu - Full screen overlay */}
+            {/* Mobile Menu - Full screen overlay with SOLID background */}
             <div className={`
-              lg:hidden fixed inset-0 z-50
-              bg-[#0A0E27]/98 backdrop-blur-2xl
+              lg:hidden fixed inset-0 z-[70]
+              bg-[#0A0E27]
               transform transition-all duration-300 ease-in-out
               ${isMobileMenuOpen ? 'translate-x-0 opacity-100 visible pointer-events-auto' : 'translate-x-full opacity-0 invisible pointer-events-none'}
             `}>
