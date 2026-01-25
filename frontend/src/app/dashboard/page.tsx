@@ -11,6 +11,7 @@ import RiskGauge from '@/components/dashboard/RiskGauge'
 import TrendChart from '@/components/dashboard/TrendChart'
 import QuickActions from '@/components/dashboard/QuickActions'
 import RecentTests from '@/components/dashboard/RecentTests'
+import AccessKeyCard from '@/components/dashboard/AccessKeyCard'
 import { useAuthStore } from '@/lib/auth-store'
 import api from '@/lib/api'
 import type { VoiceTest } from '@/types'
@@ -142,6 +143,11 @@ export default function DashboardPage() {
               color="rgba(132, 204, 22, 0.6)"
               index={3}
             />
+          </div>
+
+          {/* Access Key Card - NEW */}
+          <div className="mb-6">
+            <AccessKeyCard />
           </div>
 
           {/* Main Content Grid - 2 Columns */}
