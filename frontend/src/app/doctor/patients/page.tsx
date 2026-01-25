@@ -45,13 +45,6 @@ export default function DoctorPatientsPage() {
     password: ''
   })
 
-export default function DoctorPatientsPage() {
-  const router = useRouter()
-  const { user } = useAuthStore()
-  const [patients, setPatients] = useState<Patient[]>([])
-  const [loading, setLoading] = useState(true)
-  const [searchTerm, setSearchTerm] = useState('')
-
   useEffect(() => {
     if (user?.role !== 'doctor') {
       router.push('/dashboard')
@@ -63,7 +56,18 @@ export default function DoctorPatientsPage() {
   const fetchPatients = async () => {
     try {
       const response = await api.get('/api/v1/doctor/patients')
-      setPatients(response.data)
+      // API'den gelen veriyi frontend formatına çevir
+      const mappedPatients = response.data.map((p: any) => ({
+        id: p.id,
+        full_name: `${p.first_name || ''} ${p.last_name || ''}`.trim() || p.email,
+        email: p.email,
+        phone: p.phone,
+        date_of_birth: p.date_of_birth,
+        last_test_date: p.last_test_date,
+        risk_score: p.last_risk_score,
+        test_count: p.total_tests
+      }))
+      setPatients(mappedPatients)
     } catch (error) {
       console.error('Failed to fetch patients:', error)
     } finally {
