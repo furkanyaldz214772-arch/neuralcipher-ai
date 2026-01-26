@@ -30,7 +30,10 @@ export default function DoctorDashboardPage() {
   const [sortBy, setSortBy] = useState<'risk' | 'date' | 'name'>('risk')
 
   useEffect(() => {
-    if (user?.role !== 'doctor') {
+    // Backend returns role in UPPERCASE, normalize to lowercase
+    const userRole = user?.role?.toLowerCase()
+    
+    if (userRole !== 'doctor') {
       router.push('/dashboard')
       return
     }

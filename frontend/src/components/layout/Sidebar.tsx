@@ -238,7 +238,10 @@ export default function Sidebar() {
     },
   ]
 
-  const links = user?.role === 'admin' ? adminLinks : user?.role === 'doctor' ? doctorLinks : user?.role === 'hospital' ? hospitalLinks : patientLinks
+  // Backend returns role in UPPERCASE (ADMIN, DOCTOR, PATIENT, HOSPITAL)
+  // Convert to lowercase for comparison
+  const userRole = user?.role?.toLowerCase()
+  const links = userRole === 'admin' ? adminLinks : userRole === 'doctor' ? doctorLinks : userRole === 'hospital' ? hospitalLinks : patientLinks
 
   return (
     <>

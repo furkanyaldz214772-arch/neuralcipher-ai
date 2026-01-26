@@ -14,7 +14,10 @@ export default function HospitalDashboard() {
   const { user, isLoading } = useAuthStore()
 
   useEffect(() => {
-    if (!isLoading && (!user || user.role !== 'hospital')) {
+    // Backend returns role in UPPERCASE, normalize to lowercase
+    const userRole = user?.role?.toLowerCase()
+    
+    if (!isLoading && (!user || userRole !== 'hospital')) {
       router.push('/auth/login')
     }
   }, [user, isLoading, router])

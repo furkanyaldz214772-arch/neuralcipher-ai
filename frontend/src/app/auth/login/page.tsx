@@ -255,12 +255,16 @@ export default function LoginPage() {
     try {
       const user = await login(email, password)
       
+      // Backend returns role in UPPERCASE (ADMIN, DOCTOR, PATIENT, HOSPITAL)
+      // Convert to lowercase for comparison
+      const userRole = user?.role?.toLowerCase()
+      
       // Redirect based on user role
-      if (user?.role === 'admin') {
+      if (userRole === 'admin') {
         router.push('/admin/dashboard')
-      } else if (user?.role === 'doctor') {
+      } else if (userRole === 'doctor') {
         router.push('/doctor/dashboard')
-      } else if (user?.role === 'hospital') {
+      } else if (userRole === 'hospital') {
         router.push('/hospital/dashboard')
       } else {
         router.push('/dashboard')
