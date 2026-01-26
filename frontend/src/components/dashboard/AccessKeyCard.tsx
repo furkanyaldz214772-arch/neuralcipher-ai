@@ -1,19 +1,17 @@
 /**
- * Access Key Card Component
- * Displays patient's unique access key for sharing with doctors
+ * Access Key Card Component - Ultra Minimal
  */
 'use client'
 
 import { useState, useEffect } from 'react'
-// Icons as SVG components
-const Copy = ({ size = 16 }: { size?: number }) => (
+const Copy = ({ size = 12 }: { size?: number }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
     <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
     <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
   </svg>
 )
 
-const RefreshCw = ({ size = 16, className = '' }: { size?: number; className?: string }) => (
+const RefreshCw = ({ size = 12, className = '' }: { size?: number; className?: string }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={className}>
     <polyline points="23 4 23 10 17 10"></polyline>
     <polyline points="1 20 1 14 7 14"></polyline>
@@ -21,21 +19,6 @@ const RefreshCw = ({ size = 16, className = '' }: { size?: number; className?: s
   </svg>
 )
 
-const Users = ({ size = 16, className = '' }: { size?: number; className?: string }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={className}>
-    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-    <circle cx="9" cy="7" r="4"></circle>
-    <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-  </svg>
-)
-
-const Clock = ({ size = 16, className = '' }: { size?: number; className?: string }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={className}>
-    <circle cx="12" cy="12" r="10"></circle>
-    <polyline points="12 6 12 12 16 14"></polyline>
-  </svg>
-)
 import api from '@/lib/api'
 
 interface AccessKeyData {
@@ -75,18 +58,15 @@ export default function AccessKeyCard() {
   }
 
   const handleRegenerate = async () => {
-    if (!confirm('Are you sure? This will invalidate your old key. Current doctors will keep their access.')) {
-      return
-    }
-
+    if (!confirm('Are you sure? This will invalidate your old key.')) return
     setIsRegenerating(true)
     try {
       const response = await api.post('/api/v1/patient/access-key/regenerate')
       setKeyData(response.data)
-      alert('Access key regenerated successfully!')
+      alert('Key regenerated!')
     } catch (error) {
       console.error('Failed to regenerate key:', error)
-      alert('Failed to regenerate key. Please try again.')
+      alert('Failed to regenerate key.')
     } finally {
       setIsRegenerating(false)
     }
@@ -94,132 +74,85 @@ export default function AccessKeyCard() {
 
   if (isLoading) {
     return (
-      <div className="rounded-xl p-6 animate-pulse" style={{
+      <div className="rounded p-2 animate-pulse" style={{
         background: 'rgba(15, 23, 42, 0.4)',
-        border: '1px solid rgba(100, 255, 218, 0.15)',
-        backdropFilter: 'blur(10px)'
+        border: '1px solid rgba(100, 255, 218, 0.15)'
       }}>
-        <div className="h-6 bg-gray-700 rounded w-1/3 mb-4"></div>
-        <div className="h-12 bg-gray-700 rounded mb-4"></div>
-        <div className="flex gap-2">
-          <div className="h-10 bg-gray-700 rounded flex-1"></div>
-          <div className="h-10 bg-gray-700 rounded flex-1"></div>
+        <div className="h-3 bg-gray-700 rounded w-1/4 mb-1.5"></div>
+        <div className="h-6 bg-gray-700 rounded mb-1.5"></div>
+        <div className="flex gap-1.5">
+          <div className="h-6 bg-gray-700 rounded flex-1"></div>
+          <div className="h-6 bg-gray-700 rounded flex-1"></div>
         </div>
       </div>
     )
   }
 
   return (
-    <div className="rounded-xl p-6 relative overflow-hidden group" style={{
+    <div className="rounded p-2 relative" style={{
       background: 'rgba(15, 23, 42, 0.4)',
-      border: '1px solid rgba(100, 255, 218, 0.15)',
-      backdropFilter: 'blur(10px)'
+      border: '1px solid rgba(100, 255, 218, 0.15)'
     }}>
-      {/* Glow effect */}
-      <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
-        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-electric-cyan to-transparent"></div>
+      <div className="flex items-center gap-1.5 mb-1.5">
+        <span className="text-xs">🔑</span>
+        <h3 className="text-xs font-sora font-semibold text-white">Access Key</h3>
       </div>
 
-      <div className="relative z-10">
-        {/* Header */}
-        <div className="flex items-center gap-2 mb-4">
-          <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{
-            background: 'rgba(100, 255, 218, 0.1)',
-            border: '1px solid rgba(100, 255, 218, 0.3)'
-          }}>
-            <span className="text-2xl">🔑</span>
-          </div>
-          <div>
-            <h3 className="text-lg font-sora font-semibold text-white">Your Access Key</h3>
-            <p className="text-xs text-gray-400 font-roboto">Share with your doctor</p>
-          </div>
-        </div>
-
-        {/* Access Key Display */}
-        <div className="mb-4 p-4 rounded-lg" style={{
-          background: 'rgba(0, 0, 0, 0.3)',
-          border: '1px solid rgba(100, 255, 218, 0.2)'
+      <div className="mb-1.5 p-1.5 rounded text-center" style={{
+        background: 'rgba(0, 0, 0, 0.3)',
+        border: '1px solid rgba(100, 255, 218, 0.2)'
+      }}>
+        <div className="text-sm font-mono font-bold tracking-wider" style={{
+          color: '#64FFDA'
         }}>
-          <div className="text-center">
-            <div className="text-2xl font-mono font-bold tracking-wider mb-1" style={{
-              color: '#64FFDA',
-              textShadow: '0 0 20px rgba(100, 255, 218, 0.3)'
-            }}>
-              {keyData?.access_key || 'Loading...'}
-            </div>
-            <div className="text-xs text-gray-500 font-roboto">
-              Created {keyData?.created_at ? new Date(keyData.created_at).toLocaleDateString() : ''}
-            </div>
-          </div>
+          {keyData?.access_key || 'Loading...'}
         </div>
+      </div>
 
-        {/* Action Buttons */}
-        <div className="flex gap-2 mb-4">
-          <button
-            onClick={handleCopy}
-            className="flex-1 px-4 py-2.5 rounded-lg font-sora font-medium text-sm transition-all duration-200 hover:scale-105 flex items-center justify-center gap-2"
-            style={{
-              background: copied ? 'rgba(132, 204, 22, 0.2)' : 'rgba(100, 255, 218, 0.1)',
-              border: `1px solid ${copied ? 'rgba(132, 204, 22, 0.4)' : 'rgba(100, 255, 218, 0.3)'}`,
-              color: copied ? '#84CC16' : '#64FFDA'
-            }}
-          >
-            <Copy size={16} />
-            {copied ? 'Copied!' : 'Copy Key'}
-          </button>
+      <div className="flex gap-1.5 mb-1.5">
+        <button
+          onClick={handleCopy}
+          className="flex-1 px-1.5 py-1 rounded font-sora text-xs transition-all flex items-center justify-center gap-1"
+          style={{
+            background: copied ? 'rgba(132, 204, 22, 0.2)' : 'rgba(100, 255, 218, 0.1)',
+            border: `1px solid ${copied ? 'rgba(132, 204, 22, 0.4)' : 'rgba(100, 255, 218, 0.3)'}`,
+            color: copied ? '#84CC16' : '#64FFDA'
+          }}
+        >
+          <Copy size={12} />
+          {copied ? 'OK' : 'Copy'}
+        </button>
 
-          <button
-            onClick={handleRegenerate}
-            disabled={isRegenerating}
-            className="flex-1 px-4 py-2.5 rounded-lg font-sora font-medium text-sm transition-all duration-200 hover:scale-105 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
-            style={{
-              background: 'rgba(245, 158, 11, 0.1)',
-              border: '1px solid rgba(245, 158, 11, 0.3)',
-              color: '#F59E0B'
-            }}
-          >
-            <RefreshCw size={16} className={isRegenerating ? 'animate-spin' : ''} />
-            {isRegenerating ? 'Regenerating...' : 'Regenerate'}
-          </button>
-        </div>
+        <button
+          onClick={handleRegenerate}
+          disabled={isRegenerating}
+          className="flex-1 px-1.5 py-1 rounded font-sora text-xs transition-all flex items-center justify-center gap-1 disabled:opacity-50"
+          style={{
+            background: 'rgba(245, 158, 11, 0.1)',
+            border: '1px solid rgba(245, 158, 11, 0.3)',
+            color: '#F59E0B'
+          }}
+        >
+          <RefreshCw size={12} className={isRegenerating ? 'animate-spin' : ''} />
+          New
+        </button>
+      </div>
 
-        {/* Stats */}
-        <div className="grid grid-cols-2 gap-3">
-          <div className="p-3 rounded-lg" style={{
-            background: 'rgba(100, 255, 218, 0.05)',
-            border: '1px solid rgba(100, 255, 218, 0.1)'
-          }}>
-            <div className="flex items-center gap-2 mb-1">
-              <Users size={14} className="text-electric-cyan" />
-              <span className="text-xs text-gray-400 font-roboto">Active Doctors</span>
-            </div>
-            <div className="text-xl font-sora font-bold text-white">
-              {keyData?.active_doctors || 0}
-            </div>
-          </div>
-
-          <div className="p-3 rounded-lg" style={{
-            background: 'rgba(245, 158, 11, 0.05)',
-            border: '1px solid rgba(245, 158, 11, 0.1)'
-          }}>
-            <div className="flex items-center gap-2 mb-1">
-              <Clock size={14} className="text-sunset-orange" />
-              <span className="text-xs text-gray-400 font-roboto">Pending</span>
-            </div>
-            <div className="text-xl font-sora font-bold text-white">
-              {keyData?.pending_requests || 0}
-            </div>
-          </div>
-        </div>
-
-        {/* Info Text */}
-        <div className="mt-4 p-3 rounded-lg" style={{
-          background: 'rgba(139, 92, 246, 0.05)',
-          border: '1px solid rgba(139, 92, 246, 0.1)'
+      <div className="flex gap-1.5 text-xs">
+        <div className="flex-1 px-1.5 py-1 rounded flex items-center justify-between" style={{
+          background: 'rgba(100, 255, 218, 0.05)',
+          border: '1px solid rgba(100, 255, 218, 0.1)'
         }}>
-          <p className="text-xs text-gray-400 font-roboto leading-relaxed">
-            💡 <span className="text-gray-300">Share this key with your doctor</span> to grant them access to your test results and medical data. You can revoke access anytime.
-          </p>
+          <span className="text-gray-400 font-roboto text-xs">Doctors</span>
+          <span className="font-sora font-bold text-white text-xs">{keyData?.active_doctors || 0}</span>
+        </div>
+
+        <div className="flex-1 px-1.5 py-1 rounded flex items-center justify-between" style={{
+          background: 'rgba(245, 158, 11, 0.05)',
+          border: '1px solid rgba(245, 158, 11, 0.1)'
+        }}>
+          <span className="text-gray-400 font-roboto text-xs">Pending</span>
+          <span className="font-sora font-bold text-white text-xs">{keyData?.pending_requests || 0}</span>
         </div>
       </div>
     </div>
