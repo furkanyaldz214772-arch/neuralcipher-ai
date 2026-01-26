@@ -93,7 +93,12 @@ export const useAuthStore = create<AuthState>()(
       fetchUser: async () => {
         try {
           const response = await api.get('/api/v1/auth/me')
-          set({ user: response.data, isAuthenticated: true })
+          // Normalize role to lowercase for consistent comparison
+          const userData = {
+            ...response.data,
+            role: response.data.role?.toLowerCase() || response.data.role
+          }
+          set({ user: userData, isAuthenticated: true })
         } catch (error) {
           set({ user: null, isAuthenticated: false })
           throw error
