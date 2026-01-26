@@ -256,7 +256,7 @@ export default function LoginPage() {
       const user = await login(email, password)
       
       // Backend returns role in UPPERCASE (ADMIN, DOCTOR, PATIENT, HOSPITAL)
-      // Convert to lowercase for comparison
+      // Convert to lowercase for comparison to ensure proper routing
       const userRole = user?.role?.toLowerCase()
       
       // Redirect based on user role
