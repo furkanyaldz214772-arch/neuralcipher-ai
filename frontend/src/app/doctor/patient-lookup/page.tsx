@@ -1,8 +1,44 @@
 'use client'
 
 import { useState } from 'react'
-import { Search, User, Activity, Calendar, TrendingUp, AlertCircle } from 'lucide-react'
 import api from '@/lib/api'
+
+// Icons as inline SVG
+const SearchIcon = () => (
+  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+  </svg>
+)
+
+const UserIcon = () => (
+  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+  </svg>
+)
+
+const ActivityIcon = () => (
+  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+  </svg>
+)
+
+const CalendarIcon = () => (
+  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+  </svg>
+)
+
+const TrendingUpIcon = () => (
+  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+  </svg>
+)
+
+const AlertCircleIcon = () => (
+  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+  </svg>
+)
 
 interface PatientData {
   id: number
@@ -96,7 +132,9 @@ export default function PatientLookupPage() {
                   className="w-full px-4 py-3 bg-slate-900/50 border border-cyan-500/30 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-cyan-500 font-mono text-lg tracking-wider"
                   maxLength={14}
                 />
-                <Search className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500" size={20} />
+                <div className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500">
+                  <SearchIcon />
+                </div>
               </div>
               <button
                 type="submit"
@@ -108,7 +146,7 @@ export default function PatientLookupPage() {
             </div>
             {error && (
               <div className="mt-3 flex items-center gap-2 text-red-400 text-sm">
-                <AlertCircle size={16} />
+                <AlertCircleIcon />
                 <span>{error}</span>
               </div>
             )}
@@ -123,7 +161,7 @@ export default function PatientLookupPage() {
               <div className="flex items-start justify-between mb-4">
                 <div className="flex items-center gap-3">
                   <div className="w-12 h-12 rounded-full bg-gradient-to-br from-cyan-500 to-blue-500 flex items-center justify-center">
-                    <User className="text-white" size={24} />
+                    <UserIcon />
                   </div>
                   <div>
                     <h2 className="text-xl font-bold text-white font-sora">
@@ -161,7 +199,7 @@ export default function PatientLookupPage() {
               {/* Total Tests */}
               <div className="bg-slate-800/50 backdrop-blur-sm border border-cyan-500/20 rounded-lg p-6">
                 <div className="flex items-center gap-3 mb-2">
-                  <Activity className="text-cyan-400" size={20} />
+                  <ActivityIcon />
                   <span className="text-gray-400 text-sm font-sora">Total Tests</span>
                 </div>
                 <div className="text-3xl font-bold text-white font-sora">{patientData.total_tests}</div>
@@ -170,7 +208,7 @@ export default function PatientLookupPage() {
               {/* Average Risk Score */}
               <div className="bg-slate-800/50 backdrop-blur-sm border border-cyan-500/20 rounded-lg p-6">
                 <div className="flex items-center gap-3 mb-2">
-                  <TrendingUp className="text-cyan-400" size={20} />
+                  <TrendingUpIcon />
                   <span className="text-gray-400 text-sm font-sora">Avg Risk Score</span>
                 </div>
                 <div className="text-3xl font-bold text-white font-sora">
@@ -181,7 +219,7 @@ export default function PatientLookupPage() {
               {/* Last Test */}
               <div className="bg-slate-800/50 backdrop-blur-sm border border-cyan-500/20 rounded-lg p-6">
                 <div className="flex items-center gap-3 mb-2">
-                  <Calendar className="text-cyan-400" size={20} />
+                  <CalendarIcon />
                   <span className="text-gray-400 text-sm font-sora">Last Test</span>
                 </div>
                 <div className="text-sm text-white font-roboto">
@@ -234,7 +272,9 @@ export default function PatientLookupPage() {
         {/* Empty State */}
         {!patientData && !error && !isLoading && (
           <div className="bg-slate-800/30 backdrop-blur-sm border border-cyan-500/10 rounded-lg p-12 text-center">
-            <Search className="mx-auto text-gray-600 mb-4" size={48} />
+            <div className="mx-auto text-gray-600 mb-4 flex justify-center">
+              <SearchIcon />
+            </div>
             <h3 className="text-xl font-bold text-gray-400 mb-2 font-sora">No Patient Selected</h3>
             <p className="text-gray-500 font-roboto">Enter a patient's access key to view their information</p>
           </div>
