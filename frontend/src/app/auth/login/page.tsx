@@ -255,18 +255,39 @@ export default function LoginPage() {
     try {
       const user = await login(email, password)
       
+      // DEBUG: Log the user object to see what we're getting
+      console.log('🔍 LOGIN DEBUG:', {
+        user,
+        role: user?.role,
+        roleType: typeof user?.role,
+        roleLowercase: user?.role?.toLowerCase()
+      })
+      
       // Backend returns role in UPPERCASE (ADMIN, DOCTOR, PATIENT, HOSPITAL)
       // Normalize to lowercase for proper routing comparison
       const userRole = user?.role?.toLowerCase()
       
+      // Debug log for production testing
+      console.log('[Login] User role:', user?.role, '→ normalized:', userRole, '→ redirecting to:', 
+        userRole === 'admin' ? '/admin/dashboard' :
+        userRole === 'doctor' ? '/doctor/dashboard' :
+        userRole === 'hospital' ? '/hospital/dashboard' : '/dashboard'
+      )
+      
+      console.log('🎯 ROUTING TO:', userRole)
+      
       // Redirect based on user role
       if (userRole === 'admin') {
+        console.log('✅ Redirecting to /admin/dashboard')
         router.push('/admin/dashboard')
       } else if (userRole === 'doctor') {
+        console.log('✅ Redirecting to /doctor/dashboard')
         router.push('/doctor/dashboard')
       } else if (userRole === 'hospital') {
+        console.log('✅ Redirecting to /hospital/dashboard')
         router.push('/hospital/dashboard')
       } else {
+        console.log('✅ Redirecting to /dashboard (patient)')
         router.push('/dashboard')
       }
     } catch (err: any) {
