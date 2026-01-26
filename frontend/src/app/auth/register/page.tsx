@@ -16,7 +16,7 @@ import { useAuthStore } from '@/lib/auth-store'
 
 export default function RegisterPage() {
   const router = useRouter()
-  const { register, isLoading } = useAuthStore()
+  const { register, login, isLoading } = useAuthStore()
   
   // Personal Information Fields
   const [firstName, setFirstName] = useState('')
@@ -28,7 +28,6 @@ export default function RegisterPage() {
   const [confirmPassword, setConfirmPassword] = useState('')
   const [role, setRole] = useState<'patient' | 'doctor' | 'hospital'>('patient')
   const [error, setError] = useState('')
-  const [success, setSuccess] = useState(false)
   const [selectedCountry, setSelectedCountry] = useState({ code: '+1', flag: '🇺🇸', name: 'United States' })
   const [showCountryDropdown, setShowCountryDropdown] = useState(false)
   const [countrySearch, setCountrySearch] = useState('')
@@ -306,11 +305,8 @@ export default function RegisterPage() {
     }
 
     try {
-      // Prepare registration data
-      const registrationData = {
-        email,
-        password,
-        role,
+      // Prepare additional registration data
+      const additionalData = {
         firstName,
         lastName,
         phone: `${selectedCountry.code}${phone}`,
@@ -323,363 +319,30 @@ export default function RegisterPage() {
         })
       }
 
-      await register(email, password, role)
-      setSuccess(true)
-      setTimeout(() => {
-        router.push('/dashboard')
-      }, 2000)
+      await register(email, password, role, additionalData)
+      
+      // Automatically login with same credentials
+      const user = await login(email, password)
+      
+      // Redirect based on role
+      if (user) {
+        switch (user.role) {
+          case 'admin':
+            router.push('/admin/dashboard')
+            break
+          case 'doctor':
+            router.push('/doctor/dashboard')
+            break
+          case 'hospital':
+            router.push('/hospital/dashboard')
+            break
+          default:
+            router.push('/dashboard')
+        }
+      }
     } catch (err: any) {
       setError(err.response?.data?.detail || 'Registration failed. Please try again.')
     }
-  }
-
-  if (success) {
-    return (
-      <div className="min-h-screen modern-bg relative overflow-hidden">
-        {/* Header - Same as Landing Page */}
-        <nav className="navbar-modern fixed top-0 w-full z-50 backdrop-blur-2xl bg-[#0A0E27]/90 border-b border-[#64FFDA]/20">
-          <div className="max-w-7xl mx-auto px-6 py-3">
-            <div className="flex items-center justify-between gap-8">
-              {/* Modern Logo Section */}
-              <Link href="/" className="flex items-center gap-3 group flex-shrink-0">
-                {/* Neural Network Logo Icon */}
-                <motion.div 
-                  className="relative w-10 h-10"
-                  whileHover={{ scale: 1.05 }}
-                  transition={{ type: "spring", stiffness: 400 }}
-                >
-                  <motion.div
-                    className="absolute inset-0 rounded-2xl bg-gradient-to-br from-[#64FFDA] to-[#8B5CF6] opacity-20 blur-xl"
-                    animate={{ scale: [1, 1.15, 1], opacity: [0.2, 0.35, 0.2] }}
-                    transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                  />
-                  <div className="relative w-10 h-10 rounded-2xl bg-gradient-to-br from-[#0A0E27] to-[#1a1f3a] flex items-center justify-center border border-[#64FFDA]/40 overflow-hidden">
-                    <motion.div
-                      className="absolute inset-0 opacity-20"
-                      style={{
-                        backgroundImage: 'linear-gradient(#64FFDA 1px, transparent 1px), linear-gradient(90deg, #64FFDA 1px, transparent 1px)',
-                        backgroundSize: '8px 8px'
-                      }}
-                      animate={{ opacity: [0.1, 0.3, 0.1] }}
-                      transition={{ duration: 3, repeat: Infinity }}
-                    />
-                    <div className="relative z-10 w-6 h-6">
-                      <motion.div
-                        className="absolute top-1/2 left-1/2 w-2.5 h-2.5 rounded-full bg-[#64FFDA] shadow-lg shadow-[#64FFDA]/50"
-                        style={{ transform: 'translate(-50%, -50%)' }}
-                        animate={{ scale: [1, 1.2, 1] }}
-                        transition={{ duration: 2, repeat: Infinity }}
-                      />
-                      {[0, 72, 144, 216, 288].map((angle, i) => (
-                        <motion.div
-                          key={i}
-                          className="absolute w-2 h-2 rounded-full bg-gradient-to-br from-[#64FFDA] to-[#3B82F6]"
-                          style={{
-                            top: '50%',
-                            left: '50%',
-                            transform: `translate(-50%, -50%) rotate(${angle}deg) translateY(-10px)`
-                          }}
-                          animate={{ 
-                            scale: [0.8, 1.2, 0.8],
-                            opacity: [0.5, 1, 0.5]
-                          }}
-                          transition={{ 
-                            duration: 2, 
-                            repeat: Infinity,
-                            delay: i * 0.2
-                          }}
-                        />
-                      ))}
-                      <svg className="absolute inset-0 w-full h-full" style={{ transform: 'translate(-50%, -50%)', top: '50%', left: '50%' }}>
-                        {[0, 72, 144, 216, 288].map((angle, i) => (
-                          <motion.line
-                            key={i}
-                            x1="12"
-                            y1="12"
-                            x2={12 + Math.cos((angle * Math.PI) / 180) * 10}
-                            y2={12 + Math.sin((angle * Math.PI) / 180) * 10}
-                            stroke="url(#gradient-success)"
-                            strokeWidth="0.8"
-                            opacity="0.7"
-                            animate={{ opacity: [0.4, 0.9, 0.4] }}
-                            transition={{ duration: 2, repeat: Infinity, delay: i * 0.2 }}
-                          />
-                        ))}
-                        <defs>
-                          <linearGradient id="gradient-success" x1="0%" y1="0%" x2="100%" y2="100%">
-                            <stop offset="0%" stopColor="#64FFDA" />
-                            <stop offset="100%" stopColor="#3B82F6" />
-                          </linearGradient>
-                        </defs>
-                      </svg>
-                    </div>
-                    <motion.div
-                      className="absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-transparent"
-                      animate={{ opacity: [0, 0.3, 0] }}
-                      transition={{ duration: 3, repeat: Infinity }}
-                    />
-                  </div>
-                </motion.div>
-                <div className="flex flex-col">
-                  <h1 className="text-xl font-black tracking-tight leading-none">
-                    <span className="bg-gradient-to-r from-[#64FFDA] via-[#3B82F6] to-[#8B5CF6] bg-clip-text text-transparent">
-                      Neural
-                    </span>
-                    <span className="bg-gradient-to-r from-[#8B5CF6] via-[#3B82F6] to-[#64FFDA] bg-clip-text text-transparent">
-                      Cipher
-                    </span>
-                    <span className="text-[#64FFDA] opacity-60">.ai</span>
-                  </h1>
-                  <span className="text-[9px] text-gray-400 tracking-[0.2em] uppercase font-bold leading-none mt-0.5 opacity-90">
-                    Early Detection AI
-                  </span>
-                </div>
-              </Link>
-              
-              {/* Navigation Links */}
-              <div className="hidden lg:flex items-center gap-0.5 flex-1 justify-center">
-                <a href="/#" className="px-3 py-2 text-sm text-gray-300 hover:text-[#64FFDA] transition-colors font-medium rounded-lg hover:bg-white/5">
-                  Home
-                </a>
-                <a href="/#features" className="px-3 py-2 text-sm text-gray-300 hover:text-[#64FFDA] transition-colors font-medium rounded-lg hover:bg-white/5">
-                  Features
-                </a>
-                <a href="/#science" className="px-3 py-2 text-sm text-gray-300 hover:text-[#64FFDA] transition-colors font-medium rounded-lg hover:bg-white/5">
-                  Science
-                </a>
-                <a href="/#doctors" className="px-3 py-2 text-sm text-gray-300 hover:text-[#64FFDA] transition-colors font-medium rounded-lg hover:bg-white/5">
-                  Doctors
-                </a>
-                <Link href="/pricing" className="px-3 py-2 text-sm text-gray-300 hover:text-[#64FFDA] transition-colors font-medium rounded-lg hover:bg-white/5">
-                  Pricing
-                </Link>
-                <a href="/#testimonials" className="px-3 py-2 text-sm text-gray-300 hover:text-[#64FFDA] transition-colors font-medium rounded-lg hover:bg-white/5">
-                  Reviews
-                </a>
-                <a href="/#faq" className="px-3 py-2 text-sm text-gray-300 hover:text-[#64FFDA] transition-colors font-medium rounded-lg hover:bg-white/5">
-                  FAQ
-                </a>
-                <Link href="/contact" className="px-3 py-2 text-sm text-gray-300 hover:text-[#64FFDA] transition-colors font-medium rounded-lg hover:bg-white/5">
-                  Contact
-                </Link>
-              </div>
-              
-              {/* CTA Buttons */}
-              <div className="flex items-center gap-2 flex-shrink-0">
-                <Link 
-                  href="/auth/login" 
-                  className="hidden sm:flex items-center gap-1.5 px-4 py-2 text-sm text-[#64FFDA] transition-all duration-300 font-semibold rounded-lg bg-white/5"
-                >
-                  Sign In
-                </Link>
-                <Link 
-                  href="/auth/register" 
-                  className="relative group overflow-hidden"
-                >
-                  <div className="absolute inset-0 bg-gradient-to-r from-[#64FFDA] via-[#3B82F6] to-[#8B5CF6] rounded-lg"></div>
-                  <div className="absolute inset-0 bg-gradient-to-r from-[#8B5CF6] via-[#3B82F6] to-[#64FFDA] rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                  <div className="relative flex items-center gap-1.5 px-5 py-2 text-white font-bold rounded-lg text-sm">
-                    <FiZap className="text-sm" />
-                    <span>Start Test</span>
-                    <motion.div
-                      animate={{ x: [0, 3, 0] }}
-                      transition={{ duration: 1.5, repeat: Infinity }}
-                    >
-                      <FiArrowRight className="text-sm" />
-                    </motion.div>
-                  </div>
-                  <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-[#64FFDA] to-[#3B82F6] opacity-0 group-hover:opacity-30 blur-xl transition-opacity duration-500"></div>
-                </Link>
-              </div>
-            </div>
-          </div>
-        </nav>
-
-        {/* Success Content */}
-        <div className="relative z-10 flex items-center justify-center min-h-screen px-4 pt-32 pb-20">
-          {/* Animated Background */}
-          <div className="absolute inset-0">
-            <motion.div
-              className="absolute top-20 left-10 w-96 h-96 bg-[#64FFDA]/10 rounded-full blur-3xl"
-              animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }}
-              transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-            />
-            <motion.div
-              className="absolute top-40 right-20 w-80 h-80 bg-[#8B5CF6]/10 rounded-full blur-3xl"
-              animate={{ scale: [1, 1.3, 1], opacity: [0.2, 0.4, 0.2] }}
-              transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-            />
-          </div>
-
-          <div className="relative z-10 w-full max-w-md glass-modern p-8 md:p-10 text-center">
-            <div className="relative mx-auto mb-6 w-20 h-20">
-              {/* Success Checkmark with Neural Network Background */}
-              <motion.div 
-                className="relative w-20 h-20"
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
-                transition={{ type: "spring", stiffness: 200, damping: 15 }}
-              >
-                {/* Outer Glow Ring */}
-                <motion.div
-                  className="absolute inset-0 rounded-full bg-gradient-to-br from-green-400 to-[#64FFDA] opacity-30 blur-xl"
-                  animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }}
-                  transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-                />
-                
-                {/* Main Container */}
-                <div className="relative w-20 h-20 rounded-full bg-gradient-to-br from-green-400 to-[#64FFDA] flex items-center justify-center shadow-neon">
-                  {/* Checkmark Icon */}
-                  <svg className="w-10 h-10 text-white relative z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <motion.path 
-                      strokeLinecap="round" 
-                      strokeLinejoin="round" 
-                      strokeWidth={3} 
-                      d="M5 13l4 4L19 7"
-                      initial={{ pathLength: 0 }}
-                      animate={{ pathLength: 1 }}
-                      transition={{ duration: 0.5, delay: 0.2 }}
-                    />
-                  </svg>
-                </div>
-              </motion.div>
-            </div>
-            <h2 className="text-4xl font-black text-white mb-3">
-              <span className="gradient-text-modern">Registration Successful!</span>
-            </h2>
-            <p className="text-gray-300 text-lg">
-              A verification link has been sent to your email. Please check your inbox.
-            </p>
-          </div>
-        </div>
-
-        {/* Footer */}
-        <footer className="border-t border-gray-800/50 py-12 relative z-10 mt-auto">
-          <div className="max-w-7xl mx-auto px-6">
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
-              <div className="md:col-span-2">
-                <div className="flex items-center gap-3 mb-4">
-                  {/* Neural Network Logo */}
-                  <motion.div 
-                    className="relative w-10 h-10"
-                    whileHover={{ scale: 1.05 }}
-                    transition={{ type: "spring", stiffness: 400 }}
-                  >
-                    <motion.div
-                      className="absolute inset-0 rounded-2xl bg-gradient-to-br from-[#64FFDA] to-[#8B5CF6] opacity-20 blur-xl"
-                      animate={{ scale: [1, 1.15, 1], opacity: [0.2, 0.35, 0.2] }}
-                      transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                    />
-                    <div className="relative w-10 h-10 rounded-2xl bg-gradient-to-br from-[#0A0E27] to-[#1a1f3a] flex items-center justify-center border border-[#64FFDA]/40 overflow-hidden">
-                      <motion.div
-                        className="absolute inset-0 opacity-20"
-                        style={{
-                          backgroundImage: 'linear-gradient(#64FFDA 1px, transparent 1px), linear-gradient(90deg, #64FFDA 1px, transparent 1px)',
-                          backgroundSize: '8px 8px'
-                        }}
-                        animate={{ opacity: [0.1, 0.3, 0.1] }}
-                        transition={{ duration: 3, repeat: Infinity }}
-                      />
-                      <div className="relative z-10 w-6 h-6">
-                        <motion.div
-                          className="absolute top-1/2 left-1/2 w-2.5 h-2.5 rounded-full bg-[#64FFDA] shadow-lg shadow-[#64FFDA]/50"
-                          style={{ transform: 'translate(-50%, -50%)' }}
-                          animate={{ scale: [1, 1.2, 1] }}
-                          transition={{ duration: 2, repeat: Infinity }}
-                        />
-                        {[0, 72, 144, 216, 288].map((angle, i) => (
-                          <motion.div
-                            key={i}
-                            className="absolute w-2 h-2 rounded-full bg-gradient-to-br from-[#64FFDA] to-[#3B82F6]"
-                            style={{
-                              top: '50%',
-                              left: '50%',
-                              transform: `translate(-50%, -50%) rotate(${angle}deg) translateY(-10px)`
-                            }}
-                            animate={{ 
-                              scale: [0.8, 1.2, 0.8],
-                              opacity: [0.5, 1, 0.5]
-                            }}
-                            transition={{ 
-                              duration: 2, 
-                              repeat: Infinity,
-                              delay: i * 0.2
-                            }}
-                          />
-                        ))}
-                        <svg className="absolute inset-0 w-full h-full" style={{ transform: 'translate(-50%, -50%)', top: '50%', left: '50%' }}>
-                          {[0, 72, 144, 216, 288].map((angle, i) => (
-                            <motion.line
-                              key={i}
-                              x1="12"
-                              y1="12"
-                              x2={12 + Math.cos((angle * Math.PI) / 180) * 10}
-                              y2={12 + Math.sin((angle * Math.PI) / 180) * 10}
-                              stroke="url(#gradient-footer-register)"
-                              strokeWidth="0.8"
-                              opacity="0.7"
-                              animate={{ opacity: [0.4, 0.9, 0.4] }}
-                              transition={{ duration: 2, repeat: Infinity, delay: i * 0.2 }}
-                            />
-                          ))}
-                          <defs>
-                            <linearGradient id="gradient-footer-register" x1="0%" y1="0%" x2="100%" y2="100%">
-                              <stop offset="0%" stopColor="#64FFDA" />
-                              <stop offset="100%" stopColor="#3B82F6" />
-                            </linearGradient>
-                          </defs>
-                        </svg>
-                      </div>
-                      <motion.div
-                        className="absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-transparent"
-                        animate={{ opacity: [0, 0.3, 0] }}
-                        transition={{ duration: 3, repeat: Infinity }}
-                      />
-                    </div>
-                  </motion.div>
-                  <h3 className="text-2xl font-bold text-gradient">NeuralCipher.ai</h3>
-                </div>
-                <p className="text-gray-400 mb-4 leading-relaxed">
-                  AI-powered voice analysis for early Parkinson's detection.
-                </p>
-                <div className="flex items-center gap-4">
-                  <a href="mailto:support@neuralcipher.ai" className="w-10 h-10 rounded-lg bg-gray-800 hover:bg-gray-700 flex items-center justify-center transition-colors">
-                    <FiMail className="text-gray-400" />
-                  </a>
-                  <a href="#" className="w-10 h-10 rounded-lg bg-gray-800 hover:bg-gray-700 flex items-center justify-center transition-colors">
-                    <FiGlobe className="text-gray-400" />
-                  </a>
-                </div>
-              </div>
-
-              <div>
-                <h4 className="text-white font-bold mb-4">Product</h4>
-                <ul className="space-y-2 text-gray-400 text-sm">
-                  <li><a href="/#features" className="hover:text-[#64FFDA] transition-colors">Features</a></li>
-                  <li><Link href="/pricing" className="hover:text-[#64FFDA] transition-colors">Pricing</Link></li>
-                  <li><Link href="/auth/register" className="hover:text-[#64FFDA] transition-colors">Sign Up</Link></li>
-                </ul>
-              </div>
-
-              <div>
-                <h4 className="text-white font-bold mb-4">Company</h4>
-                <ul className="space-y-2 text-gray-400 text-sm">
-                  <li><Link href="/contact" className="hover:text-[#64FFDA] transition-colors">Contact</Link></li>
-                  <li><a href="#" className="hover:text-[#64FFDA] transition-colors">Privacy</a></li>
-                  <li><a href="#" className="hover:text-[#64FFDA] transition-colors">Terms</a></li>
-                </ul>
-              </div>
-            </div>
-
-            <div className="border-t border-gray-800 pt-6 text-center">
-              <p className="text-gray-400 text-sm">
-                &copy; 2026 NeuralCipher.ai - All rights reserved. Not a medical device.
-              </p>
-            </div>
-          </div>
-        </footer>
-      </div>
-    )
   }
 
   return (

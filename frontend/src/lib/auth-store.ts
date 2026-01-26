@@ -67,14 +67,21 @@ export const useAuthStore = create<AuthState>()(
         set({ user: null, isAuthenticated: false })
       },
 
-      register: async (email: string, password: string, role: string) => {
+      register: async (email: string, password: string, role: string, additionalData?: any) => {
         set({ isLoading: true })
         try {
-          await api.post('/api/v1/auth/register', {
+          const registerData = {
             email,
             password,
-            role,
-          })
+            role
+          }
+          
+          // Merge additional data if provided
+          if (additionalData) {
+            Object.assign(registerData, additionalData)
+          }
+          
+          await api.post('/api/v1/auth/register', registerData)
           set({ isLoading: false })
         } catch (error) {
           set({ isLoading: false })

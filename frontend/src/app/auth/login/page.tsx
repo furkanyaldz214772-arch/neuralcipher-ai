@@ -275,8 +275,38 @@ export default function LoginPage() {
     setResetLoading(true)
     
     try {
-      // Simulate API call - replace with actual API endpoint
-      await new Promise(resolve => setTimeout(resolve, 1500))
+      // Call real API endpoint
+      const response = await fetch('https://web-production-c00b0.up.railway.app/api/v1/auth/forgot-password', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email: resetEmail }),
+      })
+
+      if (response.ok) {
+        setResetSuccess(true)
+        setTimeout(() => {
+          setShowForgotPasswordModal(false)
+          setResetSuccess(false)
+          setResetEmail('')
+          setResetPhone('')
+          setResetMethod('email')
+        }, 5000)
+      } else {
+        // Even if email doesn't exist, show success for security
+        setResetSuccess(true)
+        setTimeout(() => {
+          setShowForgotPasswordModal(false)
+          setResetSuccess(false)
+          setResetEmail('')
+          setResetPhone('')
+          setResetMethod('email')
+        }, 5000)
+      }
+    } catch (err) {
+      console.error('Password reset failed:', err)
+      // Show success anyway for security
       setResetSuccess(true)
       setTimeout(() => {
         setShowForgotPasswordModal(false)
@@ -284,9 +314,7 @@ export default function LoginPage() {
         setResetEmail('')
         setResetPhone('')
         setResetMethod('email')
-      }, 3000)
-    } catch (err) {
-      console.error('Password reset failed:', err)
+      }, 5000)
     } finally {
       setResetLoading(false)
     }
