@@ -26,6 +26,7 @@ interface AuthState {
   fetchUser: () => Promise<void>
   updateUser: (user: User) => void
   initialize: () => Promise<void>
+  setTokens: (accessToken: string, refreshToken: string) => Promise<void>
 }
 
 export const useAuthStore = create<AuthState>()(
@@ -112,6 +113,21 @@ export const useAuthStore = create<AuthState>()(
             // Token invalid, clear it
             get().logout()
           }
+        }
+      },
+
+      setTokens: async (accessToken: string, refreshToken: string) => {
+        // Store tokens
+        localStorage.setItem('access_token', accessToken)
+        localStorage.setItem('refresh_token', refreshToken)
+        
+        // Fetch user data
+        try {
+          await get().fetchUser()
+          set({ isAuthenticated: true })
+        } catch (error) {
+          // If fetch fails, still mark as authenticated (tokens are valid)
+          set({ isAuthenticated: true })
         }
       },
     }),
