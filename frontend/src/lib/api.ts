@@ -4,6 +4,7 @@
  */
 import axios from 'axios'
 
+// Always use HTTPS for Railway production
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://web-production-c00b0.up.railway.app'
 
 export const api = axios.create({
