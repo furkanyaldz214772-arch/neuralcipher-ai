@@ -177,7 +177,7 @@ export default function PatientDashboard() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
           {/* Risk Gauge */}
           <div className="lg:col-span-1">
-            <RiskGauge score={stats.avgRiskScore || 0} />
+            <RiskGauge test={recentTests[0] || null} />
           </div>
 
           {/* Trend Chart */}
