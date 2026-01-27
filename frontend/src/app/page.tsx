@@ -53,16 +53,21 @@ export default function Home() {
   }
 
   const getDashboardLink = () => {
-    if (!user) return '/dashboard'
+    if (!user) return '/auth/login'
     switch (user.role) {
+      case 'ADMIN':
       case 'admin':
         return '/admin/dashboard'
+      case 'DOCTOR':
       case 'doctor':
         return '/doctor/dashboard'
+      case 'HOSPITAL':
       case 'hospital':
         return '/hospital/dashboard'
+      case 'PATIENT':
+      case 'patient':
       default:
-        return '/dashboard'
+        return '/patient/dashboard'
     }
   }
 
