@@ -271,6 +271,7 @@ export default function LoginPage() {
       console.log('🔐 LOGIN PAGE - User logged in:', { 
         email: user.email, 
         role: user.role,
+        selectedRole: selectedRole,
         roleType: typeof user.role,
         roleValue: JSON.stringify(user.role)
       })
@@ -278,14 +279,22 @@ export default function LoginPage() {
       // Backend returns role in UPPERCASE (ADMIN, DOCTOR, PATIENT, HOSPITAL)
       // Safely normalize to uppercase for comparison
       const userRole = String(user.role).toUpperCase().trim()
+      const selectedRoleUpper = selectedRole.toUpperCase()
       
-      console.log('🔀 LOGIN PAGE - Normalized role for redirect:', userRole)
+      console.log('🔀 LOGIN PAGE - Role comparison:', { 
+        userRole, 
+        selectedRoleUpper,
+        match: userRole === selectedRoleUpper 
+      })
       
-      // Redirect based on user role using switch for clarity
-      switch (userRole) {
-        case 'ADMIN':
-          console.log('➡️ Redirecting to: /admin/dashboard')
-          window.location.href = '/admin/dashboard'
+      // PROFESSIONAL ROLE-BASED ROUTING
+      // Redirect directly to role-specific dashboard based on SELECTED role
+      // This ensures users go to the dashboard they expect
+      // ALL ROLES HAVE THEIR OWN DASHBOARD PATH: /role/dashboard
+      switch (selectedRoleUpper) {
+        case 'PATIENT':
+          console.log('➡️ Redirecting to: /patient/dashboard')
+          window.location.href = '/patient/dashboard'
           break
           
         case 'DOCTOR':
@@ -298,15 +307,31 @@ export default function LoginPage() {
           window.location.href = '/hospital/dashboard'
           break
           
-        case 'PATIENT':
-          console.log('➡️ Redirecting to: /dashboard (patient)')
-          window.location.href = '/dashboard'
-          break
-          
         default:
-          console.error('❌ LOGIN PAGE - Unknown role:', userRole)
-          console.error('   Falling back to patient dashboard')
-          window.location.href = '/dashboard'
+          // Fallback: use backend role if selected role is invalid
+          console.warn('⚠️ LOGIN PAGE - Invalid selected role, using backend role')
+          switch (userRole) {
+            case 'ADMIN':
+              console.log('➡️ Redirecting to: /admin/dashboard')
+              window.location.href = '/admin/dashboard'
+              break
+            case 'DOCTOR':
+              console.log('➡️ Redirecting to: /doctor/dashboard')
+              window.location.href = '/doctor/dashboard'
+              break
+            case 'HOSPITAL':
+              console.log('➡️ Redirecting to: /hospital/dashboard')
+              window.location.href = '/hospital/dashboard'
+              break
+            case 'PATIENT':
+              console.log('➡️ Redirecting to: /patient/dashboard')
+              window.location.href = '/patient/dashboard'
+              break
+            default:
+              console.error('❌ LOGIN PAGE - Unknown role:', userRole)
+              console.error('   Falling back to patient dashboard')
+              window.location.href = '/patient/dashboard'
+          }
       }
     } catch (err: any) {
       console.error('❌ LOGIN PAGE - Login failed:', err)
