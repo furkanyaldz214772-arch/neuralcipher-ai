@@ -21,7 +21,7 @@ interface AuthState {
   isLoading: boolean
   
   // Actions
-  login: (email: string, password: string) => Promise<User | null>
+  login: (email: string, password: string, role?: string) => Promise<User | null>
   logout: () => void
   register: (email: string, password: string, role: string, additionalData?: any) => Promise<void>
   fetchUser: () => Promise<void>
@@ -37,13 +37,20 @@ export const useAuthStore = create<AuthState>()(
       isAuthenticated: false,
       isLoading: false,
 
-      login: async (email: string, password: string) => {
+      login: async (email: string, password: string, role?: string) => {
         set({ isLoading: true })
         try {
-          const response = await api.post('/api/v1/auth/login', {
+          const loginData: any = {
             email,
             password,
-          })
+          }
+          
+          // ✅ ROLE VALIDATION: Send selected role to backend for verification
+          if (role) {
+            loginData.role = role.toUpperCase()
+          }
+          
+          const response = await api.post('/api/v1/auth/login', loginData)
 
           const { access_token, refresh_token } = response.data
           

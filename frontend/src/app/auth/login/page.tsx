@@ -253,7 +253,8 @@ export default function LoginPage() {
     setError('')
 
     try {
-      const user = await login(email, password)
+      // ✅ ROLE VALIDATION: Send selected role to backend
+      const user = await login(email, password, selectedRole)
       
       // GÜVENLI KONTROL - User ve role var mı?
       if (!user) {
