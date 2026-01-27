@@ -54,10 +54,17 @@ export const useAuthStore = create<AuthState>()(
           
           set({ isAuthenticated: true, isLoading: false })
           
-          // Return user for redirect logic
-          return get().user
+          // Return user with normalized role for redirect logic
+          const user = get().user
+          console.log('🔍 AUTH STORE - Login successful:', { 
+            email: user?.email, 
+            role: user?.role,
+            roleType: typeof user?.role 
+          })
+          return user
         } catch (error) {
           set({ isLoading: false })
+          console.error('❌ AUTH STORE - Login failed:', error)
           throw error
         }
       },
@@ -93,13 +100,23 @@ export const useAuthStore = create<AuthState>()(
       fetchUser: async () => {
         try {
           const response = await api.get('/api/v1/auth/me')
+          console.log('🔍 AUTH STORE - Fetched user from backend:', response.data)
+          
           // Normalize role to lowercase for consistent comparison
           const userData = {
             ...response.data,
             role: response.data.role?.toLowerCase() || response.data.role
           }
+          
+          console.log('✅ AUTH STORE - User data normalized:', { 
+            email: userData.email, 
+            originalRole: response.data.role,
+            normalizedRole: userData.role 
+          })
+          
           set({ user: userData, isAuthenticated: true })
         } catch (error) {
+          console.error('❌ AUTH STORE - Fetch user failed:', error)
           set({ user: null, isAuthenticated: false })
           throw error
         }

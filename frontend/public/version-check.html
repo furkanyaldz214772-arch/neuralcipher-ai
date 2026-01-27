@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Version Check - NeuralCipher</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0A0E27 0%, #1a1f3a 100%);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid #64FFDA;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 600px;
+            text-align: center;
+            box-shadow: 0 0 50px rgba(100, 255, 218, 0.3);
+        }
+        h1 {
+            color: #64FFDA;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+        .version {
+            font-size: 3em;
+            font-weight: bold;
+            color: #64FFDA;
+            margin: 30px 0;
+            text-shadow: 0 0 20px rgba(100, 255, 218, 0.5);
+        }
+        .timestamp {
+            color: #8B5CF6;
+            font-size: 1.2em;
+            margin: 20px 0;
+        }
+        .status {
+            background: rgba(100, 255, 218, 0.1);
+            border: 1px solid #64FFDA;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .status-item {
+            display: flex;
+            justify-content: space-between;
+            margin: 10px 0;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 5px;
+        }
+        .label {
+            color: #64FFDA;
+            font-weight: bold;
+        }
+        .value {
+            color: white;
+        }
+        .success {
+            color: #64FFDA;
+        }
+        .warning {
+            color: #FFA500;
+        }
+        .info {
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid #3B82F6;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 20px;
+            font-size: 0.9em;
+            color: #3B82F6;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 Version Check</h1>
+        <p>NeuralCipher.ai Deployment Status</p>
+        
+        <div class="version">v2.0.1</div>
+        
+        <div class="timestamp">
+            Build: 27 Ocak 2026 - 14:35
+        </div>
+        
+        <div class="status">
+            <div class="status-item">
+                <span class="label">Commit:</span>
+                <span class="value success">359343cf</span>
+            </div>
+            <div class="status-item">
+                <span class="label">Feature:</span>
+                <span class="value">Role Routing Fix + Debug Logs</span>
+            </div>
+            <div class="status-item">
+                <span class="label">Status:</span>
+                <span class="value success">✅ DEPLOYED</span>
+            </div>
+            <div class="status-item">
+                <span class="label">Cache:</span>
+                <span class="value warning">⚠️ Check Required</span>
+            </div>
+        </div>
+        
+        <div class="info">
+            <strong>📝 Test Talimatları:</strong><br><br>
+            1. Bu sayfayı görüyorsan Vercel çalışıyor ✅<br>
+            2. Version "v2.0.1" ise yeni kod deploy edilmiş ✅<br>
+            3. Şimdi /auth/login'e git ve console'u kontrol et<br>
+            4. Debug log'ları görüyorsan BAŞARILI! 🎉
+        </div>
+        
+        <div style="margin-top: 30px;">
+            <a href="/auth/login" style="
+                display: inline-block;
+                background: linear-gradient(135deg, #64FFDA, #3B82F6);
+                color: #0A0E27;
+                padding: 15px 30px;
+                border-radius: 10px;
+                text-decoration: none;
+                font-weight: bold;
+                font-size: 1.1em;
+                box-shadow: 0 0 20px rgba(100, 255, 218, 0.5);
+            ">
+                Test Login Page →
+            </a>
+        </div>
+    </div>
+    
+    <script>
+        console.log('🔍 VERSION CHECK:');
+        console.log('Version: v2.0.1');
+        console.log('Build: 27 Ocak 2026 - 14:35');
+        console.log('Commit: 359343cf');
+        console.log('Status: DEPLOYED');
+        console.log('');
+        console.log('✅ Bu log\'ları görüyorsan Vercel yeni kodu deploy etmiş!');
+        console.log('👉 Şimdi /auth/login\'e git ve debug log\'ları kontrol et');
+    </script>
+</body>
+</html>

@@ -30,15 +30,35 @@ export default function DoctorDashboardPage() {
   const [sortBy, setSortBy] = useState<'risk' | 'date' | 'name'>('risk')
 
   useEffect(() => {
+    console.log('🏥 DOCTOR DASHBOARD - Component mounted')
+    console.log('🏥 DOCTOR DASHBOARD - User:', { email: user?.email, role: user?.role })
+    
     // Backend returns role in UPPERCASE, normalize to lowercase
     const userRole = user?.role?.toLowerCase()
     
-    if (userRole !== 'doctor') {
-      router.push('/dashboard')
+    console.log('🏥 DOCTOR DASHBOARD - Normalized role:', userRole)
+    
+    if (!user) {
+      console.log('🏥 DOCTOR DASHBOARD - No user, redirecting to login')
+      router.push('/auth/login')
       return
     }
+    
+    if (userRole !== 'doctor') {
+      console.log('🏥 DOCTOR DASHBOARD - Wrong role, redirecting to appropriate dashboard')
+      if (userRole === 'admin') {
+        router.push('/admin/dashboard')
+      } else if (userRole === 'hospital') {
+        router.push('/hospital/dashboard')
+      } else {
+        router.push('/dashboard')
+      }
+      return
+    }
+    
+    console.log('🏥 DOCTOR DASHBOARD - Correct role, fetching data')
     fetchDashboardData()
-  }, [user])
+  }, [user, router])
 
   const fetchDashboardData = async () => {
     try {

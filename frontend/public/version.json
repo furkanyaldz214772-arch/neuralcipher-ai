@@ -1,0 +1,10 @@
+{
+  "version": "1.0.1",
+  "build": "role-routing-fix",
+  "timestamp": "2026-01-27T12:00:00Z",
+  "features": [
+    "Fixed role-based dashboard routing",
+    "Added comprehensive console logging",
+    "Enhanced role validation in all dashboards"
+  ]
+}
