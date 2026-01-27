@@ -48,7 +48,7 @@ export default function CheckoutPage() {
       })
 
       // Redirect to Stripe checkout
-      window.location.href = response.data.checkout_url
+      router.push(response.data.checkout_url)
     } catch (err: any) {
       setError(err.response?.data?.detail || 'Ödeme işlemi başlatılamadı')
       setIsProcessing(false)

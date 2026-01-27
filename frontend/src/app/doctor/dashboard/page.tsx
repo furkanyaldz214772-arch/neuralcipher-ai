@@ -34,7 +34,7 @@ export default function DoctorDashboardPage() {
     
     if (!user) {
       console.log('👨‍⚕️ DOCTOR DASHBOARD - No user, redirecting to login')
-      window.location.href = '/auth/login'
+      router.push('/auth/login')
       return
     }
     
@@ -44,11 +44,11 @@ export default function DoctorDashboardPage() {
     if (userRole !== 'DOCTOR') {
       console.log('👨‍⚕️ DOCTOR DASHBOARD - Wrong role, redirecting')
       if (userRole === 'ADMIN') {
-        window.location.href = '/admin/dashboard'
+        router.push('/admin/dashboard')
       } else if (userRole === 'HOSPITAL') {
-        window.location.href = '/hospital/dashboard'
+        router.push('/hospital/dashboard')
       } else {
-        window.location.href = '/patient/dashboard'
+        router.push('/patient/dashboard')
       }
       return
     }

@@ -22,7 +22,7 @@ export default function HospitalDashboard() {
     
     if (!user) {
       console.log('🏥 HOSPITAL DASHBOARD - No user, redirecting to login')
-      window.location.href = '/auth/login'
+      router.push('/auth/login')
       return
     }
     
@@ -32,11 +32,11 @@ export default function HospitalDashboard() {
     if (userRole !== 'HOSPITAL') {
       console.log('🏥 HOSPITAL DASHBOARD - Wrong role, redirecting')
       if (userRole === 'ADMIN') {
-        window.location.href = '/admin/dashboard'
+        router.push('/admin/dashboard')
       } else if (userRole === 'DOCTOR') {
-        window.location.href = '/doctor/dashboard'
+        router.push('/doctor/dashboard')
       } else {
-        window.location.href = '/patient/dashboard'
+        router.push('/patient/dashboard')
       }
       return
     }

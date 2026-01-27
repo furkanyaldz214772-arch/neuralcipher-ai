@@ -124,7 +124,11 @@ export const TestWizard: React.FC = () => {
           </p>
         </div>
         <button
-          onClick={() => window.location.href = `/results/${results.test_id}`}
+          onClick={() => {
+            if (typeof window !== 'undefined' && results.test_id) {
+              window.location.href = `/results/${results.test_id}`
+            }
+          }}
           className="mt-6 w-full px-6 py-3 bg-cyan-400 text-blue-950 rounded-lg hover:bg-cyan-300 font-semibold"
         >
           Detaylı Sonuçları Gör →

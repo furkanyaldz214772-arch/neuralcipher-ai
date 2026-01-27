@@ -294,17 +294,17 @@ export default function LoginPage() {
       switch (selectedRoleUpper) {
         case 'PATIENT':
           console.log('➡️ Redirecting to: /patient/dashboard')
-          window.location.href = '/patient/dashboard'
+          router.push('/patient/dashboard')
           break
           
         case 'DOCTOR':
           console.log('➡️ Redirecting to: /doctor/dashboard')
-          window.location.href = '/doctor/dashboard'
+          router.push('/doctor/dashboard')
           break
           
         case 'HOSPITAL':
           console.log('➡️ Redirecting to: /hospital/dashboard')
-          window.location.href = '/hospital/dashboard'
+          router.push('/hospital/dashboard')
           break
           
         default:
@@ -313,24 +313,24 @@ export default function LoginPage() {
           switch (userRole) {
             case 'ADMIN':
               console.log('➡️ Redirecting to: /admin/dashboard')
-              window.location.href = '/admin/dashboard'
+              router.push('/admin/dashboard')
               break
             case 'DOCTOR':
               console.log('➡️ Redirecting to: /doctor/dashboard')
-              window.location.href = '/doctor/dashboard'
+              router.push('/doctor/dashboard')
               break
             case 'HOSPITAL':
               console.log('➡️ Redirecting to: /hospital/dashboard')
-              window.location.href = '/hospital/dashboard'
+              router.push('/hospital/dashboard')
               break
             case 'PATIENT':
               console.log('➡️ Redirecting to: /patient/dashboard')
-              window.location.href = '/patient/dashboard'
+              router.push('/patient/dashboard')
               break
             default:
               console.error('❌ LOGIN PAGE - Unknown role:', userRole)
               console.error('   Falling back to patient dashboard')
-              window.location.href = '/patient/dashboard'
+              router.push('/patient/dashboard')
           }
       }
     } catch (err: any) {
@@ -883,7 +883,7 @@ export default function LoginPage() {
                       e.stopPropagation()
                       console.log('Google button clicked!')
                       // Redirect to backend Google OAuth endpoint
-                      window.location.href = 'https://web-production-c00b0.up.railway.app/api/v1/auth/google/login'
+                      router.push('https://web-production-c00b0.up.railway.app/api/v1/auth/google/login')
                     }}
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
