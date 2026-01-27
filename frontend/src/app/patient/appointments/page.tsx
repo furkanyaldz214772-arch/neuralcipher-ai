@@ -2,163 +2,200 @@
 
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { Calendar, Clock, User, Plus, MapPin } from 'lucide-react'
+import { 
+  User, Mail, Phone, Calendar, MessageSquare, 
+  Stethoscope, Award, Clock, MapPin, Star
+} from 'lucide-react'
+import { useRouter } from 'next/navigation'
 
-export default function PatientAppointmentsPage() {
-  const [selectedDate, setSelectedDate] = useState(new Date())
-
-  // Mock appointments
-  const appointments = [
-    {
-      id: 1,
-      date: 'Feb 16, 2026',
-      time: '14:00',
-      doctor: 'Dr. Mehmet Yılmaz',
-      location: 'Neurology Clinic',
-      status: 'confirmed'
+export default function MyDoctorPage() {
+  const router = useRouter()
+  
+  // Mock doctor data - gerçek uygulamada API'den gelecek
+  const doctor = {
+    id: 1,
+    name: 'Dr. Sarah Johnson',
+    specialty: 'Neurologist',
+    experience: '15 years',
+    rating: 4.9,
+    reviews: 234,
+    email: 'dr.sarah@neuralcipher.ai',
+    phone: '+1 (555) 123-4567',
+    location: 'Medical Center, New York',
+    avatar: null,
+    bio: 'Specialized in Parkinson\'s disease and movement disorders. Board certified neurologist with extensive experience in early detection and treatment.',
+    nextAppointment: {
+      date: 'Feb 15, 2026',
+      time: '10:00 AM',
+      type: 'Follow-up Consultation'
     },
-    {
-      id: 2,
-      date: 'Jan 30, 2026',
-      time: '10:30',
-      doctor: 'Dr. Ayşe Demir',
-      location: 'General Hospital',
-      status: 'confirmed'
-    }
-  ]
-
-  // Simple calendar days
-  const daysInMonth = 31
-  const firstDay = 3 // Wednesday
-  const days = Array.from({ length: daysInMonth }, (_, i) => i + 1)
+    availability: [
+      { day: 'Monday', hours: '9:00 AM - 5:00 PM' },
+      { day: 'Wednesday', hours: '9:00 AM - 5:00 PM' },
+      { day: 'Friday', hours: '9:00 AM - 3:00 PM' }
+    ]
+  }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#0F172A] via-[#1E293B] to-[#0F172A]">
-      <div className="max-w-7xl mx-auto px-6 py-8">
+    <div className="min-h-screen bg-gradient-to-br from-[#0F172A] via-[#1E293B] to-[#0F172A] p-6">
+      <div className="max-w-5xl mx-auto">
         {/* Header */}
-        <div className="flex items-center justify-between mb-8">
-          <div>
-            <h1 className="text-3xl font-bold text-white mb-2">Appointments</h1>
-            <p className="text-gray-400">Manage your medical appointments</p>
-          </div>
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="bg-gradient-to-r from-[#0EA5E9] to-[#06B6D4] text-white px-6 py-3 rounded-xl font-semibold flex items-center gap-2 shadow-lg shadow-[#0EA5E9]/20"
-          >
-            <Plus className="h-5 w-5" />
-            New Appointment
-          </motion.button>
-        </div>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="mb-8"
+        >
+          <h1 className="text-3xl font-bold text-white mb-2">My Doctor</h1>
+          <p className="text-gray-400">Your assigned healthcare provider</p>
+        </motion.div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Calendar */}
-          <div className="lg:col-span-2">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="bg-[#1E293B] border border-gray-700 rounded-2xl p-6"
-            >
-              <div className="flex items-center justify-between mb-6">
-                <h2 className="text-xl font-bold text-white">January 2026</h2>
-                <div className="flex gap-2">
-                  <button className="p-2 hover:bg-[#0F172A] rounded-lg transition-colors text-gray-400">
-                    ←
-                  </button>
-                  <button className="p-2 hover:bg-[#0F172A] rounded-lg transition-colors text-gray-400">
-                    →
-                  </button>
+        {/* Doctor Profile Card */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+          className="bg-[#1E293B] border border-gray-700 rounded-2xl p-8 mb-6"
+        >
+          <div className="flex flex-col md:flex-row gap-6">
+            {/* Avatar */}
+            <div className="flex-shrink-0">
+              <div className="w-32 h-32 rounded-full bg-gradient-to-r from-[#0EA5E9] to-[#06B6D4] flex items-center justify-center text-white text-4xl font-bold">
+                {doctor.name.split(' ').map(n => n[0]).join('')}
+              </div>
+            </div>
+
+            {/* Info */}
+            <div className="flex-1">
+              <div className="flex items-start justify-between mb-4">
+                <div>
+                  <h2 className="text-2xl font-bold text-white mb-1">{doctor.name}</h2>
+                  <div className="flex items-center gap-2 text-gray-400 mb-2">
+                    <Stethoscope className="h-4 w-4" />
+                    <span>{doctor.specialty}</span>
+                  </div>
+                  <div className="flex items-center gap-4 text-sm text-gray-400">
+                    <div className="flex items-center gap-1">
+                      <Award className="h-4 w-4" />
+                      <span>{doctor.experience}</span>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <Star className="h-4 w-4 text-yellow-500 fill-yellow-500" />
+                      <span className="text-white">{doctor.rating}</span>
+                      <span>({doctor.reviews} reviews)</span>
+                    </div>
+                  </div>
                 </div>
               </div>
 
-              {/* Calendar Grid */}
-              <div className="grid grid-cols-7 gap-2">
-                {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((day) => (
-                  <div key={day} className="text-center text-gray-400 text-sm font-semibold py-2">
-                    {day}
-                  </div>
-                ))}
-                
-                {/* Empty cells for first week */}
-                {Array.from({ length: firstDay }).map((_, i) => (
-                  <div key={`empty-${i}`} />
-                ))}
-                
-                {/* Days */}
-                {days.map((day) => {
-                  const hasAppointment = day === 16 || day === 30
-                  const isToday = day === 27
-                  
-                  return (
-                    <motion.button
-                      key={day}
-                      whileHover={{ scale: 1.1 }}
-                      whileTap={{ scale: 0.9 }}
-                      className={`aspect-square rounded-lg flex items-center justify-center text-sm font-semibold transition-all relative ${
-                        isToday
-                          ? 'bg-gradient-to-r from-[#0EA5E9] to-[#06B6D4] text-white'
-                          : hasAppointment
-                          ? 'bg-[#0EA5E9]/20 text-[#0EA5E9] border border-[#0EA5E9]'
-                          : 'text-gray-400 hover:bg-[#0F172A]'
-                      }`}
-                    >
-                      {day}
-                      {hasAppointment && (
-                        <div className="absolute bottom-1 left-1/2 transform -translate-x-1/2 w-1 h-1 rounded-full bg-[#0EA5E9]" />
-                      )}
-                    </motion.button>
-                  )
-                })}
-              </div>
-            </motion.div>
-          </div>
+              <p className="text-gray-300 mb-6">{doctor.bio}</p>
 
-          {/* Upcoming Appointments */}
-          <div>
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 }}
-              className="bg-[#1E293B] border border-gray-700 rounded-2xl p-6"
-            >
-              <h2 className="text-xl font-bold text-white mb-6">Upcoming</h2>
-              <div className="space-y-4">
-                {appointments.map((apt) => (
-                  <motion.div
-                    key={apt.id}
-                    whileHover={{ scale: 1.02 }}
-                    className="bg-[#0F172A] border border-gray-700 rounded-xl p-4 cursor-pointer hover:border-[#0EA5E9]/50 transition-all"
-                  >
-                    <div className="flex items-start gap-3 mb-3">
-                      <div className="w-10 h-10 rounded-lg bg-gradient-to-r from-[#0EA5E9] to-[#06B6D4] flex items-center justify-center flex-shrink-0">
-                        <User className="h-5 w-5 text-white" />
-                      </div>
-                      <div className="flex-1">
-                        <h3 className="text-white font-semibold mb-1">{apt.doctor}</h3>
-                        <p className="text-gray-400 text-sm">{apt.location}</p>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-4 text-sm">
-                      <div className="flex items-center gap-1 text-gray-400">
-                        <Calendar className="h-4 w-4" />
-                        <span>{apt.date}</span>
-                      </div>
-                      <div className="flex items-center gap-1 text-gray-400">
-                        <Clock className="h-4 w-4" />
-                        <span>{apt.time}</span>
-                      </div>
-                    </div>
-                    <div className="mt-3 pt-3 border-t border-gray-700">
-                      <span className="px-3 py-1 rounded-full text-xs font-semibold bg-[#10B981]/20 text-[#10B981]">
-                        Confirmed
-                      </span>
-                    </div>
-                  </motion.div>
-                ))}
+              {/* Contact Info */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="flex items-center gap-3 text-gray-300">
+                  <Mail className="h-5 w-5 text-[#0EA5E9]" />
+                  <span>{doctor.email}</span>
+                </div>
+                <div className="flex items-center gap-3 text-gray-300">
+                  <Phone className="h-5 w-5 text-[#0EA5E9]" />
+                  <span>{doctor.phone}</span>
+                </div>
+                <div className="flex items-center gap-3 text-gray-300">
+                  <MapPin className="h-5 w-5 text-[#0EA5E9]" />
+                  <span>{doctor.location}</span>
+                </div>
               </div>
-            </motion.div>
+            </div>
           </div>
+        </motion.div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {/* Next Appointment */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="bg-[#1E293B] border border-gray-700 rounded-2xl p-6"
+          >
+            <h3 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
+              <Calendar className="h-5 w-5 text-[#0EA5E9]" />
+              Next Appointment
+            </h3>
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <span className="text-gray-400">Date</span>
+                <span className="text-white font-semibold">{doctor.nextAppointment.date}</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-gray-400">Time</span>
+                <span className="text-white font-semibold">{doctor.nextAppointment.time}</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-gray-400">Type</span>
+                <span className="text-white font-semibold">{doctor.nextAppointment.type}</span>
+              </div>
+            </div>
+            <button
+              onClick={() => router.push('/patient/messages')}
+              className="w-full mt-6 bg-gradient-to-r from-[#0EA5E9] to-[#06B6D4] text-white px-6 py-3 rounded-xl font-semibold flex items-center justify-center gap-2 hover:opacity-90 transition-opacity"
+            >
+              <MessageSquare className="h-5 w-5" />
+              Message Doctor
+            </button>
+          </motion.div>
+
+          {/* Availability */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+            className="bg-[#1E293B] border border-gray-700 rounded-2xl p-6"
+          >
+            <h3 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
+              <Clock className="h-5 w-5 text-[#0EA5E9]" />
+              Availability
+            </h3>
+            <div className="space-y-3">
+              {doctor.availability.map((slot, index) => (
+                <div key={index} className="flex items-center justify-between py-2 border-b border-gray-700 last:border-0">
+                  <span className="text-gray-300 font-medium">{slot.day}</span>
+                  <span className="text-gray-400">{slot.hours}</span>
+                </div>
+              ))}
+            </div>
+            <button
+              className="w-full mt-6 bg-[#0F172A] border border-gray-700 text-white px-6 py-3 rounded-xl font-semibold hover:border-[#0EA5E9]/50 transition-colors"
+            >
+              Book New Appointment
+            </button>
+          </motion.div>
         </div>
+
+        {/* Recent Consultations */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4 }}
+          className="mt-6 bg-[#1E293B] border border-gray-700 rounded-2xl p-6"
+        >
+          <h3 className="text-xl font-bold text-white mb-4">Recent Consultations</h3>
+          <div className="space-y-3">
+            {[
+              { date: 'Jan 24, 2026', type: 'Follow-up', notes: 'Reviewed test results, medication adjusted' },
+              { date: 'Jan 10, 2026', type: 'Initial Consultation', notes: 'First assessment and baseline tests ordered' },
+              { date: 'Dec 15, 2025', type: 'Check-up', notes: 'Regular monitoring, no changes needed' }
+            ].map((consultation, index) => (
+              <div key={index} className="bg-[#0F172A] border border-gray-700 rounded-xl p-4">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-white font-semibold">{consultation.date}</span>
+                  <span className="text-xs px-3 py-1 rounded-full bg-[#0EA5E9]/20 text-[#0EA5E9]">
+                    {consultation.type}
+                  </span>
+                </div>
+                <p className="text-gray-400 text-sm">{consultation.notes}</p>
+              </div>
+            ))}
+          </div>
+        </motion.div>
       </div>
     </div>
   )
