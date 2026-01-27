@@ -11,7 +11,7 @@ export default function Sidebar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
   const patientLinks = [
-    { href: '/dashboard', label: 'Dashboard', icon: '🏠' },
+    { href: '/patient/dashboard', label: 'Dashboard', icon: '🏠' },
     { href: '/test/new', label: 'New Test', icon: '🎤' },
     { href: '/history', label: 'History', icon: '📊' },
     { href: '/doctor/messages', label: 'My Doctor', icon: '👨‍⚕️' },
