@@ -33,10 +33,6 @@ interface DashboardData {
     status: 'completed' | 'processing' | 'failed'
     created_at: string
   }>
-  trendData: Array<{
-    date: string
-    riskScore: number
-  }>
 }
 
 export default function PatientDashboard() {
@@ -103,7 +99,7 @@ export default function PatientDashboard() {
     return null
   }
 
-  const { user, stats, recentTests, trendData } = data
+  const { user, stats, recentTests } = data
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 p-6">
@@ -187,7 +183,7 @@ export default function PatientDashboard() {
 
           {/* Trend Chart */}
           <div className="lg:col-span-2">
-            <TrendChart data={trendData} />
+            <TrendChart tests={recentTests} />
           </div>
         </div>
 
