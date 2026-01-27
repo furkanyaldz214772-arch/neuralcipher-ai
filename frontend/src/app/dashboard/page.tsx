@@ -24,35 +24,20 @@ export default function DashboardPage() {
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
-    console.log('🏠 PATIENT DASHBOARD - Component mounted')
-    console.log('🏠 PATIENT DASHBOARD - User:', { email: user?.email, role: user?.role, isAuthenticated })
-    
     // Check authentication first
     if (!isAuthenticated && !localStorage.getItem('access_token')) {
-      console.log('🏠 PATIENT DASHBOARD - Not authenticated, redirecting to login')
       router.replace('/auth/login')
       return
     }
 
     if (user) {
-      const userRole = user.role?.toLowerCase()
-      console.log('🏠 PATIENT DASHBOARD - User role:', userRole)
-      
-      if (userRole === 'admin') {
-        console.log('🏠 PATIENT DASHBOARD - Admin detected, redirecting to admin dashboard')
+      if (user.role === 'admin') {
         router.replace('/admin/dashboard')
         return
-      } else if (userRole === 'doctor') {
-        console.log('🏠 PATIENT DASHBOARD - Doctor detected, redirecting to doctor dashboard')
+      } else if (user.role === 'doctor') {
         router.replace('/doctor/dashboard')
         return
-      } else if (userRole === 'hospital') {
-        console.log('🏠 PATIENT DASHBOARD - Hospital detected, redirecting to hospital dashboard')
-        router.replace('/hospital/dashboard')
-        return
       }
-      
-      console.log('🏠 PATIENT DASHBOARD - Patient role confirmed, staying on patient dashboard')
     }
   }, [user, isAuthenticated, router])
 

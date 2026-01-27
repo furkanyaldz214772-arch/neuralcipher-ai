@@ -14,29 +14,11 @@ export default function HospitalDashboard() {
   const { user, isLoading } = useAuthStore()
 
   useEffect(() => {
-    console.log('🏥 HOSPITAL DASHBOARD - Component mounted')
-    console.log('🏥 HOSPITAL DASHBOARD - User:', { email: user?.email, role: user?.role, isLoading })
-    
     // Backend returns role in UPPERCASE, normalize to lowercase
     const userRole = user?.role?.toLowerCase()
     
-    console.log('🏥 HOSPITAL DASHBOARD - Normalized role:', userRole)
-    
-    if (!isLoading && !user) {
-      console.log('🏥 HOSPITAL DASHBOARD - No user, redirecting to login')
+    if (!isLoading && (!user || userRole !== 'hospital')) {
       router.push('/auth/login')
-      return
-    }
-    
-    if (!isLoading && user && userRole !== 'hospital') {
-      console.log('🏥 HOSPITAL DASHBOARD - Wrong role, redirecting to appropriate dashboard')
-      if (userRole === 'admin') {
-        router.push('/admin/dashboard')
-      } else if (userRole === 'doctor') {
-        router.push('/doctor/dashboard')
-      } else {
-        router.push('/dashboard')
-      }
     }
   }, [user, isLoading, router])
 
