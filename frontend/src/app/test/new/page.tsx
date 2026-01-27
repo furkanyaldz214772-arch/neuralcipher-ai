@@ -222,7 +222,7 @@ export default function NewTestPage() {
           {/* Professional Action Buttons - Sophisticated & Minimal */}
           <div className="flex items-center justify-between">
             <button
-              onClick={() => router.push('/dashboard')}
+              onClick={() => router.push('/patient/dashboard')}
               className="px-6 py-3 rounded-lg font-sora font-medium text-sm transition-all duration-200 hover:-translate-x-1 flex items-center gap-2"
               style={{
                 background: 'rgba(15, 23, 42, 0.6)',

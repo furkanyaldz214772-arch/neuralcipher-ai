@@ -81,7 +81,7 @@ export default function ResultsPage() {
           <h2 className="text-2xl font-sora font-bold text-white mb-4">Test Not Found</h2>
           <p className="text-gray-400 mb-8 font-roboto">{error || 'The test you are looking for does not exist'}</p>
           <button
-            onClick={() => router.push('/dashboard')}
+            onClick={() => router.push('/patient/dashboard')}
             className="px-6 py-3 bg-gradient-to-r from-electric-cyan to-azure-start text-white rounded-xl hover:shadow-neon-lg transition-all duration-300 font-sora font-medium"
           >
             Back to Dashboard
@@ -121,7 +121,7 @@ export default function ResultsPage() {
                 Download PDF
               </button>
               <button
-                onClick={() => router.push('/dashboard')}
+                onClick={() => router.push('/patient/dashboard')}
                 className="px-6 py-3 bg-gradient-to-r from-electric-cyan to-azure-start text-white rounded-xl hover:shadow-neon-lg transition-all duration-300 font-sora font-medium"
               >
                 Back to Dashboard

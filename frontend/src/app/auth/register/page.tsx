@@ -337,7 +337,7 @@ export default function RegisterPage() {
             router.push('/hospital/dashboard')
             break
           default:
-            router.push('/dashboard')
+            router.push('/patient/dashboard')
         }
       }
     } catch (err: any) {

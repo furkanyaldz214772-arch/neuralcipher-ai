@@ -24,7 +24,7 @@ export default function AdminLayout({
         } else if (user.role === 'hospital') {
           router.push('/hospital/dashboard')
         } else {
-          router.push('/dashboard')
+          router.push('/patient/dashboard')
         }
       }
     }

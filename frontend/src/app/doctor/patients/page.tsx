@@ -47,7 +47,7 @@ export default function DoctorPatientsPage() {
 
   useEffect(() => {
     if (user?.role !== 'doctor') {
-      router.push('/dashboard')
+      router.push('/patient/dashboard')
       return
     }
     fetchPatients()

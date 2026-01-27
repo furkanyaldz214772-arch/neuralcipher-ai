@@ -15,7 +15,7 @@ export default function ProcessingPage() {
 
   useEffect(() => {
     if (!testId) {
-      router.push('/dashboard')
+      router.push('/patient/dashboard')
       return
     }
 
@@ -55,7 +55,7 @@ export default function ProcessingPage() {
         router.push(`/results/${testId}`)
       } else if (response.data.status === 'failed') {
         alert('Error processing test. Please try again.')
-        router.push('/dashboard')
+        router.push('/patient/dashboard')
       } else {
         // Still processing, check again
         setTimeout(checkTestStatus, 2000)

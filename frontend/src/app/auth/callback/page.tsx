@@ -62,7 +62,7 @@ export default function AuthCallbackPage() {
               router.push('/hospital/dashboard')
               break
             default:
-              router.push('/dashboard')
+              router.push('/patient/dashboard')
           }
         }, 1500)
 

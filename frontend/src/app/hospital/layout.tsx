@@ -24,7 +24,7 @@ export default function HospitalLayout({
         } else if (user.role === 'doctor') {
           router.push('/doctor/dashboard')
         } else {
-          router.push('/dashboard')
+          router.push('/patient/dashboard')
         }
       }
     }
