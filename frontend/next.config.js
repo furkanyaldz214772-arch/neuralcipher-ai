@@ -101,8 +101,13 @@ const nextConfig = {
     return [
       {
         source: '/home',
-        destination: '/dashboard',
+        destination: '/patient/dashboard',
         permanent: true,
+      },
+      {
+        source: '/dashboard',
+        destination: '/patient/dashboard',
+        permanent: false,
       },
     ];
   },

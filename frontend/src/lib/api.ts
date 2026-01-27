@@ -4,8 +4,27 @@
  */
 import axios from 'axios'
 
-// Always use HTTPS for Railway production
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://web-production-c00b0.up.railway.app'
+// Smart API URL detection
+const getApiUrl = () => {
+  // Server-side rendering
+  if (typeof window === 'undefined') {
+    return process.env.NEXT_PUBLIC_API_URL || 'https://web-production-c00b0.up.railway.app'
+  }
+  
+  // Client-side
+  const envUrl = process.env.NEXT_PUBLIC_API_URL
+  if (envUrl) return envUrl
+  
+  // Development fallback
+  if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+    return 'http://localhost:8000'
+  }
+  
+  // Production fallback
+  return 'https://web-production-c00b0.up.railway.app'
+}
+
+const API_URL = getApiUrl()
 
 export const api = axios.create({
   baseURL: API_URL,
