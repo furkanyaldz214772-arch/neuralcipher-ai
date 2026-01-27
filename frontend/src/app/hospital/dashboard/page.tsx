@@ -4,7 +4,7 @@
  */
 'use client'
 
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useAuthStore } from '@/lib/auth-store'
 import DashboardLayout from '@/components/layout/DashboardLayout'
@@ -14,12 +14,34 @@ export default function HospitalDashboard() {
   const { user, isLoading } = useAuthStore()
 
   useEffect(() => {
-    // Backend returns role in UPPERCASE, normalize to lowercase
-    const userRole = user?.role?.toLowerCase()
+    console.log('🏥 HOSPITAL DASHBOARD - Checking auth:', { user: user?.email, role: user?.role, isLoading })
     
-    if (!isLoading && (!user || userRole !== 'hospital')) {
-      router.push('/auth/login')
+    if (isLoading) {
+      return
     }
+    
+    if (!user) {
+      console.log('🏥 HOSPITAL DASHBOARD - No user, redirecting to login')
+      window.location.href = '/auth/login'
+      return
+    }
+    
+    const userRole = user.role?.toUpperCase()
+    console.log('🏥 HOSPITAL DASHBOARD - User role:', userRole)
+    
+    if (userRole !== 'HOSPITAL') {
+      console.log('🏥 HOSPITAL DASHBOARD - Wrong role, redirecting')
+      if (userRole === 'ADMIN') {
+        window.location.href = '/admin/dashboard'
+      } else if (userRole === 'DOCTOR') {
+        window.location.href = '/doctor/dashboard'
+      } else {
+        window.location.href = '/dashboard'
+      }
+      return
+    }
+    
+    console.log('🏥 HOSPITAL DASHBOARD - Hospital confirmed, loading dashboard')
   }, [user, isLoading, router])
 
   if (isLoading || !user) {

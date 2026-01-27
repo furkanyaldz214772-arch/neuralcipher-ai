@@ -102,16 +102,14 @@ export const useAuthStore = create<AuthState>()(
           const response = await api.get('/api/v1/auth/me')
           console.log('🔍 AUTH STORE - Fetched user from backend:', response.data)
           
-          // Normalize role to lowercase for consistent comparison
+          // Keep role as-is from backend (UPPERCASE)
           const userData = {
-            ...response.data,
-            role: response.data.role?.toLowerCase() || response.data.role
+            ...response.data
           }
           
-          console.log('✅ AUTH STORE - User data normalized:', { 
+          console.log('✅ AUTH STORE - User data stored:', { 
             email: userData.email, 
-            originalRole: response.data.role,
-            normalizedRole: userData.role 
+            role: userData.role 
           })
           
           set({ user: userData, isAuthenticated: true })

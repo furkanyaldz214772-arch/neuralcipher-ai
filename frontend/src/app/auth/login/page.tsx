@@ -255,21 +255,34 @@ export default function LoginPage() {
     try {
       const user = await login(email, password)
       
+      console.log('🔐 LOGIN PAGE - User logged in:', { 
+        email: user?.email, 
+        role: user?.role,
+        roleType: typeof user?.role 
+      })
+      
       // Backend returns role in UPPERCASE (ADMIN, DOCTOR, PATIENT, HOSPITAL)
       // Convert to lowercase for comparison
-      const userRole = user?.role?.toLowerCase()
+      const userRole = user?.role?.toUpperCase()
       
-      // Redirect based on user role
-      if (userRole === 'admin') {
-        router.push('/admin/dashboard')
-      } else if (userRole === 'doctor') {
-        router.push('/doctor/dashboard')
-      } else if (userRole === 'hospital') {
-        router.push('/hospital/dashboard')
+      console.log('🔀 LOGIN PAGE - Redirecting based on role:', userRole)
+      
+      // Redirect based on user role - FORCE FULL PAGE RELOAD
+      if (userRole === 'ADMIN') {
+        console.log('➡️ Redirecting to: /admin/dashboard')
+        window.location.href = '/admin/dashboard'
+      } else if (userRole === 'DOCTOR') {
+        console.log('➡️ Redirecting to: /doctor/dashboard')
+        window.location.href = '/doctor/dashboard'
+      } else if (userRole === 'HOSPITAL') {
+        console.log('➡️ Redirecting to: /hospital/dashboard')
+        window.location.href = '/hospital/dashboard'
       } else {
-        router.push('/dashboard')
+        console.log('➡️ Redirecting to: /dashboard')
+        window.location.href = '/dashboard'
       }
     } catch (err: any) {
+      console.error('❌ LOGIN PAGE - Login failed:', err)
       setError(err.response?.data?.detail || 'Login failed. Please try again.')
     }
   }
