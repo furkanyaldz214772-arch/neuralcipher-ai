@@ -1,5 +1,6 @@
 'use client'
 
+import { useState } from 'react'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { useAuthStore } from '@/lib/auth-store'
@@ -20,7 +21,9 @@ import {
   ChevronLeft,
   ChevronRight,
   LogOut,
-  UserCircle
+  UserCircle,
+  ChevronDown,
+  ChevronUp
 } from 'lucide-react'
 
 export default function Sidebar() {
@@ -28,6 +31,7 @@ export default function Sidebar() {
   const router = useRouter()
   const { user, logout } = useAuthStore()
   const { isCollapsed, toggleSidebar } = useSidebar()
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false)
 
   const handleLogout = () => {
     logout()
@@ -86,6 +90,10 @@ export default function Sidebar() {
   }
 
   const menuItems = getMenuItems()
+
+  // Kullanıcı adını al - full_name yoksa email'den al
+  const displayName = user?.full_name || user?.email?.split('@')[0] || 'User'
+  const displayEmail = user?.email || ''
 
   return (
     <aside 
@@ -159,45 +167,68 @@ export default function Sidebar() {
         })}
       </nav>
 
-      {/* User Info & Logout Footer */}
+      {/* User Profile Dropdown */}
       <div className="absolute bottom-0 left-0 right-0 border-t border-gray-700 bg-[#0F172A]">
-        {/* User Info */}
-        <div className={`p-4 border-b border-gray-700 ${isCollapsed ? 'flex justify-center' : ''}`}>
-          {isCollapsed ? (
-            <div className="w-10 h-10 rounded-full bg-gradient-to-r from-[#0EA5E9] to-[#06B6D4] flex items-center justify-center text-white font-semibold">
-              {user?.full_name?.[0] || user?.email?.[0] || 'U'}
+        <div className="relative">
+          {/* Profile Button */}
+          <button
+            onClick={() => !isCollapsed && setIsDropdownOpen(!isDropdownOpen)}
+            className={`w-full p-4 flex items-center ${isCollapsed ? 'justify-center' : 'justify-between'} hover:bg-gray-700/50 transition-colors`}
+          >
+            <div className={`flex items-center ${isCollapsed ? '' : 'space-x-3'}`}>
+              <div className="w-10 h-10 rounded-full bg-gradient-to-r from-[#0EA5E9] to-[#06B6D4] flex items-center justify-center text-white font-semibold flex-shrink-0">
+                {displayName[0].toUpperCase()}
+              </div>
+              {!isCollapsed && (
+                <div className="text-left">
+                  <p className="text-sm font-medium text-white truncate max-w-[140px]">
+                    {displayName}
+                  </p>
+                  <p className="text-xs text-gray-400 truncate max-w-[140px]">
+                    {displayEmail}
+                  </p>
+                </div>
+              )}
             </div>
-          ) : (
-            <div>
-              <p className="text-sm font-medium text-white truncate">
-                {user?.full_name || user?.email}
-              </p>
-              <p className="text-xs text-gray-400 capitalize">
-                {user?.role?.toLowerCase()}
-              </p>
+            {!isCollapsed && (
+              isDropdownOpen ? (
+                <ChevronUp className="h-4 w-4 text-gray-400" />
+              ) : (
+                <ChevronDown className="h-4 w-4 text-gray-400" />
+              )
+            )}
+          </button>
+
+          {/* Dropdown Menu */}
+          {isDropdownOpen && !isCollapsed && (
+            <div className="absolute bottom-full left-0 right-0 mb-1 bg-[#1E293B] border border-gray-700 rounded-lg shadow-lg overflow-hidden">
+              <Link
+                href={`/${user?.role?.toLowerCase()}/settings`}
+                className="flex items-center space-x-3 px-4 py-3 hover:bg-gray-700/50 transition-colors text-gray-300"
+                onClick={() => setIsDropdownOpen(false)}
+              >
+                <UserCircle className="h-5 w-5" />
+                <span className="font-medium">Profile</span>
+              </Link>
+              <Link
+                href={`/${user?.role?.toLowerCase()}/settings`}
+                className="flex items-center space-x-3 px-4 py-3 hover:bg-gray-700/50 transition-colors text-gray-300"
+                onClick={() => setIsDropdownOpen(false)}
+              >
+                <Settings className="h-5 w-5" />
+                <span className="font-medium">Settings</span>
+              </Link>
+              <div className="border-t border-gray-700"></div>
+              <button
+                onClick={handleLogout}
+                className="w-full flex items-center space-x-3 px-4 py-3 hover:bg-red-500/10 transition-colors text-red-400"
+              >
+                <LogOut className="h-5 w-5" />
+                <span className="font-medium">Logout</span>
+              </button>
             </div>
           )}
         </div>
-
-        {/* Logout Button */}
-        <button
-          onClick={handleLogout}
-          className={`w-full p-4 flex items-center ${isCollapsed ? 'justify-center' : 'space-x-3'} text-red-400 hover:bg-red-500/10 transition-all duration-200 group relative`}
-          title={isCollapsed ? 'Logout' : ''}
-        >
-          <LogOut className="h-5 w-5 flex-shrink-0" />
-          {!isCollapsed && (
-            <span className="font-medium">Logout</span>
-          )}
-          
-          {/* Tooltip for collapsed state */}
-          {isCollapsed && (
-            <div className="absolute left-full ml-2 px-3 py-2 bg-gray-800 text-white text-sm rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 whitespace-nowrap z-50 border border-gray-700">
-              Logout
-              <div className="absolute left-0 top-1/2 -translate-x-1 -translate-y-1/2 w-2 h-2 bg-gray-800 border-l border-b border-gray-700 rotate-45"></div>
-            </div>
-          )}
-        </button>
       </div>
     </aside>
   )
