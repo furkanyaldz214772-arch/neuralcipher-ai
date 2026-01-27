@@ -48,7 +48,7 @@ export default function DoctorDashboardPage() {
       } else if (userRole === 'HOSPITAL') {
         window.location.href = '/hospital/dashboard'
       } else {
-        window.location.href = '/dashboard'
+        window.location.href = '/patient/dashboard'
       }
       return
     }
