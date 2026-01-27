@@ -100,16 +100,22 @@ export const useAuthStore = create<AuthState>()(
       fetchUser: async () => {
         try {
           const response = await api.get('/api/v1/auth/me')
-          console.log('🔍 AUTH STORE - Fetched user from backend:', response.data)
           
-          // Keep role as-is from backend (UPPERCASE)
+          // DETAILED DEBUG LOGGING
+          console.log('🔍 AUTH STORE - Raw API response:', response.data)
+          console.log('🔍 AUTH STORE - Role value:', response.data.role)
+          console.log('🔍 AUTH STORE - Role type:', typeof response.data.role)
+          console.log('🔍 AUTH STORE - Role JSON:', JSON.stringify(response.data.role))
+          
+          // Keep role as-is from backend (should be UPPERCASE string)
           const userData = {
             ...response.data
           }
           
           console.log('✅ AUTH STORE - User data stored:', { 
             email: userData.email, 
-            role: userData.role 
+            role: userData.role,
+            roleType: typeof userData.role
           })
           
           set({ user: userData, isAuthenticated: true })
