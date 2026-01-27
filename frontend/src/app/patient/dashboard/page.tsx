@@ -23,10 +23,15 @@ interface DashboardData {
     lastRiskLevel: string | null
   }
   recentTests: Array<{
-    id: number
-    riskScore: number
-    riskLevel: string
-    createdAt: string
+    id: string
+    patient_id: string
+    test_level: 'quick' | 'standard' | 'comprehensive' | 'clinical'
+    test_date: string
+    audio_file_url: string
+    risk_score: number
+    confidence: number
+    status: 'completed' | 'processing' | 'failed'
+    created_at: string
   }>
   trendData: Array<{
     date: string
