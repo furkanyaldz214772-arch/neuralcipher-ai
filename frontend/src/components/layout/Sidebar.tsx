@@ -8,7 +8,7 @@ import {
   FileText,
   Users,
   Settings,
-  Hospital,
+  Building2,
   Stethoscope,
   Activity,
   MessageSquare,
@@ -59,7 +59,7 @@ export default function Sidebar() {
         return [
           { href: '/admin/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
           { href: '/admin/users', icon: Users, label: 'Users' },
-          { href: '/admin/hospitals', icon: Hospital, label: 'Hospitals' },
+          { href: '/admin/hospitals', icon: Building2, label: 'Hospitals' },
           { href: '/admin/tests', icon: FileCheck, label: 'Tests' },
           { href: '/admin/analytics', icon: BarChart3, label: 'Analytics' },
           { href: '/admin/database', icon: Database, label: 'Database' },
