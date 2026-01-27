@@ -197,7 +197,7 @@ export default function PatientDashboard() {
           {/* Quick Actions & Access Key */}
           <div className="space-y-6">
             <QuickActions />
-            {user.accessKey && <AccessKeyCard accessKey={user.accessKey} />}
+            <AccessKeyCard />
           </div>
         </div>
       </div>

@@ -4,6 +4,11 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+
+interface AccessKeyCardProps {
+  accessKey: string
+}
+
 const Copy = ({ size = 10 }: { size?: number }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
     <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
@@ -28,7 +33,7 @@ interface AccessKeyData {
   pending_requests: number
 }
 
-export default function AccessKeyCard() {
+export default function AccessKeyCard({ accessKey }: AccessKeyCardProps) {
   const [keyData, setKeyData] = useState<AccessKeyData | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [copied, setCopied] = useState(false)
