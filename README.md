@@ -346,3 +346,5 @@ NeuralCipher.ai is a screening tool and should not be used as a substitute for p
 [Website](https://neuralcipher.ai) • [Documentation](https://docs.neuralcipher.ai) • [Blog](https://blog.neuralcipher.ai)
 
 </div>
+#   T r i g g e r   d e p l o y m e n t  
+ 
