@@ -78,7 +78,15 @@ api.interceptors.response.use(
         // Refresh failed - logout
         localStorage.removeItem('access_token')
         localStorage.removeItem('refresh_token')
-        window.location.href = '/auth/login'
+        
+        // Don't redirect if already on login pages
+        if (typeof window !== 'undefined') {
+          const currentPath = window.location.pathname
+          if (!currentPath.includes('/auth/login') && !currentPath.includes('/neural-control-center')) {
+            window.location.href = '/auth/login'
+          }
+        }
+        
         return Promise.reject(refreshError)
       }
     }
