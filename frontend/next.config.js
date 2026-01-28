@@ -1,4 +1,5 @@
 /** @type {import('next').NextConfig} */
+// Admin dashboard build fix - force cache clear
 const nextConfig = {
   // Vercel deployment - remove static export for dynamic routes
   // output: 'export',
