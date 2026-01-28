@@ -5,6 +5,7 @@ import { useState } from 'react'
 /**
  * Admin Panel - Login Page
  * Simple authentication with username and password
+ * Updated: 28 Ocak 2026
  */
 
 export default function AdminLoginPage() {
