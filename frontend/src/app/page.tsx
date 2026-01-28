@@ -64,6 +64,9 @@ export default function Home() {
       case 'HOSPITAL':
       case 'hospital':
         return '/hospital/dashboard'
+      case 'AUTHORIZED':
+      case 'authorized':
+        return '/patient/dashboard'
       case 'PATIENT':
       case 'patient':
       default:
