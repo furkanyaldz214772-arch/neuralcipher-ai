@@ -289,7 +289,7 @@ export default function DoctorAnalyticsPage() {
             </div>
             <div className="bg-[#0F172A] border border-gray-700 rounded-xl p-4">
               <p className="text-gray-400 text-sm mb-2">Response Time</p>
-              <p className="text-2xl font-bold text-white">< 2h</p>
+              <p className="text-2xl font-bold text-white">&lt; 2h</p>
             </div>
           </div>
         </motion.div>
