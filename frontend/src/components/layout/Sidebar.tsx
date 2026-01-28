@@ -62,6 +62,7 @@ export default function Sidebar() {
         return [
           { href: '/doctor/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
           { href: '/doctor/patients', icon: Users, label: 'Patients' },
+          { href: '/doctor/appointments', icon: UserCircle, label: 'Appointments' },
           { href: '/doctor/tests', icon: FileText, label: 'Test Results' },
           { href: '/doctor/messages', icon: MessageSquare, label: 'Messages' },
           { href: '/doctor/analytics', icon: BarChart3, label: 'Analytics' },
