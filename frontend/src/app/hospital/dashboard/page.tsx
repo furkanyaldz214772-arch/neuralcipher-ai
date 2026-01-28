@@ -41,8 +41,23 @@ export default function HospitalDashboard() {
       return
     }
 
-    if (user && user.role !== 'hospital') {
-      router.replace('/dashboard')
+    // ✅ FIX: Backend returns role in UPPERCASE, normalize for comparison
+    if (user && user.role?.toUpperCase() !== 'HOSPITAL') {
+      console.warn('⚠️ HOSPITAL DASHBOARD - User role mismatch:', { 
+        userRole: user.role, 
+        expected: 'HOSPITAL' 
+      })
+      // Redirect to appropriate dashboard based on actual role
+      const roleUpper = user.role?.toUpperCase()
+      if (roleUpper === 'PATIENT') {
+        router.replace('/patient/dashboard')
+      } else if (roleUpper === 'DOCTOR') {
+        router.replace('/doctor/dashboard')
+      } else if (roleUpper === 'ADMIN') {
+        router.replace('/admin/dashboard')
+      } else {
+        router.replace('/auth/login')
+      }
       return
     }
 
