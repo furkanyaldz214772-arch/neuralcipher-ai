@@ -236,6 +236,73 @@ export default function NeuralControlCenter() {
         >
           All access attempts are logged and monitored for security purposes
         </motion.p>
+
+        {/* System Status Panel */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.6 }}
+          className="mt-8 relative"
+        >
+          <div className="absolute -inset-1 bg-gradient-to-r from-[#64FFDA]/20 via-[#3B82F6]/20 to-[#8B5CF6]/20 rounded-xl blur-lg" />
+          
+          <div className="relative bg-[#0A0E27]/80 backdrop-blur-xl border border-[#64FFDA]/10 rounded-xl p-6">
+            <h3 className="text-sm font-semibold text-[#64FFDA] mb-4 flex items-center gap-2">
+              <FiShield className="text-lg" />
+              System Security Status
+            </h3>
+            
+            <div className="grid grid-cols-2 gap-4">
+              {/* Active Sessions */}
+              <div className="bg-[#1a1f3a]/50 rounded-lg p-4 border border-[#64FFDA]/10">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-xs text-gray-400">Active Sessions</span>
+                  <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
+                </div>
+                <p className="text-2xl font-bold text-white">0</p>
+                <p className="text-xs text-gray-500 mt-1">Currently online</p>
+              </div>
+
+              {/* Security Level */}
+              <div className="bg-[#1a1f3a]/50 rounded-lg p-4 border border-[#64FFDA]/10">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-xs text-gray-400">Security Level</span>
+                  <FiShield className="text-[#64FFDA]" />
+                </div>
+                <p className="text-2xl font-bold text-[#64FFDA]">MAX</p>
+                <p className="text-xs text-gray-500 mt-1">256-bit encryption</p>
+              </div>
+
+              {/* Failed Attempts */}
+              <div className="bg-[#1a1f3a]/50 rounded-lg p-4 border border-[#64FFDA]/10">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-xs text-gray-400">Failed Attempts</span>
+                  <FiAlertTriangle className="text-yellow-400" />
+                </div>
+                <p className="text-2xl font-bold text-white">{attempts}</p>
+                <p className="text-xs text-gray-500 mt-1">Last 24 hours</p>
+              </div>
+
+              {/* System Health */}
+              <div className="bg-[#1a1f3a]/50 rounded-lg p-4 border border-[#64FFDA]/10">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-xs text-gray-400">System Health</span>
+                  <div className="w-2 h-2 bg-green-400 rounded-full" />
+                </div>
+                <p className="text-2xl font-bold text-green-400">100%</p>
+                <p className="text-xs text-gray-500 mt-1">All systems operational</p>
+              </div>
+            </div>
+
+            {/* Last Activity */}
+            <div className="mt-4 pt-4 border-t border-[#64FFDA]/10">
+              <div className="flex items-center justify-between text-xs">
+                <span className="text-gray-500">Last Admin Access:</span>
+                <span className="text-gray-400">Never</span>
+              </div>
+            </div>
+          </div>
+        </motion.div>
       </motion.div>
     </div>
   )
