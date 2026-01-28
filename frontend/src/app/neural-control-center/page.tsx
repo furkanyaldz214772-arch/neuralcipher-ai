@@ -44,8 +44,8 @@ export default function NeuralControlCenter() {
         return
       }
       
-      // Success - redirect to admin dashboard
-      router.push('/admin/dashboard')
+      // Success - redirect to neural control center dashboard
+      router.push('/neural-control-center/dashboard')
       
     } catch (err: any) {
       setAttempts(prev => prev + 1)
