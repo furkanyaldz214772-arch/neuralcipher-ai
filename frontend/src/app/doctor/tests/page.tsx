@@ -30,8 +30,121 @@ export default function DoctorTestsPage() {
   const fetchTests = async () => {
     try {
       setLoading(true);
-      const response = await api.get('/api/v1/doctor/tests');
-      setTests(response.data.tests || []);
+      // const response = await api.get('/api/v1/doctor/tests');
+      // setTests(response.data.tests || []);
+      
+      // Mock data for demonstration
+      await new Promise(resolve => setTimeout(resolve, 500));
+      setTests([
+        {
+          id: '1',
+          patientName: 'John Smith',
+          patientId: '1',
+          createdAt: '2026-01-27T10:30:00Z',
+          riskScore: 78,
+          status: 'completed',
+          testType: 'Voice Analysis'
+        },
+        {
+          id: '2',
+          patientName: 'Emma Wilson',
+          patientId: '2',
+          createdAt: '2026-01-26T14:15:00Z',
+          riskScore: 45,
+          status: 'completed',
+          testType: 'Voice Analysis'
+        },
+        {
+          id: '3',
+          patientName: 'Michael Brown',
+          patientId: '3',
+          createdAt: '2026-01-25T09:45:00Z',
+          riskScore: 22,
+          status: 'completed',
+          testType: 'Voice Analysis'
+        },
+        {
+          id: '4',
+          patientName: 'John Smith',
+          patientId: '1',
+          createdAt: '2026-01-20T16:20:00Z',
+          riskScore: 72,
+          status: 'completed',
+          testType: 'Voice Analysis'
+        },
+        {
+          id: '5',
+          patientName: 'Emma Wilson',
+          patientId: '2',
+          createdAt: '2026-01-19T11:30:00Z',
+          riskScore: 48,
+          status: 'completed',
+          testType: 'Voice Analysis'
+        },
+        {
+          id: '6',
+          patientName: 'Michael Brown',
+          patientId: '3',
+          createdAt: '2026-01-18T08:15:00Z',
+          riskScore: 18,
+          status: 'completed',
+          testType: 'Voice Analysis'
+        },
+        {
+          id: '7',
+          patientName: 'Sarah Johnson',
+          patientId: '4',
+          createdAt: '2026-01-15T13:45:00Z',
+          riskScore: 65,
+          status: 'completed',
+          testType: 'Voice Analysis'
+        },
+        {
+          id: '8',
+          patientName: 'David Lee',
+          patientId: '5',
+          createdAt: '2026-01-12T10:00:00Z',
+          riskScore: 82,
+          status: 'completed',
+          testType: 'Voice Analysis'
+        },
+        {
+          id: '9',
+          patientName: 'John Smith',
+          patientId: '1',
+          createdAt: '2026-01-10T15:30:00Z',
+          riskScore: 75,
+          status: 'completed',
+          testType: 'Voice Analysis'
+        },
+        {
+          id: '10',
+          patientName: 'Emma Wilson',
+          patientId: '2',
+          createdAt: '2026-01-08T12:00:00Z',
+          riskScore: 42,
+          status: 'completed',
+          testType: 'Voice Analysis'
+        },
+        {
+          id: '11',
+          patientName: 'Michael Brown',
+          patientId: '3',
+          createdAt: '2026-01-05T09:15:00Z',
+          riskScore: 25,
+          status: 'completed',
+          testType: 'Voice Analysis'
+        },
+        {
+          id: '12',
+          patientName: 'Sarah Johnson',
+          patientId: '4',
+          createdAt: '2026-01-03T14:45:00Z',
+          riskScore: 68,
+          status: 'completed',
+          testType: 'Voice Analysis'
+        }
+      ]);
     } catch (error) {
       console.error('Failed to fetch tests:', error);
     } finally {
