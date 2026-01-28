@@ -24,7 +24,7 @@ export default function AdminPanelLayout({
   }
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-slate-950">
       {/* Sidebar */}
       <AdminSidebar isOpen={sidebarOpen} setIsOpen={setSidebarOpen} />
 
@@ -203,14 +203,14 @@ function AdminSidebar({ isOpen, setIsOpen }: { isOpen: boolean; setIsOpen: (open
 // Topbar Component
 function AdminTopbar({ toggleSidebar }: { toggleSidebar: () => void }) {
   return (
-    <header className="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-6">
+    <header className="h-16 bg-slate-900 border-b border-slate-800 flex items-center justify-between px-6">
       {/* Left */}
       <div className="flex items-center gap-4">
         <button
           onClick={toggleSidebar}
-          className="p-2 hover:bg-slate-100 rounded-lg transition-colors"
+          className="p-2 hover:bg-slate-800 rounded-lg transition-colors"
         >
-          <svg className="w-6 h-6 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="w-6 h-6 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
           </svg>
         </button>
@@ -220,10 +220,10 @@ function AdminTopbar({ toggleSidebar }: { toggleSidebar: () => void }) {
           <input
             type="text"
             placeholder="Search..."
-            className="w-64 px-4 py-2 pl-10 bg-slate-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+            className="w-64 px-4 py-2 pl-10 bg-slate-800 text-slate-200 placeholder-slate-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
           />
           <svg
-            className="w-5 h-5 text-slate-400 absolute left-3 top-2.5"
+            className="w-5 h-5 text-slate-500 absolute left-3 top-2.5"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -236,8 +236,8 @@ function AdminTopbar({ toggleSidebar }: { toggleSidebar: () => void }) {
       {/* Right */}
       <div className="flex items-center gap-4">
         {/* Notifications */}
-        <button className="relative p-2 hover:bg-slate-100 rounded-lg transition-colors">
-          <svg className="w-6 h-6 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <button className="relative p-2 hover:bg-slate-800 rounded-lg transition-colors">
+          <svg className="w-6 h-6 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
           </svg>
           <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
@@ -249,8 +249,8 @@ function AdminTopbar({ toggleSidebar }: { toggleSidebar: () => void }) {
             <span className="text-white font-semibold">A</span>
           </div>
           <div>
-            <p className="text-sm font-semibold text-slate-800">Admin</p>
-            <p className="text-xs text-slate-500">Administrator</p>
+            <p className="text-sm font-semibold text-slate-200">Admin</p>
+            <p className="text-xs text-slate-400">Administrator</p>
           </div>
         </div>
       </div>
