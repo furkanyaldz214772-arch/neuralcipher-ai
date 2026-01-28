@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { useAuth } from '@/lib/auth-context'
+import { useAuthStore } from '@/lib/auth-store'
 import api from '@/lib/api'
 
 interface Report {
@@ -25,7 +25,7 @@ interface Patient {
 
 export default function ReportsPage() {
   const router = useRouter()
-  const { user, isAuthenticated } = useAuth()
+  const { user, isAuthenticated } = useAuthStore()
   const [reports, setReports] = useState<Report[]>([])
   const [patients, setPatients] = useState<Patient[]>([])
   const [loading, setLoading] = useState(true)

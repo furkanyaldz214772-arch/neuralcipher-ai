@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { useAuth } from '@/lib/auth-context'
+import { useAuthStore } from '@/lib/auth-store'
 import { useRouter } from 'next/navigation'
 import { Calendar, Clock, User, Plus, Filter, CheckCircle, XCircle, AlertCircle } from 'lucide-react'
 
@@ -17,7 +17,7 @@ interface Appointment {
 }
 
 export default function AppointmentsPage() {
-  const { user, isAuthenticated } = useAuth()
+  const { user, isAuthenticated } = useAuthStore()
   const router = useRouter()
   const [appointments, setAppointments] = useState<Appointment[]>([])
   const [loading, setLoading] = useState(true)
