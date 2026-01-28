@@ -78,16 +78,6 @@ function AdminSidebar({ isOpen, setIsOpen }: { isOpen: boolean; setIsOpen: (open
       ]
     },
     {
-      title: 'Hospitals',
-      icon: '🏥',
-      href: '/admin-panel/hospitals',
-    },
-    {
-      title: 'Doctors',
-      icon: '👨‍⚕️',
-      href: '/admin-panel/doctors',
-    },
-    {
       title: 'Reports',
       icon: '📊',
       href: '/admin-panel/reports',
@@ -98,13 +88,14 @@ function AdminSidebar({ isOpen, setIsOpen }: { isOpen: boolean; setIsOpen: (open
       href: '/admin-panel/logs',
     },
     {
-      title: 'Communications',
+      title: 'Emails',
       icon: '📧',
-      href: '/admin-panel/communications',
-      submenu: [
-        { title: 'Emails', href: '/admin-panel/emails' },
-        { title: 'Notifications', href: '/admin-panel/notifications' },
-      ]
+      href: '/admin-panel/emails',
+    },
+    {
+      title: 'Notifications',
+      icon: '🔔',
+      href: '/admin-panel/notifications',
     },
     {
       title: 'Mobile App',
