@@ -1,8 +1,13 @@
-# Ignore old admin folder completely
+# Ignore old admin folder completely - DO NOT BUILD THIS
+frontend/src/app/admin
 frontend/src/app/admin/
+frontend/src/app/admin/**
 frontend/src/app/admin/**/*
+**/admin/dashboard/**
 
 # Cache directories
 .next/
+.next/**
 node_modules/
 .cache/
+.turbo/

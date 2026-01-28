@@ -20,8 +20,20 @@ const nextConfig = {
   poweredByHeader: false,
   generateEtags: true,
   
+  // CRITICAL: Exclude old admin folder from build
+  pageExtensions: ['tsx', 'ts', 'jsx', 'js'],
+  
   // Bundle analyzer (development only)
   webpack: (config, { dev, isServer }) => {
+    // CRITICAL: Exclude admin folder from webpack build
+    config.module.rules.push({
+      test: /\.(tsx|ts|jsx|js)$/,
+      exclude: [
+        /node_modules/,
+        /src\/app\/admin/,  // Exclude old admin folder
+      ],
+    });
+    
     // Bundle size optimization
     if (!dev && !isServer) {
       config.optimization.splitChunks = {
