@@ -26,7 +26,7 @@ interface AuthState {
   logout: () => void
   register: (email: string, password: string, role: string, additionalData?: any) => Promise<void>
   fetchUser: () => Promise<void>
-  updateUser: (user: User) => void
+  updateUser: (userData: Partial<User>) => void
   initialize: () => Promise<void>
   setTokens: (accessToken: string, refreshToken: string) => Promise<void>
 }
@@ -135,8 +135,11 @@ export const useAuthStore = create<AuthState>()(
         }
       },
 
-      updateUser: (user: User) => {
-        set({ user })
+      updateUser: (userData: Partial<User>) => {
+        const currentUser = get().user
+        if (currentUser) {
+          set({ user: { ...currentUser, ...userData } })
+        }
       },
 
       initialize: async () => {

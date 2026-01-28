@@ -76,7 +76,7 @@ export default function PatientSettingsPage() {
       
       // Update user in auth store
       if (updateUser) {
-        updateUser({ ...user, profile_photo_url: data.profile_photo_url })
+        updateUser({ profile_photo_url: data.profile_photo_url })
       }
     } catch (error) {
       console.error('Failed to upload photo:', error)
@@ -94,7 +94,7 @@ export default function PatientSettingsPage() {
       
       // Update user in auth store
       if (updateUser) {
-        updateUser({ ...user, profile_photo_url: null })
+        updateUser({ profile_photo_url: null })
       }
     } catch (error) {
       console.error('Failed to delete photo:', error)
