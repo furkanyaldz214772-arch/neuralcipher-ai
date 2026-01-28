@@ -1,0 +1,1 @@
+Force update to trigger Vercel rebuild - 28 Ocak 2026
