@@ -3,6 +3,11 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 
+/**
+ * Admin Panel - Patients Management
+ * Version: 1.0.1 - 28 Ocak 2026
+ */
+
 export default function AdminPatientsPage() {
   const router = useRouter()
   const [patients, setPatients] = useState([

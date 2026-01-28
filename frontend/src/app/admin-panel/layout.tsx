@@ -7,7 +7,7 @@ import { usePathname } from 'next/navigation'
 /**
  * Admin Panel Layout
  * Includes Sidebar and Topbar
- * Updated: 28 Ocak 2026
+ * Updated: 28 Ocak 2026 - Cache Fix v2
  */
 
 export default function AdminPanelLayout({
