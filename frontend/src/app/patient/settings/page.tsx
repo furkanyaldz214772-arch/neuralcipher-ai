@@ -1,12 +1,16 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { User, Mail, Phone, Calendar, Heart, Pill, Bell, Save } from 'lucide-react'
+import { User, Mail, Phone, Calendar, Heart, Pill, Bell, Save, Camera, Key, Users as UsersIcon } from 'lucide-react'
 import { useAuthStore } from '@/lib/auth-store'
+import { profilePhotoAPI, accessKeyAPI } from '@/lib/api'
+import ProfilePhotoUpload from '@/components/settings/ProfilePhotoUpload'
+import AccessKeyDisplay from '@/components/settings/AccessKeyDisplay'
+import DoctorAccessList from '@/components/settings/DoctorAccessList'
 
 export default function PatientSettingsPage() {
-  const { user } = useAuthStore()
+  const { user, updateUser } = useAuthStore()
   
   // Personal Info
   const [firstName, setFirstName] = useState('Ahmet')
@@ -28,6 +32,111 @@ export default function PatientSettingsPage() {
   const [appointmentReminders, setAppointmentReminders] = useState(true)
   const [doctorMessages, setDoctorMessages] = useState(true)
 
+  // Profile Photo & Access Key
+  const [profilePhotoUrl, setProfilePhotoUrl] = useState<string | null>(user?.profile_photo_url || null)
+  const [isUploadingPhoto, setIsUploadingPhoto] = useState(false)
+  const [accessKey, setAccessKey] = useState<string>('')
+  const [isRegeneratingKey, setIsRegeneratingKey] = useState(false)
+  const [doctors, setDoctors] = useState<any[]>([])
+  const [isLoadingDoctors, setIsLoadingDoctors] = useState(true)
+
+  // Fetch access key and doctors on mount
+  useEffect(() => {
+    fetchAccessKey()
+    fetchDoctors()
+  }, [])
+
+  const fetchAccessKey = async () => {
+    try {
+      const data = await accessKeyAPI.get()
+      setAccessKey(data.access_key)
+    } catch (error) {
+      console.error('Failed to fetch access key:', error)
+    }
+  }
+
+  const fetchDoctors = async () => {
+    try {
+      setIsLoadingDoctors(true)
+      const data = await accessKeyAPI.getMyDoctors()
+      setDoctors(data.doctors || [])
+    } catch (error) {
+      console.error('Failed to fetch doctors:', error)
+    } finally {
+      setIsLoadingDoctors(false)
+    }
+  }
+
+  // Handle photo upload
+  const handlePhotoUpload = async (file: File) => {
+    try {
+      setIsUploadingPhoto(true)
+      const data = await profilePhotoAPI.upload(file)
+      setProfilePhotoUrl(data.profile_photo_url)
+      
+      // Update user in auth store
+      if (updateUser) {
+        updateUser({ ...user, profile_photo_url: data.profile_photo_url })
+      }
+    } catch (error) {
+      console.error('Failed to upload photo:', error)
+      throw error
+    } finally {
+      setIsUploadingPhoto(false)
+    }
+  }
+
+  // Handle photo delete
+  const handlePhotoDelete = async () => {
+    try {
+      await profilePhotoAPI.delete()
+      setProfilePhotoUrl(null)
+      
+      // Update user in auth store
+      if (updateUser) {
+        updateUser({ ...user, profile_photo_url: null })
+      }
+    } catch (error) {
+      console.error('Failed to delete photo:', error)
+      throw error
+    }
+  }
+
+  // Handle copy access key
+  const handleCopyAccessKey = () => {
+    navigator.clipboard.writeText(accessKey)
+  }
+
+  // Handle regenerate access key
+  const handleRegenerateKey = async () => {
+    try {
+      setIsRegeneratingKey(true)
+      const data = await accessKeyAPI.regenerate()
+      setAccessKey(data.access_key)
+      
+      // Refresh doctors list (should be empty now)
+      await fetchDoctors()
+    } catch (error) {
+      console.error('Failed to regenerate key:', error)
+      throw error
+    } finally {
+      setIsRegeneratingKey(false)
+    }
+  }
+
+  // Handle revoke doctor access
+  const handleRevokeDoctorAccess = async (doctorId: string) => {
+    try {
+      await accessKeyAPI.revokeDoctorAccess(doctorId)
+      
+      // Refresh doctors list
+      await fetchDoctors()
+    } catch (error) {
+      console.error('Failed to revoke access:', error)
+      throw error
+    }
+  }
+
   const handleSave = () => {
     // Handle save
     alert('Settings saved successfully!')
@@ -43,10 +152,68 @@ export default function PatientSettingsPage() {
         </div>
 
         <div className="space-y-6">
+          {/* Profile Photo Section */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="bg-[#1E293B] border border-gray-700 rounded-2xl p-6"
+          >
+            <h2 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
+              <Camera className="h-5 w-5 text-[#0EA5E9]" />
+              Profile Photo
+            </h2>
+            <ProfilePhotoUpload
+              currentPhotoUrl={profilePhotoUrl}
+              onUpload={handlePhotoUpload}
+              onDelete={handlePhotoDelete}
+              isUploading={isUploadingPhoto}
+            />
+          </motion.div>
+
+          {/* Access Key Section */}
+          {accessKey && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.05 }}
+              className="bg-[#1E293B] border border-gray-700 rounded-2xl p-6"
+            >
+              <h2 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
+                <Key className="h-5 w-5 text-[#0EA5E9]" />
+                Access Key Management
+              </h2>
+              <AccessKeyDisplay
+                accessKey={accessKey}
+                onCopy={handleCopyAccessKey}
+                onRegenerate={handleRegenerateKey}
+                isRegenerating={isRegeneratingKey}
+              />
+            </motion.div>
+          )}
+
+          {/* Doctors with Access Section */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+            className="bg-[#1E293B] border border-gray-700 rounded-2xl p-6"
+          >
+            <h2 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
+              <UsersIcon className="h-5 w-5 text-[#0EA5E9]" />
+              Doctors with Access
+            </h2>
+            <DoctorAccessList
+              doctors={doctors}
+              onRevoke={handleRevokeDoctorAccess}
+              isLoading={isLoadingDoctors}
+            />
+          </motion.div>
+
           {/* Personal Information */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.15 }}
             className="bg-[#1E293B] border border-gray-700 rounded-2xl p-6"
           >
             <h2 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
@@ -118,7 +285,7 @@ export default function PatientSettingsPage() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
+            transition={{ delay: 0.2 }}
             className="bg-[#1E293B] border border-gray-700 rounded-2xl p-6"
           >
             <h2 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
@@ -169,7 +336,7 @@ export default function PatientSettingsPage() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
+            transition={{ delay: 0.25 }}
             className="bg-[#1E293B] border border-gray-700 rounded-2xl p-6"
           >
             <h2 className="text-xl font-bold text-white mb-6 flex items-center gap-2">

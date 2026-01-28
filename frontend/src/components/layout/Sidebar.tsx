@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { usePathname, useRouter } from 'next/navigation'
 import { useAuthStore } from '@/lib/auth-store'
 import { useSidebar } from '@/lib/sidebar-context'
@@ -94,6 +95,17 @@ export default function Sidebar() {
   // Kullanıcı adını al - full_name yoksa email'den al
   const displayName = user?.full_name || user?.email?.split('@')[0] || 'User'
   const displayEmail = user?.email || ''
+  const profilePhotoUrl = user?.profile_photo_url
+
+  // Get initials for fallback
+  const getInitials = (name: string) => {
+    return name
+      .split(' ')
+      .map(n => n[0])
+      .join('')
+      .toUpperCase()
+      .slice(0, 2) || name[0]?.toUpperCase() || 'U'
+  }
 
   return (
     <aside 
@@ -176,8 +188,25 @@ export default function Sidebar() {
             className={`w-full p-4 flex items-center ${isCollapsed ? 'justify-center' : 'justify-between'} hover:bg-gray-700/50 transition-colors`}
           >
             <div className={`flex items-center ${isCollapsed ? '' : 'space-x-3'}`}>
-              <div className="w-10 h-10 rounded-full bg-gradient-to-r from-[#0EA5E9] to-[#06B6D4] flex items-center justify-center text-white font-semibold flex-shrink-0">
-                {displayName[0].toUpperCase()}
+              <div className="w-10 h-10 rounded-full flex-shrink-0 overflow-hidden relative">
+                {profilePhotoUrl ? (
+                  <Image
+                    src={profilePhotoUrl}
+                    alt={displayName}
+                    fill
+                    className="object-cover"
+                    onError={(e) => {
+                      // Fallback to gradient circle on error
+                      const target = e.target as HTMLImageElement
+                      target.style.display = 'none'
+                    }}
+                  />
+                ) : null}
+                {!profilePhotoUrl && (
+                  <div className="w-full h-full bg-gradient-to-r from-[#0EA5E9] to-[#06B6D4] flex items-center justify-center text-white font-semibold">
+                    {getInitials(displayName)}
+                  </div>
+                )}
               </div>
               {!isCollapsed && (
                 <div className="text-left">

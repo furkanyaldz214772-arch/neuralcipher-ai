@@ -13,6 +13,7 @@ interface User {
   full_name?: string
   is_verified: boolean
   is_2fa_enabled: boolean
+  profile_photo_url?: string | null
 }
 
 interface AuthState {

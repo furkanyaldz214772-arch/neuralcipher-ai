@@ -87,4 +87,69 @@ api.interceptors.response.use(
   }
 )
 
+// Profile Photo API
+export const profilePhotoAPI = {
+  upload: async (file: File) => {
+    const formData = new FormData()
+    formData.append('file', file)
+    
+    const response = await api.post('/api/v1/profile/upload-photo', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    })
+    return response.data
+  },
+
+  delete: async () => {
+    const response = await api.delete('/api/v1/profile/photo')
+    return response.data
+  },
+}
+
+// Access Key API
+export const accessKeyAPI = {
+  get: async () => {
+    const response = await api.get('/api/v1/profile/access-key')
+    return response.data
+  },
+
+  regenerate: async () => {
+    const response = await api.post('/api/v1/profile/regenerate-key')
+    return response.data
+  },
+
+  getMyDoctors: async () => {
+    const response = await api.get('/api/v1/profile/my-doctors')
+    return response.data
+  },
+
+  revokeDoctorAccess: async (doctorId: string) => {
+    const response = await api.delete(`/api/v1/profile/revoke-doctor-access/${doctorId}`)
+    return response.data
+  },
+}
+
+// Doctor Patient API
+export const doctorPatientAPI = {
+  addPatientByKey: async (accessKey: string) => {
+    const response = await api.post('/api/v1/doctor/add-patient-by-key', {
+      access_key: accessKey,
+    })
+    return response.data
+  },
+
+  getMyPatients: async (page: number = 1, limit: number = 20) => {
+    const response = await api.get('/api/v1/doctor/my-patients', {
+      params: { page, limit },
+    })
+    return response.data
+  },
+
+  removePatient: async (patientId: string) => {
+    const response = await api.delete(`/api/v1/doctor/remove-patient/${patientId}`)
+    return response.data
+  },
+}
+
 export default api
