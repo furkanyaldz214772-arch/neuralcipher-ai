@@ -52,61 +52,38 @@ export default function DoctorDashboard() {
     try {
       setIsLoading(true)
       
-      // Mock data for now - replace with real API calls
-      setStats({
-        total_patients: 24,
-        high_risk_patients: 3,
-        tests_this_month: 156,
-        avg_risk_score: 32.5
-      })
-
-      setPatients([
-        {
-          id: '1',
-          name: 'John Smith',
-          email: 'john@example.com',
-          last_test_date: '2026-01-27',
-          test_count: 12,
-          risk_score: 78,
-          status: 'high'
-        },
-        {
-          id: '2',
-          name: 'Emma Wilson',
-          email: 'emma@example.com',
-          last_test_date: '2026-01-26',
-          test_count: 8,
-          risk_score: 45,
-          status: 'medium'
-        },
-        {
-          id: '3',
-          name: 'Michael Brown',
-          email: 'michael@example.com',
-          last_test_date: '2026-01-25',
-          test_count: 15,
-          risk_score: 22,
-          status: 'low'
-        },
-        {
-          id: '4',
-          name: 'Sarah Johnson',
-          email: 'sarah@example.com',
-          last_test_date: '2026-01-24',
-          test_count: 10,
-          risk_score: 65,
-          status: 'medium'
-        },
-        {
-          id: '5',
-          name: 'David Lee',
-          email: 'david@example.com',
-          last_test_date: '2026-01-23',
-          test_count: 6,
-          risk_score: 82,
-          status: 'high'
+      // Fetch real stats from API
+      const statsResponse = await fetch('/api/v1/doctor/dashboard/stats', {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
         }
-      ])
+      })
+      
+      if (statsResponse.ok) {
+        const statsData = await statsResponse.json()
+        setStats(statsData)
+      }
+
+      // Fetch recent patients
+      const patientsResponse = await fetch('/api/v1/doctor/patients?page=1&page_size=5', {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }
+      })
+      
+      if (patientsResponse.ok) {
+        const patientsData = await patientsResponse.json()
+        const formattedPatients = patientsData.map((p: any) => ({
+          id: p.id.toString(),
+          name: `${p.first_name || ''} ${p.last_name || ''}`.trim() || p.email,
+          email: p.email,
+          last_test_date: p.last_test_date,
+          test_count: p.total_tests || 0,
+          risk_score: p.last_risk_score,
+          status: p.last_risk_score >= 70 ? 'high' : p.last_risk_score >= 40 ? 'medium' : 'low'
+        }))
+        setPatients(formattedPatients)
+      }
     } catch (error) {
       console.error('Failed to fetch dashboard data:', error)
     } finally {
