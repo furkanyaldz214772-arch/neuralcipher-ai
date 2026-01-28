@@ -31,7 +31,7 @@ export default function NeuralControlCenter() {
       
       if (!user || !user.role) {
         setAttempts(prev => prev + 1)
-        setError('Invalid credentials')
+        setError('Invalid credentials. Please check your email and password.')
         return
       }
       
@@ -40,7 +40,7 @@ export default function NeuralControlCenter() {
       // CRITICAL: Only ADMIN role allowed
       if (userRole !== 'ADMIN') {
         setAttempts(prev => prev + 1)
-        setError('Access Denied: Insufficient privileges')
+        setError('Access Denied: Insufficient privileges. Admin access only.')
         return
       }
       
@@ -49,7 +49,9 @@ export default function NeuralControlCenter() {
       
     } catch (err: any) {
       setAttempts(prev => prev + 1)
-      setError('Authentication failed')
+      // Show specific error message from API if available
+      const errorMessage = err?.response?.data?.detail || err?.message || 'Authentication failed. Please verify your credentials.'
+      setError(errorMessage)
       console.error('Admin login failed:', err)
     }
   }
