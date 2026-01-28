@@ -1,9 +1,10 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Mic, Square, Play, Upload, FileText, Activity, CheckCircle } from 'lucide-react'
 import { useRouter } from 'next/navigation'
+import api from '@/lib/api'
 
 export default function NewTestPage() {
   const router = useRouter()
@@ -12,39 +13,136 @@ export default function NewTestPage() {
   const [recordingTime, setRecordingTime] = useState(0)
   const [isAnalyzing, setIsAnalyzing] = useState(false)
   const [analysisProgress, setAnalysisProgress] = useState(0)
+  const [error, setError] = useState<string | null>(null)
+  
+  const mediaRecorderRef = useRef<MediaRecorder | null>(null)
+  const audioChunksRef = useRef<Blob[]>([])
+  const timerRef = useRef<NodeJS.Timeout | null>(null)
 
-  const handleStartRecording = () => {
-    setIsRecording(true)
-    // Simulate recording timer
-    const interval = setInterval(() => {
-      setRecordingTime(prev => {
-        if (prev >= 30) {
-          clearInterval(interval)
-          handleStopRecording()
-          return 30
+  const handleStartRecording = async () => {
+    try {
+      setError(null)
+      
+      // Request microphone permission
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
+      
+      // Create MediaRecorder
+      const mediaRecorder = new MediaRecorder(stream)
+      mediaRecorderRef.current = mediaRecorder
+      audioChunksRef.current = []
+      
+      // Collect audio data
+      mediaRecorder.ondataavailable = (event) => {
+        if (event.data.size > 0) {
+          audioChunksRef.current.push(event.data)
         }
-        return prev + 1
-      })
-    }, 1000)
+      }
+      
+      // Start recording
+      mediaRecorder.start()
+      setIsRecording(true)
+      setRecordingTime(0)
+      
+      // Start timer
+      timerRef.current = setInterval(() => {
+        setRecordingTime(prev => {
+          if (prev >= 30) {
+            handleStopRecording()
+            return 30
+          }
+          return prev + 1
+        })
+      }, 1000)
+    } catch (err) {
+      console.error('Failed to start recording:', err)
+      setError('Failed to access microphone. Please check permissions.')
+    }
   }
 
-  const handleStopRecording = () => {
-    setIsRecording(false)
-    setIsAnalyzing(true)
+  const handleStopRecording = async () => {
+    if (!mediaRecorderRef.current) return
     
-    // Simulate analysis progress
-    const interval = setInterval(() => {
-      setAnalysisProgress(prev => {
-        if (prev >= 100) {
-          clearInterval(interval)
-          setTimeout(() => {
-            router.push('/patient/tests/1')
-          }, 1000)
-          return 100
-        }
-        return prev + 5
+    // Stop timer
+    if (timerRef.current) {
+      clearInterval(timerRef.current)
+      timerRef.current = null
+    }
+    
+    // Stop recording
+    mediaRecorderRef.current.stop()
+    setIsRecording(false)
+    
+    // Wait for data to be available
+    mediaRecorderRef.current.onstop = async () => {
+      // Create audio blob
+      const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/wav' })
+      
+      // Stop all tracks
+      mediaRecorderRef.current?.stream.getTracks().forEach(track => track.stop())
+      
+      // Upload to backend
+      await uploadAudio(audioBlob)
+    }
+  }
+
+  const uploadAudio = async (audioBlob: Blob) => {
+    try {
+      setIsAnalyzing(true)
+      setAnalysisProgress(10)
+      
+      // Create form data
+      const formData = new FormData()
+      formData.append('audio_file', audioBlob, 'recording.wav')
+      formData.append('level', 'quick')
+      
+      setAnalysisProgress(30)
+      
+      // Upload to backend
+      const response = await api.post('/api/v1/tests/upload-test', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
       })
-    }, 200)
+      
+      setAnalysisProgress(60)
+      
+      const testId = response.data.test_id
+      
+      // Poll for results
+      let attempts = 0
+      const maxAttempts = 30
+      
+      const checkStatus = setInterval(async () => {
+        attempts++
+        
+        try {
+          const statusRes = await api.get(`/api/v1/tests/${testId}`)
+          const status = statusRes.data.status
+          
+          setAnalysisProgress(60 + (attempts / maxAttempts) * 40)
+          
+          if (status === 'completed') {
+            clearInterval(checkStatus)
+            setAnalysisProgress(100)
+            
+            setTimeout(() => {
+              router.push(`/patient/tests/${testId}`)
+            }, 1000)
+          } else if (status === 'failed' || attempts >= maxAttempts) {
+            clearInterval(checkStatus)
+            setError('Analysis failed. Please try again.')
+            setIsAnalyzing(false)
+          }
+        } catch (err) {
+          console.error('Failed to check status:', err)
+        }
+      }, 2000)
+      
+    } catch (err) {
+      console.error('Failed to upload audio:', err)
+      setError('Failed to upload audio. Please try again.')
+      setIsAnalyzing(false)
+    }
   }
 
   const formatTime = (seconds: number) => {

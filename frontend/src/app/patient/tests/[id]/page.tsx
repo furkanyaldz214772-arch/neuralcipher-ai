@@ -1,31 +1,91 @@
 'use client'
 
+import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { Download, Mail, FileText, TrendingUp, Activity, CheckCircle, AlertCircle } from 'lucide-react'
 import { useRouter } from 'next/navigation'
+import api from '@/lib/api'
 
 export default function TestDetailPage({ params }: { params: { id: string } }) {
   const router = useRouter()
+  const [loading, setLoading] = useState(true)
+  const [test, setTest] = useState<any>(null)
+  const [error, setError] = useState<string | null>(null)
 
-  // Mock test data
-  const test = {
-    id: params.id,
-    date: 'Jan 24, 2026',
-    time: '14:30',
-    riskScore: 15,
-    status: 'Low',
-    analysis: {
-      voiceTremor: 'Normal',
-      speechRate: 'Normal',
-      voiceTone: 'Stable',
-      articulation: 'Good'
-    },
-    recommendations: [
-      'Regular monitoring recommended',
-      'Follow-up test in 2 weeks',
-      'Maintain current medication schedule'
-    ]
+  useEffect(() => {
+    fetchTestDetails()
+  }, [params.id])
+
+  const fetchTestDetails = async () => {
+    try {
+      setLoading(true)
+      const response = await api.get(`/api/v1/tests/${params.id}/results`)
+      setTest(response.data)
+    } catch (err) {
+      console.error('Failed to fetch test details:', err)
+      setError('Failed to load test details')
+    } finally {
+      setLoading(false)
+    }
   }
+
+  const handleDownloadPDF = async () => {
+    try {
+      const response = await api.get(`/api/v1/tests/${params.id}/pdf`, {
+        responseType: 'blob'
+      })
+      
+      const url = window.URL.createObjectURL(new Blob([response.data]))
+      const link = document.createElement('a')
+      link.href = url
+      link.setAttribute('download', `neuralcipher_test_${params.id}.pdf`)
+      document.body.appendChild(link)
+      link.click()
+      link.remove()
+    } catch (error) {
+      console.error('Failed to download PDF:', error)
+    }
+  }
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-[#0F172A] via-[#1E293B] to-[#0F172A] flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-16 h-16 border-4 border-[#0EA5E9] border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-gray-400">Loading test details...</p>
+        </div>
+      </div>
+    )
+  }
+
+  if (error || !test) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-[#0F172A] via-[#1E293B] to-[#0F172A] flex items-center justify-center">
+        <div className="text-center">
+          <AlertCircle className="h-16 w-16 text-red-500 mx-auto mb-4" />
+          <p className="text-gray-400">{error || 'Test not found'}</p>
+          <button
+            onClick={() => router.back()}
+            className="mt-4 text-[#0EA5E9] hover:text-[#06B6D4]"
+          >
+            ← Go Back
+          </button>
+        </div>
+      </div>
+    )
+  }
+
+  const testDate = new Date(test.test_date)
+  const formattedDate = testDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+  const formattedTime = testDate.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })
+
+  // Extract biomarkers for display
+  const biomarkersList = [
+    { key: 'Fundamental Frequency', value: test.biomarkers?.fundamental_frequency?.mean_f0?.toFixed(2) || 'N/A', unit: 'Hz' },
+    { key: 'Jitter', value: (test.biomarkers?.jitter?.local_jitter * 100)?.toFixed(3) || 'N/A', unit: '%' },
+    { key: 'Shimmer', value: (test.biomarkers?.shimmer?.local_shimmer * 100)?.toFixed(3) || 'N/A', unit: '%' },
+    { key: 'HNR', value: test.biomarkers?.hnr?.harmonics_to_noise?.toFixed(2) || 'N/A', unit: 'dB' },
+  ]
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#0F172A] via-[#1E293B] to-[#0F172A]">
@@ -43,7 +103,7 @@ export default function TestDetailPage({ params }: { params: { id: string } }) {
             ← Back to Tests
           </button>
           <h1 className="text-3xl font-bold text-white mb-2">Test Report</h1>
-          <p className="text-gray-400">{test.date} at {test.time}</p>
+          <p className="text-gray-400">{formattedDate} at {formattedTime}</p>
         </motion.div>
 
         {/* Report Card */}
@@ -61,19 +121,21 @@ export default function TestDetailPage({ params }: { params: { id: string } }) {
                 Risk Score
               </h2>
               <span className={`px-4 py-2 rounded-full text-lg font-bold ${
-                test.status === 'Low' 
+                test.risk_category === 'normal' 
                   ? 'bg-[#10B981]/20 text-[#10B981]' 
-                  : 'bg-[#F59E0B]/20 text-[#F59E0B]'
+                  : test.risk_category === 'warning'
+                  ? 'bg-[#F59E0B]/20 text-[#F59E0B]'
+                  : 'bg-[#EF4444]/20 text-[#EF4444]'
               }`}>
-                {test.riskScore}% - {test.status}
+                {test.risk_score}% - {test.risk_category.replace('_', ' ').toUpperCase()}
               </span>
             </div>
             <div className="w-full bg-gray-700 rounded-full h-4">
               <div
                 className={`h-4 rounded-full ${
-                  test.riskScore < 20 ? 'bg-[#10B981]' : 'bg-[#F59E0B]'
+                  test.risk_score < 30 ? 'bg-[#10B981]' : test.risk_score < 60 ? 'bg-[#F59E0B]' : 'bg-[#EF4444]'
                 }`}
-                style={{ width: `${test.riskScore}%` }}
+                style={{ width: `${test.risk_score}%` }}
               />
             </div>
           </div>
@@ -82,22 +144,48 @@ export default function TestDetailPage({ params }: { params: { id: string } }) {
           <div className="mb-8">
             <h2 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
               <Activity className="h-6 w-6 text-[#0EA5E9]" />
-              Detailed Analysis
+              Voice Biomarkers
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {Object.entries(test.analysis).map(([key, value]) => (
-                <div key={key} className="bg-[#0F172A] border border-gray-700 rounded-xl p-4">
-                  <p className="text-gray-400 text-sm mb-1 capitalize">
-                    {key.replace(/([A-Z])/g, ' $1').trim()}
+              {biomarkersList.map((biomarker) => (
+                <div key={biomarker.key} className="bg-[#0F172A] border border-gray-700 rounded-xl p-4">
+                  <p className="text-gray-400 text-sm mb-1">
+                    {biomarker.key}
                   </p>
                   <div className="flex items-center gap-2">
                     <CheckCircle className="h-5 w-5 text-[#10B981]" />
-                    <p className="text-white font-semibold">{value}</p>
+                    <p className="text-white font-semibold">{biomarker.value} {biomarker.unit}</p>
                   </div>
                 </div>
               ))}
             </div>
           </div>
+
+          {/* Interpretation */}
+          <div className="mb-8">
+            <h2 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
+              <FileText className="h-6 w-6 text-[#0EA5E9]" />
+              Clinical Interpretation
+            </h2>
+            <div className="bg-[#0F172A] border border-gray-700 rounded-xl p-4">
+              <p className="text-gray-300">{test.interpretation?.status}</p>
+            </div>
+          </div>
+
+          {/* Findings */}
+          {test.interpretation?.findings && test.interpretation.findings.length > 0 && (
+            <div className="mb-8">
+              <h3 className="text-lg font-bold text-white mb-3">Key Findings</h3>
+              <div className="space-y-2">
+                {test.interpretation.findings.map((finding: string, index: number) => (
+                  <div key={index} className="flex items-start gap-2 text-gray-300">
+                    <span className="text-[#0EA5E9]">•</span>
+                    <span>{finding}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
 
           {/* Recommendations */}
           <div>
@@ -106,7 +194,7 @@ export default function TestDetailPage({ params }: { params: { id: string } }) {
               Recommendations
             </h2>
             <div className="space-y-3">
-              {test.recommendations.map((rec, index) => (
+              {test.interpretation?.recommendations?.map((rec: string, index: number) => (
                 <div key={index} className="flex items-start gap-3 bg-[#0F172A] border border-gray-700 rounded-xl p-4">
                   <div className="w-6 h-6 rounded-full bg-[#0EA5E9]/20 flex items-center justify-center flex-shrink-0 mt-0.5">
                     <span className="text-[#0EA5E9] text-sm font-bold">{index + 1}</span>
@@ -128,6 +216,7 @@ export default function TestDetailPage({ params }: { params: { id: string } }) {
           <motion.button
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
+            onClick={handleDownloadPDF}
             className="flex-1 bg-gradient-to-r from-[#0EA5E9] to-[#06B6D4] text-white px-6 py-3 rounded-xl font-semibold flex items-center justify-center gap-2 shadow-lg shadow-[#0EA5E9]/20"
           >
             <Download className="h-5 w-5" />

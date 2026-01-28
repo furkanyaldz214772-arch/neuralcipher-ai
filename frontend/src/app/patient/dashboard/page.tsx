@@ -8,23 +8,70 @@ import {
 } from 'lucide-react'
 import { useAuthStore } from '@/lib/auth-store'
 import { useRouter } from 'next/navigation'
+import api from '@/lib/api'
 
 export default function PatientDashboard() {
   const { user } = useAuthStore()
   const router = useRouter()
+  const [loading, setLoading] = useState(true)
   const [stats, setStats] = useState({
-    totalTests: 12,
+    totalTests: 0,
     riskScore: 'Low',
-    unreadMessages: 3,
-    nextAppointment: 'Feb 15, 2026'
+    unreadMessages: 0,
+    nextAppointment: 'No appointments'
   })
+  const [recentTests, setRecentTests] = useState<any[]>([])
 
-  // Mock data for recent tests
-  const recentTests = [
-    { id: 1, date: 'Jan 24, 2026', riskScore: 15, status: 'Low' },
-    { id: 2, date: 'Jan 17, 2026', riskScore: 18, status: 'Low' },
-    { id: 3, date: 'Jan 10, 2026', riskScore: 12, status: 'Low' },
-  ]
+  useEffect(() => {
+    fetchDashboardData()
+  }, [])
+
+  const fetchDashboardData = async () => {
+    try {
+      setLoading(true)
+      
+      // Fetch dashboard data
+      const dashboardRes = await api.get('/api/v1/patient/dashboard')
+      const dashboardData = dashboardRes.data
+      
+      // Fetch messages count
+      const messagesRes = await api.get('/api/v1/messages/conversations')
+      const unreadCount = messagesRes.data.reduce((sum: number, conv: any) => sum + conv.unread_count, 0)
+      
+      // Update stats
+      setStats({
+        totalTests: dashboardData.stats.totalTests || 0,
+        riskScore: dashboardData.stats.lastRiskLevel || 'Low',
+        unreadMessages: unreadCount,
+        nextAppointment: 'No appointments'
+      })
+      
+      // Format recent tests
+      const formattedTests = dashboardData.recentTests.map((test: any) => ({
+        id: test.id,
+        date: new Date(test.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+        riskScore: test.riskScore || 0,
+        status: test.riskLevel || 'Low'
+      }))
+      
+      setRecentTests(formattedTests)
+    } catch (error) {
+      console.error('Failed to fetch dashboard data:', error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-[#0F172A] via-[#1E293B] to-[#0F172A] flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-16 h-16 border-4 border-[#0EA5E9] border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-gray-400">Loading dashboard...</p>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#0F172A] via-[#1E293B] to-[#0F172A]">
@@ -38,10 +85,10 @@ export default function PatientDashboard() {
           <div className="flex items-center justify-between">
             <div>
               <h1 className="text-3xl font-bold text-white mb-2">
-                👋 Welcome back, {user?.full_name || 'Patient'}!
+                👋 Welcome back, {user?.firstName || user?.email?.split('@')[0] || 'Patient'}!
               </h1>
               <p className="text-gray-400">
-                Last test: 3 days ago • Next appointment: {stats.nextAppointment}
+                Total tests: {stats.totalTests} • Next appointment: {stats.nextAppointment}
               </p>
             </div>
             <motion.button

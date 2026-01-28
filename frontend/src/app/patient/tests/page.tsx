@@ -1,21 +1,75 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { FileText, Eye, Download, Calendar, TrendingUp } from 'lucide-react'
 import { useRouter } from 'next/navigation'
+import api from '@/lib/api'
 
 export default function PatientTestsPage() {
   const router = useRouter()
-  
-  // Mock test data
-  const tests = [
-    { id: 1, date: 'Jan 24, 2026', time: '14:30', riskScore: 15, status: 'Low', analyzed: true },
-    { id: 2, date: 'Jan 17, 2026', time: '10:15', riskScore: 18, status: 'Low', analyzed: true },
-    { id: 3, date: 'Jan 10, 2026', time: '16:45', riskScore: 12, status: 'Low', analyzed: true },
-    { id: 4, date: 'Jan 3, 2026', time: '09:30', riskScore: 20, status: 'Low', analyzed: true },
-    { id: 5, date: 'Dec 27, 2025', time: '11:00', riskScore: 16, status: 'Low', analyzed: true },
-  ]
+  const [loading, setLoading] = useState(true)
+  const [tests, setTests] = useState<any[]>([])
+
+  useEffect(() => {
+    fetchTests()
+  }, [])
+
+  const fetchTests = async () => {
+    try {
+      setLoading(true)
+      const response = await api.get('/api/v1/patient/tests', {
+        params: { page: 1, page_size: 20 }
+      })
+      
+      const formattedTests = response.data.tests.map((test: any) => {
+        const testDate = new Date(test.createdAt)
+        return {
+          id: test.id,
+          date: testDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+          time: testDate.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }),
+          riskScore: test.riskScore || 0,
+          status: test.riskLevel || 'Low',
+          analyzed: true
+        }
+      })
+      
+      setTests(formattedTests)
+    } catch (error) {
+      console.error('Failed to fetch tests:', error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const handleDownloadPDF = async (testId: number) => {
+    try {
+      const response = await api.get(`/api/v1/tests/${testId}/pdf`, {
+        responseType: 'blob'
+      })
+      
+      const url = window.URL.createObjectURL(new Blob([response.data]))
+      const link = document.createElement('a')
+      link.href = url
+      link.setAttribute('download', `neuralcipher_test_${testId}.pdf`)
+      document.body.appendChild(link)
+      link.click()
+      link.remove()
+    } catch (error) {
+      console.error('Failed to download PDF:', error)
+    }
+  }
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-[#0F172A] via-[#1E293B] to-[#0F172A] flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-16 h-16 border-4 border-[#0EA5E9] border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-gray-400">Loading tests...</p>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#0F172A] via-[#1E293B] to-[#0F172A]">
@@ -114,6 +168,7 @@ export default function PatientTestsPage() {
                         <motion.button
                           whileHover={{ scale: 1.1 }}
                           whileTap={{ scale: 0.9 }}
+                          onClick={() => handleDownloadPDF(test.id)}
                           className="p-2 bg-[#10B981]/10 hover:bg-[#10B981]/20 text-[#10B981] rounded-lg transition-colors"
                           title="Download PDF"
                         >
