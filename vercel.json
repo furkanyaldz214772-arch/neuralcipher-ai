@@ -1,5 +1,5 @@
 {
-  "buildCommand": "cd frontend && rm -rf .next && npm install && npm run build",
+  "buildCommand": "cd frontend && rm -rf .next && rm -rf node_modules/.cache && npm install && npm run build",
   "outputDirectory": "frontend/.next",
   "installCommand": "cd frontend && npm install",
   "framework": "nextjs",
@@ -10,6 +10,7 @@
     }
   ],
   "env": {
-    "NEXT_PUBLIC_API_URL": "https://neuralcipher-ai-production.up.railway.app"
+    "NEXT_PUBLIC_API_URL": "https://neuralcipher-ai-production.up.railway.app",
+    "CACHE_BUST": "2026-01-28-v2"
   }
 }

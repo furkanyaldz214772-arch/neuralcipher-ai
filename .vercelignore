@@ -1,0 +1,8 @@
+# Ignore old admin folder completely
+frontend/src/app/admin/
+frontend/src/app/admin/**/*
+
+# Cache directories
+.next/
+node_modules/
+.cache/
