@@ -87,6 +87,24 @@ export default function DoctorDashboard() {
           test_count: 15,
           risk_score: 22,
           status: 'low'
+        },
+        {
+          id: '4',
+          name: 'Sarah Johnson',
+          email: 'sarah@example.com',
+          last_test_date: '2026-01-24',
+          test_count: 10,
+          risk_score: 65,
+          status: 'medium'
+        },
+        {
+          id: '5',
+          name: 'David Lee',
+          email: 'david@example.com',
+          last_test_date: '2026-01-23',
+          test_count: 6,
+          risk_score: 82,
+          status: 'high'
         }
       ])
     } catch (error) {
