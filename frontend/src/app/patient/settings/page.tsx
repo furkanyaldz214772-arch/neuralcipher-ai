@@ -49,9 +49,12 @@ export default function PatientSettingsPage() {
   const fetchAccessKey = async () => {
     try {
       const data = await accessKeyAPI.get()
+      console.log('Access key fetched:', data)
       setAccessKey(data.access_key)
     } catch (error) {
       console.error('Failed to fetch access key:', error)
+      // Set a placeholder to show the section even if API fails
+      setAccessKey('LOADING')
     }
   }
 
@@ -170,26 +173,31 @@ export default function PatientSettingsPage() {
             />
           </motion.div>
 
-          {/* Access Key Section */}
-          {accessKey && (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.05 }}
-              className="bg-[#1E293B] border border-gray-700 rounded-2xl p-6"
-            >
-              <h2 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
-                <Key className="h-5 w-5 text-[#0EA5E9]" />
-                Access Key Management
-              </h2>
+          {/* Access Key Section - Always show */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.05 }}
+            className="bg-[#1E293B] border border-gray-700 rounded-2xl p-6"
+          >
+            <h2 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
+              <Key className="h-5 w-5 text-[#0EA5E9]" />
+              Access Key Management
+            </h2>
+            {accessKey && accessKey !== 'LOADING' ? (
               <AccessKeyDisplay
                 accessKey={accessKey}
                 onCopy={handleCopyAccessKey}
                 onRegenerate={handleRegenerateKey}
                 isRegenerating={isRegeneratingKey}
               />
-            </motion.div>
-          )}
+            ) : (
+              <div className="bg-[#0F172A] border border-gray-700 rounded-xl p-6 text-center">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#0EA5E9] mx-auto mb-3"></div>
+                <p className="text-gray-400">Loading your access key...</p>
+              </div>
+            )}
+          </motion.div>
 
           {/* Doctors with Access Section */}
           <motion.div

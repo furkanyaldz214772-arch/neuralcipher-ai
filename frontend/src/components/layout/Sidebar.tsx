@@ -40,9 +40,14 @@ export default function Sidebar() {
   }
 
   const getMenuItems = () => {
-    if (!user) return []
+    // If no user, try to get role from pathname
+    const role = user?.role || pathname?.split('/')[1]?.toUpperCase()
+    
+    console.log('Sidebar Debug:', { user, pathname, role, menuItems: role ? 'will show' : 'empty' })
+    
+    if (!role) return []
 
-    switch (user.role) {
+    switch (role) {
       case 'PATIENT':
         return [
           { href: '/patient/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
