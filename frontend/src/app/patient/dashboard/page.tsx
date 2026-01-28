@@ -85,7 +85,7 @@ export default function PatientDashboard() {
           <div className="flex items-center justify-between">
             <div>
               <h1 className="text-3xl font-bold text-white mb-2">
-                👋 Welcome back, {user?.firstName || user?.email?.split('@')[0] || 'Patient'}!
+                👋 Welcome back, {user?.full_name || user?.email?.split('@')[0] || 'Patient'}!
               </h1>
               <p className="text-gray-400">
                 Total tests: {stats.totalTests} • Next appointment: {stats.nextAppointment}
