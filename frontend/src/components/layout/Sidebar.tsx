@@ -64,6 +64,7 @@ export default function Sidebar() {
           { href: '/doctor/patients', icon: Users, label: 'Patients' },
           { href: '/doctor/appointments', icon: UserCircle, label: 'Appointments' },
           { href: '/doctor/tests', icon: FileText, label: 'Test Results' },
+          { href: '/doctor/reports', icon: FileCheck, label: 'Reports' },
           { href: '/doctor/messages', icon: MessageSquare, label: 'Messages' },
           { href: '/doctor/analytics', icon: BarChart3, label: 'Analytics' },
           { href: '/doctor/settings', icon: Settings, label: 'Settings' }
