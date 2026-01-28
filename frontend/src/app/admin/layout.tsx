@@ -1,33 +1,34 @@
 'use client'
 
-import Sidebar from '@/components/layout/Sidebar'
-import { SidebarProvider, useSidebar } from '@/lib/sidebar-context'
-
-function AdminLayoutContent({ children }: { children: React.ReactNode }) {
-  const { isCollapsed } = useSidebar()
-  
-  return (
-    <div className="flex min-h-screen bg-gradient-to-br from-[#0F172A] via-[#1E293B] to-[#0F172A]">
-      <Sidebar />
-      <main 
-        className={`flex-1 transition-all duration-300 ${
-          isCollapsed ? 'ml-20' : 'ml-64'
-        }`}
-      >
-        {children}
-      </main>
-    </div>
-  )
-}
+import { useEffect } from 'react'
+import { useRouter } from 'next/navigation'
+import { useAuthStore } from '@/lib/auth-store'
 
 export default function AdminLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
-  return (
-    <SidebarProvider>
-      <AdminLayoutContent>{children}</AdminLayoutContent>
-    </SidebarProvider>
-  )
+  const router = useRouter()
+  const { user, isLoading } = useAuthStore()
+
+  useEffect(() => {
+    if (!isLoading && (!user || user.role !== 'ADMIN')) {
+      router.push('/neural-control-center')
+    }
+  }, [user, isLoading, router])
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-[#0A0E27] via-[#1a1f3a] to-[#0A0E27] flex items-center justify-center">
+        <div className="text-[#64FFDA] text-xl">Loading...</div>
+      </div>
+    )
+  }
+
+  if (!user || user.role !== 'ADMIN') {
+    return null
+  }
+
+  return <>{children}</>
 }
