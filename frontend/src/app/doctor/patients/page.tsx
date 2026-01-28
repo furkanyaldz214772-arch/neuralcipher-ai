@@ -2,9 +2,10 @@
 
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { UserPlus, Users, Search, Loader2 } from 'lucide-react'
+import { UserPlus, Users, Search, Loader2, Mail } from 'lucide-react'
 import { doctorPatientAPI } from '@/lib/api'
 import AddPatientModal from '@/components/doctor/AddPatientModal'
+import AddPatientManualModal from '@/components/doctor/AddPatientManualModal'
 import PatientListItem from '@/components/doctor/PatientListItem'
 
 interface Patient {
@@ -19,6 +20,7 @@ export default function DoctorPatientsPage() {
   const [patients, setPatients] = useState<Patient[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isManualModalOpen, setIsManualModalOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
   const [page, setPage] = useState(1)
   const [total, setTotal] = useState(0)
@@ -41,15 +43,26 @@ export default function DoctorPatientsPage() {
     }
   }
 
-  // Handle add patient
+  // Handle add patient by key
   const handleAddPatient = async (accessKey: string) => {
     try {
       await doctorPatientAPI.addPatientByKey(accessKey)
-      
-      // Refresh patient list
       await fetchPatients()
     } catch (error) {
       console.error('Failed to add patient:', error)
+      throw error
+    }
+  }
+
+  // Handle manual patient invitation
+  const handleManualInvite = async (data: { email: string; phone: string; name: string }) => {
+    try {
+      // TODO: Backend API endpoint needed
+      // await doctorPatientAPI.invitePatient(data)
+      console.log('Inviting patient:', data)
+      await fetchPatients()
+    } catch (error) {
+      console.error('Failed to invite patient:', error)
       throw error
     }
   }
@@ -84,15 +97,26 @@ export default function DoctorPatientsPage() {
             </p>
           </div>
           
-          <motion.button
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            onClick={() => setIsModalOpen(true)}
-            className="bg-gradient-to-r from-[#0EA5E9] to-[#06B6D4] text-white px-6 py-3 rounded-xl font-semibold flex items-center justify-center gap-2 shadow-lg shadow-[#0EA5E9]/20"
-          >
-            <UserPlus className="h-5 w-5" />
-            Add Patient by Key
-          </motion.button>
+          <div className="flex gap-3">
+            <motion.button
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              onClick={() => setIsManualModalOpen(true)}
+              className="bg-gradient-to-r from-emerald-500 to-teal-500 text-white px-6 py-3 rounded-xl font-semibold flex items-center justify-center gap-2 shadow-lg shadow-emerald-500/20"
+            >
+              <Mail className="h-5 w-5" />
+              Invite Patient
+            </motion.button>
+            <motion.button
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              onClick={() => setIsModalOpen(true)}
+              className="bg-gradient-to-r from-[#0EA5E9] to-[#06B6D4] text-white px-6 py-3 rounded-xl font-semibold flex items-center justify-center gap-2 shadow-lg shadow-[#0EA5E9]/20"
+            >
+              <UserPlus className="h-5 w-5" />
+              Add by Key
+            </motion.button>
+          </div>
         </div>
 
         {/* Search Bar */}
@@ -194,11 +218,16 @@ export default function DoctorPatientsPage() {
         )}
       </div>
 
-      {/* Add Patient Modal */}
+      {/* Add Patient Modals */}
       <AddPatientModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         onSubmit={handleAddPatient}
+      />
+      <AddPatientManualModal
+        isOpen={isManualModalOpen}
+        onClose={() => setIsManualModalOpen(false)}
+        onSubmit={handleManualInvite}
       />
     </div>
   )
