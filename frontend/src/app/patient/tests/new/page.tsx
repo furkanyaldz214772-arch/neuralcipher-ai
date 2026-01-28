@@ -17,7 +17,7 @@ const TEST_LEVELS = {
     color: 'from-[#0EA5E9] to-[#06B6D4]',
     description: 'Fast initial screening for daily monitoring',
     tests_list: [
-      { id: 1, instruction: 'Say "Aaaa" for 5 seconds', duration: 5, type: 'vowel' }
+      { id: 1, instruction: 'Say "Aaaa" for 5 seconds', duration: 5, type: 'vowel', detail: 'Sustained vowel A' }
     ]
   },
   standard: {
