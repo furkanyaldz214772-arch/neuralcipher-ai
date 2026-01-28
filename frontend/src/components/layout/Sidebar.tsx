@@ -82,14 +82,14 @@ export default function Sidebar() {
       
       case 'ADMIN':
         return [
-          { href: '/admin/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
-          { href: '/admin/users', icon: Users, label: 'Users' },
-          { href: '/admin/hospitals', icon: Building2, label: 'Hospitals' },
-          { href: '/admin/tests', icon: FileCheck, label: 'Tests' },
-          { href: '/admin/analytics', icon: BarChart3, label: 'Analytics' },
-          { href: '/admin/database', icon: Database, label: 'Database' },
-          { href: '/admin/audit', icon: Shield, label: 'Audit Logs' },
-          { href: '/admin/settings', icon: Settings, label: 'Settings' }
+          { href: '/neural-control-center/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
+          { href: '/neural-control-center/users', icon: Users, label: 'Users' },
+          { href: '/neural-control-center/hospitals', icon: Building2, label: 'Hospitals' },
+          { href: '/neural-control-center/tests', icon: FileCheck, label: 'Tests' },
+          { href: '/neural-control-center/analytics', icon: BarChart3, label: 'Analytics' },
+          { href: '/neural-control-center/database', icon: Database, label: 'Database' },
+          { href: '/neural-control-center/audit', icon: Shield, label: 'Audit Logs' },
+          { href: '/neural-control-center/settings', icon: Settings, label: 'Settings' }
         ]
       
       default:

@@ -328,7 +328,7 @@ export default function RegisterPage() {
       if (user) {
         switch (user.role) {
           case 'admin':
-            router.push('/admin/dashboard')
+            router.push('/neural-control-center/dashboard')
             break
           case 'doctor':
             router.push('/doctor/dashboard')

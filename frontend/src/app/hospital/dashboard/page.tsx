@@ -54,7 +54,7 @@ export default function HospitalDashboard() {
       } else if (roleUpper === 'DOCTOR') {
         router.replace('/doctor/dashboard')
       } else if (roleUpper === 'ADMIN') {
-        router.replace('/admin/dashboard')
+        router.replace('/neural-control-center/dashboard')
       } else {
         router.replace('/auth/login')
       }

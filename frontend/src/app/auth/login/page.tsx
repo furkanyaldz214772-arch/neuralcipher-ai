@@ -313,8 +313,8 @@ export default function LoginPage() {
           console.warn('⚠️ LOGIN PAGE - Invalid selected role, using backend role')
           switch (userRole) {
             case 'ADMIN':
-              console.log('➡️ Redirecting to: /admin/dashboard')
-              router.push('/admin/dashboard')
+              console.log('➡️ Redirecting to: /neural-control-center/dashboard')
+              router.push('/neural-control-center/dashboard')
               break
             case 'DOCTOR':
               console.log('➡️ Redirecting to: /doctor/dashboard')

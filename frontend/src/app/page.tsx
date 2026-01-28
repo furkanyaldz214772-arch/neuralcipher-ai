@@ -57,7 +57,7 @@ export default function Home() {
     switch (user.role) {
       case 'ADMIN':
       case 'admin':
-        return '/admin/dashboard'
+        return '/neural-control-center/dashboard'
       case 'DOCTOR':
       case 'doctor':
         return '/doctor/dashboard'
