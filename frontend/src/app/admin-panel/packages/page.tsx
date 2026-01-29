@@ -50,8 +50,8 @@ export default function AdminPackagesPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-slate-800">Package Management</h1>
-          <p className="text-slate-600 mt-1">Manage subscription packages and pricing</p>
+          <h1 className="text-3xl font-bold text-white">Package Management</h1>
+          <p className="text-slate-400 mt-1">Manage subscription packages and pricing</p>
         </div>
         <button className="px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-lg hover:from-purple-700 hover:to-pink-700 transition-all shadow-lg">
           + Create Package
@@ -60,35 +60,35 @@ export default function AdminPackagesPage() {
 
       {/* Stats */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-        <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
-          <p className="text-sm text-slate-600">Total Subscribers</p>
-          <p className="text-2xl font-bold text-slate-800 mt-1">785</p>
-          <p className="text-sm text-green-600 mt-2">+12% this month</p>
+        <div className="bg-slate-800 rounded-xl shadow-sm border border-slate-700 p-6">
+          <p className="text-sm text-slate-400">Total Subscribers</p>
+          <p className="text-2xl font-bold text-white mt-1">785</p>
+          <p className="text-sm text-green-400 mt-2">+12% this month</p>
         </div>
-        <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
-          <p className="text-sm text-slate-600">Monthly Revenue</p>
-          <p className="text-2xl font-bold text-slate-800 mt-1">$17,405</p>
-          <p className="text-sm text-green-600 mt-2">+23% this month</p>
+        <div className="bg-slate-800 rounded-xl shadow-sm border border-slate-700 p-6">
+          <p className="text-sm text-slate-400">Monthly Revenue</p>
+          <p className="text-2xl font-bold text-white mt-1">$17,405</p>
+          <p className="text-sm text-green-400 mt-2">+23% this month</p>
         </div>
-        <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
-          <p className="text-sm text-slate-600">Conversion Rate</p>
-          <p className="text-2xl font-bold text-slate-800 mt-1">8.4%</p>
-          <p className="text-sm text-green-600 mt-2">+1.2% this month</p>
+        <div className="bg-slate-800 rounded-xl shadow-sm border border-slate-700 p-6">
+          <p className="text-sm text-slate-400">Conversion Rate</p>
+          <p className="text-2xl font-bold text-white mt-1">8.4%</p>
+          <p className="text-sm text-green-400 mt-2">+1.2% this month</p>
         </div>
-        <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
-          <p className="text-sm text-slate-600">Churn Rate</p>
-          <p className="text-2xl font-bold text-slate-800 mt-1">2.1%</p>
-          <p className="text-sm text-red-600 mt-2">-0.5% this month</p>
+        <div className="bg-slate-800 rounded-xl shadow-sm border border-slate-700 p-6">
+          <p className="text-sm text-slate-400">Churn Rate</p>
+          <p className="text-2xl font-bold text-white mt-1">2.1%</p>
+          <p className="text-sm text-red-400 mt-2">-0.5% this month</p>
         </div>
       </div>
 
       {/* Packages Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {packages.map((pkg) => (
-          <div key={pkg.id} className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 hover:shadow-lg transition-shadow">
+          <div key={pkg.id} className="bg-slate-800 rounded-xl shadow-sm border border-slate-700 p-6 hover:shadow-lg transition-shadow">
             {/* Header */}
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-xl font-bold text-slate-800">{pkg.name}</h3>
+              <h3 className="text-xl font-bold text-white">{pkg.name}</h3>
               <span className={`px-3 py-1 text-xs font-medium rounded-full ${
                 pkg.status === 'Active' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
               }`}>
@@ -99,8 +99,8 @@ export default function AdminPackagesPage() {
             {/* Price */}
             <div className="mb-6">
               <div className="flex items-baseline gap-2">
-                <span className="text-4xl font-bold text-slate-800">${pkg.price}</span>
-                <span className="text-slate-600">/{pkg.interval}</span>
+                <span className="text-4xl font-bold text-white">${pkg.price}</span>
+                <span className="text-slate-400">/{pkg.interval}</span>
               </div>
             </div>
 
@@ -111,20 +111,20 @@ export default function AdminPackagesPage() {
                   <svg className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                   </svg>
-                  <span className="text-sm text-slate-600">{feature}</span>
+                  <span className="text-sm text-slate-300">{feature}</span>
                 </div>
               ))}
             </div>
 
             {/* Stats */}
-            <div className="border-t border-slate-200 pt-4 space-y-2">
+            <div className="border-t border-slate-700 pt-4 space-y-2">
               <div className="flex items-center justify-between text-sm">
-                <span className="text-slate-600">Subscribers</span>
-                <span className="font-semibold text-slate-800">{pkg.users}</span>
+                <span className="text-slate-400">Subscribers</span>
+                <span className="font-semibold text-white">{pkg.users}</span>
               </div>
               <div className="flex items-center justify-between text-sm">
-                <span className="text-slate-600">Revenue</span>
-                <span className="font-semibold text-slate-800">${pkg.revenue.toLocaleString()}</span>
+                <span className="text-slate-400">Revenue</span>
+                <span className="font-semibold text-white">${pkg.revenue.toLocaleString()}</span>
               </div>
             </div>
 
@@ -133,7 +133,7 @@ export default function AdminPackagesPage() {
               <button className="flex-1 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors text-sm">
                 Edit
               </button>
-              <button className="px-4 py-2 border border-slate-300 rounded-lg hover:bg-slate-50 transition-colors text-sm">
+              <button className="px-4 py-2 border border-slate-600 rounded-lg hover:bg-slate-700 transition-colors text-sm text-slate-300">
                 Stats
               </button>
             </div>
@@ -142,43 +142,43 @@ export default function AdminPackagesPage() {
       </div>
 
       {/* Package Comparison Table */}
-      <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
-        <h3 className="text-lg font-semibold text-slate-800 mb-4">Package Comparison</h3>
+      <div className="bg-slate-800 rounded-xl shadow-sm border border-slate-700 p-6">
+        <h3 className="text-lg font-semibold text-white mb-4">Package Comparison</h3>
         <div className="overflow-x-auto">
           <table className="w-full">
-            <thead className="bg-slate-50 border-b border-slate-200">
+            <thead className="bg-slate-700/50 border-b border-slate-600">
               <tr>
-                <th className="px-6 py-4 text-left text-sm font-semibold text-slate-700">Feature</th>
-                <th className="px-6 py-4 text-center text-sm font-semibold text-slate-700">Free</th>
-                <th className="px-6 py-4 text-center text-sm font-semibold text-slate-700">Basic</th>
-                <th className="px-6 py-4 text-center text-sm font-semibold text-slate-700">Pro</th>
-                <th className="px-6 py-4 text-center text-sm font-semibold text-slate-700">Enterprise</th>
+                <th className="px-6 py-4 text-left text-sm font-semibold text-slate-200">Feature</th>
+                <th className="px-6 py-4 text-center text-sm font-semibold text-slate-200">Free</th>
+                <th className="px-6 py-4 text-center text-sm font-semibold text-slate-200">Basic</th>
+                <th className="px-6 py-4 text-center text-sm font-semibold text-slate-200">Pro</th>
+                <th className="px-6 py-4 text-center text-sm font-semibold text-slate-200">Enterprise</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-200">
+            <tbody className="divide-y divide-slate-700">
               <tr>
-                <td className="px-6 py-4 text-sm text-slate-600">Tests per month</td>
-                <td className="px-6 py-4 text-center text-sm">1</td>
-                <td className="px-6 py-4 text-center text-sm">5</td>
-                <td className="px-6 py-4 text-center text-sm">Unlimited</td>
-                <td className="px-6 py-4 text-center text-sm">Unlimited</td>
+                <td className="px-6 py-4 text-sm text-slate-300">Tests per month</td>
+                <td className="px-6 py-4 text-center text-sm text-slate-300">1</td>
+                <td className="px-6 py-4 text-center text-sm text-slate-300">5</td>
+                <td className="px-6 py-4 text-center text-sm text-slate-300">Unlimited</td>
+                <td className="px-6 py-4 text-center text-sm text-slate-300">Unlimited</td>
               </tr>
               <tr>
-                <td className="px-6 py-4 text-sm text-slate-600">History</td>
-                <td className="px-6 py-4 text-center text-sm">7 days</td>
-                <td className="px-6 py-4 text-center text-sm">30 days</td>
-                <td className="px-6 py-4 text-center text-sm">Unlimited</td>
-                <td className="px-6 py-4 text-center text-sm">Unlimited</td>
+                <td className="px-6 py-4 text-sm text-slate-300">History</td>
+                <td className="px-6 py-4 text-center text-sm text-slate-300">7 days</td>
+                <td className="px-6 py-4 text-center text-sm text-slate-300">30 days</td>
+                <td className="px-6 py-4 text-center text-sm text-slate-300">Unlimited</td>
+                <td className="px-6 py-4 text-center text-sm text-slate-300">Unlimited</td>
               </tr>
               <tr>
-                <td className="px-6 py-4 text-sm text-slate-600">Support</td>
-                <td className="px-6 py-4 text-center text-sm">Basic</td>
-                <td className="px-6 py-4 text-center text-sm">Email</td>
-                <td className="px-6 py-4 text-center text-sm">Priority</td>
-                <td className="px-6 py-4 text-center text-sm">Dedicated</td>
+                <td className="px-6 py-4 text-sm text-slate-300">Support</td>
+                <td className="px-6 py-4 text-center text-sm text-slate-300">Basic</td>
+                <td className="px-6 py-4 text-center text-sm text-slate-300">Email</td>
+                <td className="px-6 py-4 text-center text-sm text-slate-300">Priority</td>
+                <td className="px-6 py-4 text-center text-sm text-slate-300">Dedicated</td>
               </tr>
               <tr>
-                <td className="px-6 py-4 text-sm text-slate-600">API Access</td>
+                <td className="px-6 py-4 text-sm text-slate-300">API Access</td>
                 <td className="px-6 py-4 text-center">❌</td>
                 <td className="px-6 py-4 text-center">❌</td>
                 <td className="px-6 py-4 text-center">✅</td>

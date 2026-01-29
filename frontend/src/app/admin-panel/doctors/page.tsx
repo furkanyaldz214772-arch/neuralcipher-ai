@@ -14,7 +14,7 @@ export default function AdminDoctorsPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-slate-800">Doctor Management</h1>
+          <h1 className="text-3xl font-bold text-white">Doctor Management</h1>
           <p className="text-slate-600 mt-1">Manage all doctors in the system</p>
         </div>
         <button className="px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-lg hover:from-purple-700 hover:to-pink-700 transition-all shadow-lg">
@@ -24,62 +24,62 @@ export default function AdminDoctorsPage() {
 
       {/* Stats */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-        <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
-          <p className="text-sm text-slate-600">Total Doctors</p>
-          <p className="text-3xl font-bold text-slate-800 mt-2">189</p>
+        <div className="bg-slate-800 rounded-xl shadow-sm border border-slate-700 p-6">
+          <p className="text-sm text-slate-400">Total Doctors</p>
+          <p className="text-3xl font-bold text-white mt-2">189</p>
           <p className="text-sm text-green-600 mt-2">+7 this month</p>
         </div>
-        <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
-          <p className="text-sm text-slate-600">Verified</p>
-          <p className="text-3xl font-bold text-slate-800 mt-2">176</p>
+        <div className="bg-slate-800 rounded-xl shadow-sm border border-slate-700 p-6">
+          <p className="text-sm text-slate-400">Verified</p>
+          <p className="text-3xl font-bold text-white mt-2">176</p>
           <p className="text-sm text-green-600 mt-2">93% verified</p>
         </div>
-        <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
-          <p className="text-sm text-slate-600">Pending Approval</p>
-          <p className="text-3xl font-bold text-slate-800 mt-2">13</p>
+        <div className="bg-slate-800 rounded-xl shadow-sm border border-slate-700 p-6">
+          <p className="text-sm text-slate-400">Pending Approval</p>
+          <p className="text-3xl font-bold text-white mt-2">13</p>
           <p className="text-sm text-yellow-600 mt-2">Needs review</p>
         </div>
-        <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
-          <p className="text-sm text-slate-600">Total Patients</p>
-          <p className="text-3xl font-bold text-slate-800 mt-2">957</p>
+        <div className="bg-slate-800 rounded-xl shadow-sm border border-slate-700 p-6">
+          <p className="text-sm text-slate-400">Total Patients</p>
+          <p className="text-3xl font-bold text-white mt-2">957</p>
           <p className="text-sm text-green-600 mt-2">+45 this month</p>
         </div>
       </div>
 
       {/* Doctors Table */}
-      <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+      <div className="bg-slate-800 rounded-xl shadow-sm border border-slate-700 overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full">
-            <thead className="bg-slate-50 border-b border-slate-200">
+            <thead className="bg-slate-700/50 border-b border-slate-700">
               <tr>
-                <th className="px-6 py-4 text-left text-sm font-semibold text-slate-700">Doctor</th>
-                <th className="px-6 py-4 text-left text-sm font-semibold text-slate-700">Specialty</th>
-                <th className="px-6 py-4 text-left text-sm font-semibold text-slate-700">Hospital</th>
-                <th className="px-6 py-4 text-left text-sm font-semibold text-slate-700">Patients</th>
-                <th className="px-6 py-4 text-left text-sm font-semibold text-slate-700">Tests</th>
-                <th className="px-6 py-4 text-left text-sm font-semibold text-slate-700">Verified</th>
-                <th className="px-6 py-4 text-left text-sm font-semibold text-slate-700">Status</th>
-                <th className="px-6 py-4 text-left text-sm font-semibold text-slate-700">Actions</th>
+                <th className="px-6 py-4 text-left text-sm font-semibold text-slate-200">Doctor</th>
+                <th className="px-6 py-4 text-left text-sm font-semibold text-slate-200">Specialty</th>
+                <th className="px-6 py-4 text-left text-sm font-semibold text-slate-200">Hospital</th>
+                <th className="px-6 py-4 text-left text-sm font-semibold text-slate-200">Patients</th>
+                <th className="px-6 py-4 text-left text-sm font-semibold text-slate-200">Tests</th>
+                <th className="px-6 py-4 text-left text-sm font-semibold text-slate-200">Verified</th>
+                <th className="px-6 py-4 text-left text-sm font-semibold text-slate-200">Status</th>
+                <th className="px-6 py-4 text-left text-sm font-semibold text-slate-200">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-200">
+            <tbody className="divide-y divide-slate-700">
               {doctors.map((doctor) => (
-                <tr key={doctor.id} className="hover:bg-slate-50 transition-colors">
+                <tr key={doctor.id} className="hover:bg-slate-700/50 transition-colors">
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-full flex items-center justify-center">
                         <span className="text-white font-semibold">{doctor.name.split(' ')[1][0]}</span>
                       </div>
                       <div>
-                        <p className="font-medium text-slate-800">{doctor.name}</p>
-                        <p className="text-sm text-slate-500">{doctor.email}</p>
+                        <p className="font-medium text-white">{doctor.name}</p>
+                        <p className="text-sm text-slate-300">{doctor.email}</p>
                       </div>
                     </div>
                   </td>
-                  <td className="px-6 py-4 text-sm text-slate-600">{doctor.specialty}</td>
-                  <td className="px-6 py-4 text-sm text-slate-600">{doctor.hospital}</td>
-                  <td className="px-6 py-4 text-sm text-slate-600">{doctor.patients}</td>
-                  <td className="px-6 py-4 text-sm text-slate-600">{doctor.tests}</td>
+                  <td className="px-6 py-4 text-sm text-slate-400">{doctor.specialty}</td>
+                  <td className="px-6 py-4 text-sm text-slate-400">{doctor.hospital}</td>
+                  <td className="px-6 py-4 text-sm text-slate-400">{doctor.patients}</td>
+                  <td className="px-6 py-4 text-sm text-slate-400">{doctor.tests}</td>
                   <td className="px-6 py-4">
                     {doctor.verified ? (
                       <span className="inline-flex items-center gap-1 px-3 py-1 bg-green-100 text-green-700 text-xs font-medium rounded-full">

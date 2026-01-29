@@ -14,7 +14,7 @@ export default function AdminHospitalsPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-slate-800">Hospital Management</h1>
+          <h1 className="text-3xl font-bold text-white">Hospital Management</h1>
           <p className="text-slate-600 mt-1">Manage all hospitals in the system</p>
         </div>
         <button className="px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-lg hover:from-purple-700 hover:to-pink-700 transition-all shadow-lg">
@@ -24,44 +24,44 @@ export default function AdminHospitalsPage() {
 
       {/* Stats */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-        <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+        <div className="bg-slate-800 rounded-xl shadow-sm border border-slate-700 p-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-slate-600">Total Hospitals</p>
-              <p className="text-2xl font-bold text-slate-800 mt-1">45</p>
+              <p className="text-sm text-slate-400">Total Hospitals</p>
+              <p className="text-2xl font-bold text-white mt-1">45</p>
             </div>
             <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
               <span className="text-2xl">🏥</span>
             </div>
           </div>
         </div>
-        <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+        <div className="bg-slate-800 rounded-xl shadow-sm border border-slate-700 p-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-slate-600">Total Doctors</p>
-              <p className="text-2xl font-bold text-slate-800 mt-1">189</p>
+              <p className="text-sm text-slate-400">Total Doctors</p>
+              <p className="text-2xl font-bold text-white mt-1">189</p>
             </div>
             <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
               <span className="text-2xl">👨‍⚕️</span>
             </div>
           </div>
         </div>
-        <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+        <div className="bg-slate-800 rounded-xl shadow-sm border border-slate-700 p-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-slate-600">Total Patients</p>
-              <p className="text-2xl font-bold text-slate-800 mt-1">957</p>
+              <p className="text-sm text-slate-400">Total Patients</p>
+              <p className="text-2xl font-bold text-white mt-1">957</p>
             </div>
             <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
               <span className="text-2xl">👥</span>
             </div>
           </div>
         </div>
-        <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+        <div className="bg-slate-800 rounded-xl shadow-sm border border-slate-700 p-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-slate-600">Total Tests</p>
-              <p className="text-2xl font-bold text-slate-800 mt-1">4,701</p>
+              <p className="text-sm text-slate-400">Total Tests</p>
+              <p className="text-2xl font-bold text-white mt-1">4,701</p>
             </div>
             <div className="w-12 h-12 bg-pink-100 rounded-lg flex items-center justify-center">
               <span className="text-2xl">🧪</span>
@@ -71,34 +71,34 @@ export default function AdminHospitalsPage() {
       </div>
 
       {/* Hospitals Table */}
-      <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+      <div className="bg-slate-800 rounded-xl shadow-sm border border-slate-700 overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full">
-            <thead className="bg-slate-50 border-b border-slate-200">
+            <thead className="bg-slate-700/50 border-b border-slate-700">
               <tr>
-                <th className="px-6 py-4 text-left text-sm font-semibold text-slate-700">Hospital</th>
-                <th className="px-6 py-4 text-left text-sm font-semibold text-slate-700">Country</th>
-                <th className="px-6 py-4 text-left text-sm font-semibold text-slate-700">Doctors</th>
-                <th className="px-6 py-4 text-left text-sm font-semibold text-slate-700">Patients</th>
-                <th className="px-6 py-4 text-left text-sm font-semibold text-slate-700">Tests</th>
-                <th className="px-6 py-4 text-left text-sm font-semibold text-slate-700">Package</th>
-                <th className="px-6 py-4 text-left text-sm font-semibold text-slate-700">Status</th>
-                <th className="px-6 py-4 text-left text-sm font-semibold text-slate-700">Actions</th>
+                <th className="px-6 py-4 text-left text-sm font-semibold text-slate-200">Hospital</th>
+                <th className="px-6 py-4 text-left text-sm font-semibold text-slate-200">Country</th>
+                <th className="px-6 py-4 text-left text-sm font-semibold text-slate-200">Doctors</th>
+                <th className="px-6 py-4 text-left text-sm font-semibold text-slate-200">Patients</th>
+                <th className="px-6 py-4 text-left text-sm font-semibold text-slate-200">Tests</th>
+                <th className="px-6 py-4 text-left text-sm font-semibold text-slate-200">Package</th>
+                <th className="px-6 py-4 text-left text-sm font-semibold text-slate-200">Status</th>
+                <th className="px-6 py-4 text-left text-sm font-semibold text-slate-200">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-200">
+            <tbody className="divide-y divide-slate-700">
               {hospitals.map((hospital) => (
-                <tr key={hospital.id} className="hover:bg-slate-50 transition-colors">
+                <tr key={hospital.id} className="hover:bg-slate-700/50 transition-colors">
                   <td className="px-6 py-4">
                     <div>
-                      <p className="font-medium text-slate-800">{hospital.name}</p>
-                      <p className="text-sm text-slate-500">{hospital.email}</p>
+                      <p className="font-medium text-white">{hospital.name}</p>
+                      <p className="text-sm text-slate-300">{hospital.email}</p>
                     </div>
                   </td>
-                  <td className="px-6 py-4 text-sm text-slate-600">{hospital.country}</td>
-                  <td className="px-6 py-4 text-sm text-slate-600">{hospital.doctors}</td>
-                  <td className="px-6 py-4 text-sm text-slate-600">{hospital.patients}</td>
-                  <td className="px-6 py-4 text-sm text-slate-600">{hospital.tests}</td>
+                  <td className="px-6 py-4 text-sm text-slate-400">{hospital.country}</td>
+                  <td className="px-6 py-4 text-sm text-slate-400">{hospital.doctors}</td>
+                  <td className="px-6 py-4 text-sm text-slate-400">{hospital.patients}</td>
+                  <td className="px-6 py-4 text-sm text-slate-400">{hospital.tests}</td>
                   <td className="px-6 py-4">
                     <span className={`inline-block px-3 py-1 text-xs font-medium rounded-full ${
                       hospital.package === 'Enterprise' ? 'bg-purple-100 text-purple-700' :

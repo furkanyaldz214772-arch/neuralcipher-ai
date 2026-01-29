@@ -36,8 +36,8 @@ export default function AdminDashboardPage() {
     <div className="space-y-6">
       {/* Page Header */}
       <div>
-        <h1 className="text-3xl font-bold text-slate-800">Dashboard</h1>
-        <p className="text-slate-600 mt-1">Welcome back, Admin! Here's what's happening today.</p>
+        <h1 className="text-3xl font-bold text-white">Dashboard</h1>
+        <p className="text-slate-400 mt-1">Welcome back, Admin! Here's what's happening today.</p>
       </div>
 
       {/* Stats Grid */}
@@ -103,8 +103,8 @@ export default function AdminDashboardPage() {
       {/* Charts Row */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* User Growth Chart */}
-        <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
-          <h3 className="text-lg font-semibold text-slate-800 mb-4">User Growth (Last 30 Days)</h3>
+        <div className="bg-slate-800 rounded-xl shadow-sm border border-slate-700 p-6">
+          <h3 className="text-lg font-semibold text-white mb-4">User Growth (Last 30 Days)</h3>
           <div className="h-64 flex items-end justify-between gap-2">
             {[40, 55, 45, 60, 70, 65, 80, 75, 90, 85, 95, 100].map((height, i) => (
               <div key={i} className="flex-1 bg-gradient-to-t from-purple-500 to-pink-500 rounded-t-lg" style={{ height: `${height}%` }}></div>
@@ -113,8 +113,8 @@ export default function AdminDashboardPage() {
         </div>
 
         {/* Role Distribution */}
-        <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
-          <h3 className="text-lg font-semibold text-slate-800 mb-4">User Distribution by Role</h3>
+        <div className="bg-slate-800 rounded-xl shadow-sm border border-slate-700 p-6">
+          <h3 className="text-lg font-semibold text-white mb-4">User Distribution by Role</h3>
           <div className="space-y-4">
             <RoleBar label="Patients" percentage={65} color="purple" count={810} />
             <RoleBar label="Doctors" percentage={15} color="blue" count={189} />
@@ -127,28 +127,28 @@ export default function AdminDashboardPage() {
       {/* Recent Activities */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Recent Users */}
-        <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+        <div className="bg-slate-800 rounded-xl shadow-sm border border-slate-700 p-6">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-semibold text-slate-800">Recent Users</h3>
+            <h3 className="text-lg font-semibold text-white">Recent Users</h3>
             <a href="/admin-panel/users" className="text-sm text-purple-600 hover:text-purple-700">View All →</a>
           </div>
           <div className="space-y-3">
             {recentUsers.map((user) => (
-              <div key={user.id} className="flex items-center justify-between p-3 bg-slate-50 rounded-lg">
+              <div key={user.id} className="flex items-center justify-between p-3 bg-slate-700/50 rounded-lg">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center">
                     <span className="text-white font-semibold">{user.name[0]}</span>
                   </div>
                   <div>
-                    <p className="font-medium text-slate-800">{user.name}</p>
-                    <p className="text-sm text-slate-500">{user.email}</p>
+                    <p className="font-medium text-white">{user.name}</p>
+                    <p className="text-sm text-slate-400">{user.email}</p>
                   </div>
                 </div>
                 <div className="text-right">
                   <span className="inline-block px-3 py-1 bg-purple-100 text-purple-700 text-xs font-medium rounded-full">
                     {user.role}
                   </span>
-                  <p className="text-xs text-slate-500 mt-1">{user.date}</p>
+                  <p className="text-xs text-slate-400 mt-1">{user.date}</p>
                 </div>
               </div>
             ))}
@@ -156,17 +156,17 @@ export default function AdminDashboardPage() {
         </div>
 
         {/* Recent Tests */}
-        <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+        <div className="bg-slate-800 rounded-xl shadow-sm border border-slate-700 p-6">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-semibold text-slate-800">Recent Tests</h3>
+            <h3 className="text-lg font-semibold text-white">Recent Tests</h3>
             <a href="/admin-panel/tests" className="text-sm text-purple-600 hover:text-purple-700">View All →</a>
           </div>
           <div className="space-y-3">
             {recentTests.map((test) => (
-              <div key={test.id} className="flex items-center justify-between p-3 bg-slate-50 rounded-lg">
+              <div key={test.id} className="flex items-center justify-between p-3 bg-slate-700/50 rounded-lg">
                 <div>
-                  <p className="font-medium text-slate-800">{test.patient}</p>
-                  <p className="text-sm text-slate-500">{test.date}</p>
+                  <p className="font-medium text-white">{test.patient}</p>
+                  <p className="text-sm text-slate-400">{test.date}</p>
                 </div>
                 <span className={`px-3 py-1 text-xs font-medium rounded-full ${
                   test.result === 'Low Risk' ? 'bg-green-100 text-green-700' :
@@ -209,17 +209,17 @@ function StatsCard({ title, value, icon, color, change }: any) {
   }
 
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+    <div className="bg-slate-800 rounded-xl shadow-sm border border-slate-700 p-6">
       <div className="flex items-center justify-between mb-4">
         <div className={`w-12 h-12 bg-gradient-to-br ${colorClasses[color as keyof typeof colorClasses]} rounded-lg flex items-center justify-center text-2xl`}>
           {icon}
         </div>
-        <span className={`text-sm font-medium ${change.startsWith('+') ? 'text-green-600' : change.startsWith('-') ? 'text-red-600' : 'text-slate-600'}`}>
+        <span className={`text-sm font-medium ${change.startsWith('+') ? 'text-green-400' : change.startsWith('-') ? 'text-red-400' : 'text-slate-400'}`}>
           {change}
         </span>
       </div>
-      <h3 className="text-2xl font-bold text-slate-800">{value}</h3>
-      <p className="text-sm text-slate-600 mt-1">{title}</p>
+      <h3 className="text-2xl font-bold text-white">{value}</h3>
+      <p className="text-sm text-slate-400 mt-1">{title}</p>
     </div>
   )
 }
@@ -236,10 +236,10 @@ function RoleBar({ label, percentage, color, count }: any) {
   return (
     <div>
       <div className="flex items-center justify-between mb-2">
-        <span className="text-sm font-medium text-slate-700">{label}</span>
-        <span className="text-sm text-slate-600">{count} ({percentage}%)</span>
+        <span className="text-sm font-medium text-slate-200">{label}</span>
+        <span className="text-sm text-slate-400">{count} ({percentage}%)</span>
       </div>
-      <div className="w-full bg-slate-200 rounded-full h-2">
+      <div className="w-full bg-slate-700 rounded-full h-2">
         <div
           className={`h-2 rounded-full ${colorClasses[color as keyof typeof colorClasses]}`}
           style={{ width: `${percentage}%` }}
