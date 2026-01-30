@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { patientAPI } from "@/lib/patient-api";
-import { ArrowLeft, Brain, Download, Activity, AlertCircle } from "lucide-react";
+import { ArrowLeft, Brain, Download, Activity, AlertCircle, BarChart2, FileText } from "lucide-react";
 
 interface TestResult {
   id: number;
@@ -19,6 +19,8 @@ interface TestResult {
   inference_time: number | null;
 }
 
+type ViewMode = 'simple' | 'detailed';
+
 export default function TestResultPage() {
   const params = useParams();
   const router = useRouter();
@@ -27,6 +29,7 @@ export default function TestResultPage() {
   const [test, setTest] = useState<TestResult | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [viewMode, setViewMode] = useState<ViewMode>('simple');
 
   useEffect(() => {
     // Check authentication before loading
@@ -125,6 +128,20 @@ export default function TestResultPage() {
     }
   };
 
+  // Get main biomarkers for simple view (most important ones)
+  const getMainBiomarkers = () => {
+    if (!test?.biomarkers) return [];
+    
+    const mainKeys = ['HNR', 'jitterLocal', 'shimmerLocal', 'CPP'];
+    return mainKeys
+      .filter(key => test.biomarkers[key] !== undefined)
+      .map(key => ({
+        key,
+        name: key.replace(/([A-Z])/g, ' $1').trim(),
+        value: test.biomarkers[key]
+      }));
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#0F172A] via-[#1E293B] to-[#0F172A]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -142,13 +159,41 @@ export default function TestResultPage() {
               <Brain className="h-8 w-8 text-[#0EA5E9]" />
               Test Analysis #{test.id}
             </h1>
-            <button 
-              onClick={() => window.print()}
-              className="flex items-center gap-2 px-4 py-2 bg-[#0EA5E9] text-white rounded-lg hover:bg-[#0EA5E9]/90 transition-colors"
-            >
-              <Download className="h-5 w-5" />
-              Download Report
-            </button>
+            <div className="flex items-center gap-3">
+              {/* View Mode Toggle */}
+              <div className="flex items-center gap-2 bg-[#0F172A] border border-gray-700/50 rounded-lg p-1">
+                <button
+                  onClick={() => setViewMode('simple')}
+                  className={`flex items-center gap-2 px-4 py-2 rounded-md transition-all ${
+                    viewMode === 'simple'
+                      ? 'bg-[#0EA5E9] text-white'
+                      : 'text-gray-400 hover:text-white'
+                  }`}
+                >
+                  <FileText className="h-4 w-4" />
+                  Simple View
+                </button>
+                <button
+                  onClick={() => setViewMode('detailed')}
+                  className={`flex items-center gap-2 px-4 py-2 rounded-md transition-all ${
+                    viewMode === 'detailed'
+                      ? 'bg-[#0EA5E9] text-white'
+                      : 'text-gray-400 hover:text-white'
+                  }`}
+                >
+                  <BarChart2 className="h-4 w-4" />
+                  Detailed View
+                </button>
+              </div>
+              
+              <button 
+                onClick={() => window.print()}
+                className="flex items-center gap-2 px-4 py-2 bg-[#0EA5E9] text-white rounded-lg hover:bg-[#0EA5E9]/90 transition-colors"
+              >
+                <Download className="h-5 w-5" />
+                Download Report
+              </button>
+            </div>
           </div>
 
           <div className="space-y-6">

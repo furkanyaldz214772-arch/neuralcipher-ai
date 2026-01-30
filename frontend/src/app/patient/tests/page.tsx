@@ -10,6 +10,8 @@ import {
 import { useRouter } from 'next/navigation'
 import api from '@/lib/api'
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
+import ViewModeModal from '@/components/ViewModeModal'
+import SimpleTestView from '@/components/SimpleTestView'
 
 interface Test {
   id: number
@@ -46,6 +48,9 @@ export default function PatientTestsPage() {
     trend: 'stable' as 'up' | 'down' | 'stable'
   })
   const [chartData, setChartData] = useState<Array<{ date: string; risk: number }>>([])
+  const [selectedTestForPreview, setSelectedTestForPreview] = useState<Test | null>(null)
+  const [showViewModal, setShowViewModal] = useState(false)
+  const [showSimpleView, setShowSimpleView] = useState(false)
 
   useEffect(() => {
     fetchTests()
@@ -620,10 +625,11 @@ export default function PatientTestsPage() {
                         whileTap={{ scale: 0.9 }}
                         onClick={(e) => {
                           e.stopPropagation()
-                          router.push(`/patient/tests/${test.id}`)
+                          setSelectedTestForPreview(test)
+                          setShowViewModal(true)
                         }}
                         className="p-3 bg-[#0EA5E9]/10 hover:bg-[#0EA5E9]/20 text-[#0EA5E9] rounded-xl transition-all group-hover:bg-[#0EA5E9]/20"
-                        title="View Details"
+                        title="Quick Preview"
                       >
                         <Eye className="h-5 w-5" />
                       </motion.button>
@@ -667,6 +673,33 @@ export default function PatientTestsPage() {
           </div>
         )}
       </div>
+
+      {/* View Mode Modal */}
+      {selectedTestForPreview && (
+        <ViewModeModal
+          isOpen={showViewModal}
+          onClose={() => {
+            setShowViewModal(false)
+            setSelectedTestForPreview(null)
+          }}
+          testId={selectedTestForPreview.id}
+          onSimpleView={() => {
+            setShowSimpleView(true)
+          }}
+        />
+      )}
+
+      {/* Simple Test View */}
+      {selectedTestForPreview && (
+        <SimpleTestView
+          isOpen={showSimpleView}
+          onClose={() => {
+            setShowSimpleView(false)
+            setSelectedTestForPreview(null)
+          }}
+          test={selectedTestForPreview}
+        />
+      )}
     </div>
   )
 }
