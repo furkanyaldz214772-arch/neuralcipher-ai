@@ -11,7 +11,6 @@ import { useRouter } from 'next/navigation'
 import api from '@/lib/api'
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
 import ViewModeModal from '@/components/ViewModeModal'
-import SimpleTestView from '@/components/SimpleTestView'
 
 interface Test {
   id: number
@@ -50,7 +49,6 @@ export default function PatientTestsPage() {
   const [chartData, setChartData] = useState<Array<{ date: string; risk: number }>>([])
   const [selectedTestForPreview, setSelectedTestForPreview] = useState<Test | null>(null)
   const [showViewModal, setShowViewModal] = useState(false)
-  const [showSimpleView, setShowSimpleView] = useState(false)
 
   useEffect(() => {
     fetchTests()
@@ -683,21 +681,6 @@ export default function PatientTestsPage() {
             setSelectedTestForPreview(null)
           }}
           testId={selectedTestForPreview.id}
-          onSimpleView={() => {
-            setShowSimpleView(true)
-          }}
-        />
-      )}
-
-      {/* Simple Test View */}
-      {selectedTestForPreview && (
-        <SimpleTestView
-          isOpen={showSimpleView}
-          onClose={() => {
-            setShowSimpleView(false)
-            setSelectedTestForPreview(null)
-          }}
-          test={selectedTestForPreview}
         />
       )}
     </div>

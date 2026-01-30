@@ -8,10 +8,9 @@ interface ViewModeModalProps {
   isOpen: boolean
   onClose: () => void
   testId: number
-  onSimpleView: () => void
 }
 
-export default function ViewModeModal({ isOpen, onClose, testId, onSimpleView }: ViewModeModalProps) {
+export default function ViewModeModal({ isOpen, onClose, testId }: ViewModeModalProps) {
   const router = useRouter()
 
   return (
@@ -57,7 +56,7 @@ export default function ViewModeModal({ isOpen, onClose, testId, onSimpleView }:
                   whileHover={{ scale: 1.02, y: -4 }}
                   whileTap={{ scale: 0.98 }}
                   onClick={() => {
-                    onSimpleView()
+                    router.push(`/patient/tests/${testId}/simple`)
                     onClose()
                   }}
                   className="group relative bg-gradient-to-br from-[#0EA5E9]/20 to-[#06B6D4]/10 border-2 border-[#0EA5E9]/30 hover:border-[#0EA5E9] rounded-xl p-8 text-left transition-all"
