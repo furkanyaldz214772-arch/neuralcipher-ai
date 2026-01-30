@@ -8,7 +8,7 @@ import axios from 'axios'
 const getApiUrl = () => {
   // Server-side rendering
   if (typeof window === 'undefined') {
-    return process.env.NEXT_PUBLIC_API_URL || 'https://neuralcipher-ai-production.up.railway.app'
+    return process.env.NEXT_PUBLIC_API_URL || 'https://web-production-c00b0.up.railway.app'
   }
   
   // Client-side
@@ -20,8 +20,8 @@ const getApiUrl = () => {
     return 'http://localhost:8000'
   }
   
-  // Production fallback (Railway)
-  return 'https://neuralcipher-ai-production.up.railway.app'
+  // Production fallback (Real Railway URL)
+  return 'https://web-production-c00b0.up.railway.app'
 }
 
 const API_URL = getApiUrl()
