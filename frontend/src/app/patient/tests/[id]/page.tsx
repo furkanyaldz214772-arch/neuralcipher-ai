@@ -29,17 +29,41 @@ export default function TestResultPage() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    // Check authentication before loading
+    if (typeof window !== 'undefined') {
+      const token = localStorage.getItem('access_token');
+      if (!token) {
+        setError("Please login to view test results");
+        setLoading(false);
+        setTimeout(() => router.push('/auth/login'), 2000);
+        return;
+      }
+    }
+    
     loadTestResult();
   }, [testId]);
 
   const loadTestResult = async () => {
     try {
       setLoading(true);
+      setError(null);
+      
       const result = await patientAPI.tests.getTestDetails(testId.toString());
       setTest(result);
     } catch (err: any) {
       console.error("Failed to load test:", err);
-      setError(err.message || "Failed to load test result");
+      
+      // Better error handling based on status code
+      if (err.response?.status === 401) {
+        setError("Authentication required. Redirecting to login...");
+        setTimeout(() => router.push('/auth/login'), 2000);
+      } else if (err.response?.status === 404) {
+        setError("Test not found. It may have been deleted.");
+      } else if (err.response?.status === 403) {
+        setError("Access denied. This test belongs to another user.");
+      } else {
+        setError(err.response?.data?.detail || err.message || "Failed to load test result");
+      }
     } finally {
       setLoading(false);
     }
@@ -51,6 +75,7 @@ export default function TestResultPage() {
         <div className="text-center">
           <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-[#0EA5E9] mx-auto mb-4"></div>
           <p className="text-white text-lg">Loading test result...</p>
+          <p className="text-gray-400 text-sm mt-2">Verifying authentication...</p>
         </div>
       </div>
     );
