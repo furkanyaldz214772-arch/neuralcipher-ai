@@ -10,7 +10,7 @@ import {
 import { useRouter } from 'next/navigation'
 import api from '@/lib/api'
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
-import ViewModeModal from '@/components/ViewModeModal'
+
 
 interface Test {
   id: number
@@ -47,8 +47,7 @@ export default function PatientTestsPage() {
     trend: 'stable' as 'up' | 'down' | 'stable'
   })
   const [chartData, setChartData] = useState<Array<{ date: string; risk: number }>>([])
-  const [selectedTestForPreview, setSelectedTestForPreview] = useState<Test | null>(null)
-  const [showViewModal, setShowViewModal] = useState(false)
+
 
   useEffect(() => {
     fetchTests()
@@ -623,8 +622,7 @@ export default function PatientTestsPage() {
                         whileTap={{ scale: 0.9 }}
                         onClick={(e) => {
                           e.stopPropagation()
-                          setSelectedTestForPreview(test)
-                          setShowViewModal(true)
+                          router.push(`/patient/tests/${test.id}/simple`)
                         }}
                         className="p-3 bg-[#0EA5E9]/10 hover:bg-[#0EA5E9]/20 text-[#0EA5E9] rounded-xl transition-all group-hover:bg-[#0EA5E9]/20"
                         title="Quick Preview"
@@ -671,18 +669,6 @@ export default function PatientTestsPage() {
           </div>
         )}
       </div>
-
-      {/* View Mode Modal */}
-      {selectedTestForPreview && (
-        <ViewModeModal
-          isOpen={showViewModal}
-          onClose={() => {
-            setShowViewModal(false)
-            setSelectedTestForPreview(null)
-          }}
-          testId={selectedTestForPreview.id}
-        />
-      )}
     </div>
   )
 }
