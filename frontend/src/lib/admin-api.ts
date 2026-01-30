@@ -480,6 +480,239 @@ class AdminAPI {
     if (!response.ok) throw new Error('Failed to send test email')
     return response.json()
   }
+
+  // Logs API
+  async getLogStats() {
+    const response = await fetch(`${API_BASE_URL}/api/v1/admin/logs/stats`, {
+      headers: this.getAuthHeaders()
+    })
+    if (!response.ok) throw new Error('Failed to fetch log stats')
+    return response.json()
+  }
+
+  async getSystemLogs(params?: { skip?: number; limit?: number; level?: string; category?: string }) {
+    const queryParams = new URLSearchParams()
+    if (params?.skip) queryParams.append('skip', params.skip.toString())
+    if (params?.limit) queryParams.append('limit', params.limit.toString())
+    if (params?.level) queryParams.append('level', params.level)
+    if (params?.category) queryParams.append('category', params.category)
+
+    const response = await fetch(`${API_BASE_URL}/api/v1/admin/logs/system?${queryParams}`, {
+      headers: this.getAuthHeaders()
+    })
+    if (!response.ok) throw new Error('Failed to fetch system logs')
+    return response.json()
+  }
+
+  async getErrorLogs(params?: { skip?: number; limit?: number; severity?: string }) {
+    const queryParams = new URLSearchParams()
+    if (params?.skip) queryParams.append('skip', params.skip.toString())
+    if (params?.limit) queryParams.append('limit', params.limit.toString())
+    if (params?.severity) queryParams.append('severity', params.severity)
+
+    const response = await fetch(`${API_BASE_URL}/api/v1/admin/logs/errors?${queryParams}`, {
+      headers: this.getAuthHeaders()
+    })
+    if (!response.ok) throw new Error('Failed to fetch error logs')
+    return response.json()
+  }
+
+  // Notifications API
+  async getNotificationStats() {
+    const response = await fetch(`${API_BASE_URL}/api/v1/admin/notifications/stats`, {
+      headers: this.getAuthHeaders()
+    })
+    if (!response.ok) throw new Error('Failed to fetch notification stats')
+    return response.json()
+  }
+
+  async listNotifications(params?: { skip?: number; limit?: number; type?: string; status?: string }) {
+    const queryParams = new URLSearchParams()
+    if (params?.skip) queryParams.append('skip', params.skip.toString())
+    if (params?.limit) queryParams.append('limit', params.limit.toString())
+    if (params?.type) queryParams.append('type', params.type)
+    if (params?.status) queryParams.append('status', params.status)
+
+    const response = await fetch(`${API_BASE_URL}/api/v1/admin/notifications/list?${queryParams}`, {
+      headers: this.getAuthHeaders()
+    })
+    if (!response.ok) throw new Error('Failed to fetch notifications')
+    return response.json()
+  }
+
+  async sendNotification(data: any) {
+    const response = await fetch(`${API_BASE_URL}/api/v1/admin/notifications/send`, {
+      method: 'POST',
+      headers: this.getAuthHeaders(),
+      body: JSON.stringify(data)
+    })
+    if (!response.ok) throw new Error('Failed to send notification')
+    return response.json()
+  }
+
+  // Advanced User Operations
+  async getUserStats() {
+    const response = await fetch(`${API_BASE_URL}/api/v1/admin/users-advanced/stats`, {
+      headers: this.getAuthHeaders()
+    })
+    if (!response.ok) throw new Error('Failed to fetch user stats')
+    return response.json()
+  }
+
+  async bulkUserOperation(operation: string, userIds: number[], parameters: any = {}) {
+    const response = await fetch(`${API_BASE_URL}/api/v1/admin/users-advanced/bulk-operation`, {
+      method: 'POST',
+      headers: this.getAuthHeaders(),
+      body: JSON.stringify({ operation, user_ids: userIds, parameters })
+    })
+    if (!response.ok) throw new Error('Failed to perform bulk operation')
+    return response.json()
+  }
+
+  async exportUsers(format: string, filters: any = {}, fields: string[] = []) {
+    const response = await fetch(`${API_BASE_URL}/api/v1/admin/users-advanced/export`, {
+      method: 'POST',
+      headers: this.getAuthHeaders(),
+      body: JSON.stringify({ format, filters, fields })
+    })
+    if (!response.ok) throw new Error('Failed to export users')
+    return response.json()
+  }
+
+  // Billing API
+  async getRevenueStats() {
+    const response = await fetch(`${API_BASE_URL}/api/v1/admin/billing/stats`, {
+      headers: this.getAuthHeaders()
+    })
+    if (!response.ok) throw new Error('Failed to fetch revenue stats')
+    return response.json()
+  }
+
+  async listPayments(params?: { skip?: number; limit?: number; status?: string }) {
+    const queryParams = new URLSearchParams()
+    if (params?.skip) queryParams.append('skip', params.skip.toString())
+    if (params?.limit) queryParams.append('limit', params.limit.toString())
+    if (params?.status) queryParams.append('status', params.status)
+
+    const response = await fetch(`${API_BASE_URL}/api/v1/admin/billing/payments?${queryParams}`, {
+      headers: this.getAuthHeaders()
+    })
+    if (!response.ok) throw new Error('Failed to fetch payments')
+    return response.json()
+  }
+
+  // Packages API
+  async getPackageStats() {
+    const response = await fetch(`${API_BASE_URL}/api/v1/admin/packages/stats`, {
+      headers: this.getAuthHeaders()
+    })
+    if (!response.ok) throw new Error('Failed to fetch package stats')
+    return response.json()
+  }
+
+  async listPackages() {
+    const response = await fetch(`${API_BASE_URL}/api/v1/admin/packages/list`, {
+      headers: this.getAuthHeaders()
+    })
+    if (!response.ok) throw new Error('Failed to fetch packages')
+    return response.json()
+  }
+
+  // Mobile API
+  async getMobileStats() {
+    const response = await fetch(`${API_BASE_URL}/api/v1/admin/mobile/stats`, {
+      headers: this.getAuthHeaders()
+    })
+    if (!response.ok) throw new Error('Failed to fetch mobile stats')
+    return response.json()
+  }
+
+  async listAppVersions(platform?: string) {
+    const queryParams = new URLSearchParams()
+    if (platform) queryParams.append('platform', platform)
+
+    const response = await fetch(`${API_BASE_URL}/api/v1/admin/mobile/versions?${queryParams}`, {
+      headers: this.getAuthHeaders()
+    })
+    if (!response.ok) throw new Error('Failed to fetch app versions')
+    return response.json()
+  }
+
+  // Email Management API
+  async getEmailStats() {
+    const response = await fetch(`${API_BASE_URL}/api/v1/admin/emails/stats`, {
+      headers: this.getAuthHeaders()
+    })
+    if (!response.ok) throw new Error('Failed to fetch email stats')
+    return response.json()
+  }
+
+  async listEmailTemplates(category?: string) {
+    const queryParams = new URLSearchParams()
+    if (category) queryParams.append('category', category)
+
+    const response = await fetch(`${API_BASE_URL}/api/v1/admin/emails/templates?${queryParams}`, {
+      headers: this.getAuthHeaders()
+    })
+    if (!response.ok) throw new Error('Failed to fetch email templates')
+    return response.json()
+  }
+
+  async listEmailCampaigns(params?: { skip?: number; limit?: number }) {
+    const queryParams = new URLSearchParams()
+    if (params?.skip) queryParams.append('skip', params.skip.toString())
+    if (params?.limit) queryParams.append('limit', params.limit.toString())
+
+    const response = await fetch(`${API_BASE_URL}/api/v1/admin/emails/campaigns?${queryParams}`, {
+      headers: this.getAuthHeaders()
+    })
+    if (!response.ok) throw new Error('Failed to fetch email campaigns')
+    return response.json()
+  }
+
+  // Reports API
+  async listReportTemplates() {
+    const response = await fetch(`${API_BASE_URL}/api/v1/admin/reports/templates`, {
+      headers: this.getAuthHeaders()
+    })
+    if (!response.ok) throw new Error('Failed to fetch report templates')
+    return response.json()
+  }
+
+  async generateReport(reportId: number, parameters: any = {}) {
+    const response = await fetch(`${API_BASE_URL}/api/v1/admin/reports/generate`, {
+      method: 'POST',
+      headers: this.getAuthHeaders(),
+      body: JSON.stringify({ report_id: reportId, parameters })
+    })
+    if (!response.ok) throw new Error('Failed to generate report')
+    return response.json()
+  }
+
+  // Content Management API
+  async listPages(params?: { skip?: number; limit?: number }) {
+    const queryParams = new URLSearchParams()
+    if (params?.skip) queryParams.append('skip', params.skip.toString())
+    if (params?.limit) queryParams.append('limit', params.limit.toString())
+
+    const response = await fetch(`${API_BASE_URL}/api/v1/admin/content/pages?${queryParams}`, {
+      headers: this.getAuthHeaders()
+    })
+    if (!response.ok) throw new Error('Failed to fetch pages')
+    return response.json()
+  }
+
+  async listBlogPosts(params?: { skip?: number; limit?: number }) {
+    const queryParams = new URLSearchParams()
+    if (params?.skip) queryParams.append('skip', params.skip.toString())
+    if (params?.limit) queryParams.append('limit', params.limit.toString())
+
+    const response = await fetch(`${API_BASE_URL}/api/v1/admin/content/blog?${queryParams}`, {
+      headers: this.getAuthHeaders()
+    })
+    if (!response.ok) throw new Error('Failed to fetch blog posts')
+    return response.json()
+  }
 }
 
 export const adminApi = new AdminAPI()
