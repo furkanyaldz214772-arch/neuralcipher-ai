@@ -53,13 +53,16 @@ export default function PatientTestsPage() {
   const fetchTests = async () => {
     try {
       setLoading(true)
-      const response = await api.get('/api/v1/patient/tests', {
+      const response = await api.get('/api/v1/patient/tests/', {
         params: { page: 1, page_size: 50 }
       })
       
-      const formattedTests: Test[] = response.data.tests.map((test: any, index: number) => {
-        const testDate = new Date(test.createdAt)
-        const riskScore = test.riskScore || Math.floor(Math.random() * 60)
+      // Backend returns array directly, not { tests: [] }
+      const testsData = Array.isArray(response.data) ? response.data : []
+      
+      const formattedTests: Test[] = testsData.map((test: any, index: number) => {
+        const testDate = new Date(test.created_at)
+        const riskScore = test.risk_score || 0
         
         return {
           id: test.id,
@@ -68,12 +71,12 @@ export default function PatientTestsPage() {
           fullDate: testDate,
           riskScore,
           status: riskScore < 30 ? 'Low' : riskScore < 60 ? 'Moderate' : 'High',
-          analyzed: true,
+          analyzed: test.status === 'completed',
           trend: index > 0 ? (Math.random() > 0.5 ? 'down' : Math.random() > 0.5 ? 'up' : 'stable') : 'stable',
-          biomarkers: {
-            jitter: Math.random() * 0.01,
-            shimmer: Math.random() * 0.05,
-            hnr: 15 + Math.random() * 10
+          biomarkers: test.biomarkers || {
+            jitter: 0,
+            shimmer: 0,
+            hnr: 0
           }
         }
       })
@@ -82,6 +85,8 @@ export default function PatientTestsPage() {
       calculateStats(formattedTests)
     } catch (error) {
       console.error('Failed to fetch tests:', error)
+      // Set empty array on error
+      setTests([])
     } finally {
       setLoading(false)
     }
