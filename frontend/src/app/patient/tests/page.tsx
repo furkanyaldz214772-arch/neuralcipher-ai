@@ -622,10 +622,10 @@ export default function PatientTestsPage() {
                         whileTap={{ scale: 0.9 }}
                         onClick={(e) => {
                           e.stopPropagation()
-                          router.push(`/patient/tests/${test.id}/simple`)
+                          router.push(`/patient/tests/${test.id}`)
                         }}
                         className="p-3 bg-[#0EA5E9]/10 hover:bg-[#0EA5E9]/20 text-[#0EA5E9] rounded-xl transition-all group-hover:bg-[#0EA5E9]/20"
-                        title="Quick Preview"
+                        title="View Detailed Analysis"
                       >
                         <Eye className="h-5 w-5" />
                       </motion.button>
