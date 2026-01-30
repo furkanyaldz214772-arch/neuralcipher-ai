@@ -272,15 +272,6 @@ class AdminAPI {
     const userStr = localStorage.getItem('admin_user')
     return userStr ? JSON.parse(userStr) : null
   }
-}
-
-export const adminApi = new AdminAPI()
-
-// Helper function for authentication check
-export function isAdminAuthenticated(): boolean {
-  return adminApi.isAuthenticated()
-}
-
 
   // Tests Management
   async getTestStats() {
@@ -491,5 +482,12 @@ export function isAdminAuthenticated(): boolean {
   }
 }
 
-export const adminAPI = new AdminAPI()
+export const adminApi = new AdminAPI()
+export const adminAPI = adminApi
+
+// Helper function for authentication check
+export function isAdminAuthenticated(): boolean {
+  return adminApi.isAuthenticated()
+}
+
 export default adminAPI
