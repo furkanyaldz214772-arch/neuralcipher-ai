@@ -134,6 +134,8 @@ export default function NewTestPage() {
   const [error, setError] = useState<string | null>(null)
   const [completedTests, setCompletedTests] = useState<number[]>([])
   const [allRecordings, setAllRecordings] = useState<Blob[]>([])
+  const [showSuccessPopup, setShowSuccessPopup] = useState(false)
+  const [testId, setTestId] = useState<string | null>(null)
   
   const mediaRecorderRef = useRef<MediaRecorder | null>(null)
   const audioChunksRef = useRef<Blob[]>([])
@@ -247,39 +249,13 @@ export default function NewTestPage() {
         },
       })
       
-      setAnalysisProgress(60)
+      setAnalysisProgress(100)
       
-      const testId = response.data.test_id
+      const responseTestId = response.data.test_id
+      setTestId(responseTestId)
       
-      // Poll for results
-      let attempts = 0
-      const maxAttempts = 30
-      
-      const checkStatus = setInterval(async () => {
-        attempts++
-        
-        try {
-          const statusRes = await api.get(`/api/v1/tests/${testId}`)
-          const status = statusRes.data.status
-          
-          setAnalysisProgress(60 + (attempts / maxAttempts) * 40)
-          
-          if (status === 'completed') {
-            clearInterval(checkStatus)
-            setAnalysisProgress(100)
-            
-            setTimeout(() => {
-              router.push(`/patient/tests/${testId}`)
-            }, 1000)
-          } else if (status === 'failed' || attempts >= maxAttempts) {
-            clearInterval(checkStatus)
-            setError('Analysis failed. Please try again.')
-            setIsAnalyzing(false)
-          }
-        } catch (err) {
-          console.error('Failed to check status:', err)
-        }
-      }, 2000)
+      // Show success popup
+      setShowSuccessPopup(true)
       
     } catch (err) {
       console.error('Failed to upload audio:', err)
@@ -539,69 +515,297 @@ export default function NewTestPage() {
             </motion.div>
           )}
 
-          {/* Analyzing */}
+          {/* Analyzing - Success Popup */}
           {isAnalyzing && (
             <motion.div
               key="analyzing"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              className="bg-[#1E293B] border border-gray-700 rounded-2xl p-8"
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.9 }}
+              className="bg-[#1E293B] border-2 border-[#10B981] rounded-2xl p-8 shadow-2xl"
             >
               <div className="text-center">
+                {/* Success Icon */}
                 <motion.div
-                  className="w-32 h-32 mx-auto mb-8 rounded-full bg-gradient-to-r from-[#8B5CF6] to-[#7C3AED] flex items-center justify-center relative"
+                  className="w-32 h-32 mx-auto mb-8 rounded-full bg-gradient-to-r from-[#10B981] to-[#059669] flex items-center justify-center relative"
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ type: "spring", duration: 0.6 }}
                 >
                   <motion.div
-                    className="absolute inset-0 rounded-full border-4 border-t-white border-r-transparent border-b-transparent border-l-transparent"
-                    animate={{ rotate: 360 }}
-                    transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                    className="absolute inset-0 rounded-full bg-[#10B981]"
+                    animate={{ scale: [1, 1.3, 1], opacity: [0.5, 0, 0.5] }}
+                    transition={{ duration: 2, repeat: Infinity }}
                   />
-                  <Activity className="h-16 w-16 text-white" />
+                  <CheckCircle className="h-16 w-16 text-white relative z-10" />
                 </motion.div>
 
-                <h2 className="text-2xl sm:text-3xl font-bold text-white mb-4">Analyzing Your Voice</h2>
-                <p className="text-gray-400 mb-8">
-                  Our AI is processing {allRecordings.length + 1} voice sample{allRecordings.length > 0 ? 's' : ''} using advanced algorithms
-                </p>
+                {/* Success Message */}
+                <motion.h2 
+                  className="text-3xl sm:text-4xl font-bold text-white mb-4"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.2 }}
+                >
+                  ✅ Ses Kaydı Başarılı!
+                </motion.h2>
+                
+                <motion.p 
+                  className="text-xl text-gray-300 mb-8"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.3 }}
+                >
+                  Sesiniz başarıyla yüklendi
+                </motion.p>
 
-                <div className="w-full bg-gray-700 rounded-full h-4 mb-4 overflow-hidden">
+                {/* Progress Bar */}
+                <div className="w-full bg-gray-700 rounded-full h-4 mb-6 overflow-hidden">
                   <motion.div
-                    className="h-4 rounded-full bg-gradient-to-r from-[#0EA5E9] via-[#8B5CF6] to-[#06B6D4]"
+                    className="h-4 rounded-full bg-gradient-to-r from-[#10B981] to-[#059669]"
                     initial={{ width: 0 }}
                     animate={{ width: `${analysisProgress}%` }}
                     transition={{ duration: 0.5 }}
                   />
                 </div>
 
-                <p className="text-[#0EA5E9] font-bold text-2xl mb-8">{analysisProgress}%</p>
+                {/* Info Box */}
+                <motion.div
+                  className="bg-[#0F172A] border border-[#10B981]/30 rounded-xl p-6 mb-6"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.4 }}
+                >
+                  <div className="flex items-start gap-4 text-left">
+                    <div className="w-12 h-12 rounded-full bg-[#10B981]/20 flex items-center justify-center flex-shrink-0">
+                      <Activity className="h-6 w-6 text-[#10B981]" />
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="text-white font-bold text-lg mb-2">🔬 Analiz Başlatıldı</h3>
+                      <p className="text-gray-300 text-sm leading-relaxed mb-3">
+                        Ses kaydınız AI sistemimize gönderildi. Gelişmiş algoritmalarımız şu anda sesinizi analiz ediyor.
+                      </p>
+                      <div className="space-y-2">
+                        <div className="flex items-center gap-2 text-sm">
+                          <div className="w-2 h-2 rounded-full bg-[#10B981] animate-pulse" />
+                          <span className="text-gray-400">59 ses özelliği çıkarılıyor</span>
+                        </div>
+                        <div className="flex items-center gap-2 text-sm">
+                          <div className="w-2 h-2 rounded-full bg-[#8B5CF6] animate-pulse" />
+                          <span className="text-gray-400">Yapay zeka modeli çalışıyor</span>
+                        </div>
+                        <div className="flex items-center gap-2 text-sm">
+                          <div className="w-2 h-2 rounded-full bg-[#0EA5E9] animate-pulse" />
+                          <span className="text-gray-400">Detaylı rapor hazırlanıyor</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-left">
-                  <div className="bg-[#0F172A] rounded-xl p-4">
-                    <div className="flex items-center gap-2 text-[#0EA5E9] mb-2">
-                      <CheckCircle className="h-5 w-5" />
-                      <span className="font-semibold">Extracting Features</span>
+                {/* Time Estimate */}
+                <motion.div
+                  className="bg-[#0EA5E9]/10 border border-[#0EA5E9]/30 rounded-xl p-4 mb-6"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.5 }}
+                >
+                  <div className="flex items-center justify-center gap-3">
+                    <Clock className="h-5 w-5 text-[#0EA5E9]" />
+                    <div className="text-left">
+                      <p className="text-white font-semibold">⏱️ Tahmini Süre: 2-5 dakika</p>
+                      <p className="text-gray-400 text-sm">Analiz tamamlanınca bildirim alacaksınız</p>
                     </div>
-                    <p className="text-sm text-gray-400">Analyzing voice characteristics</p>
                   </div>
-                  
-                  <div className="bg-[#0F172A] rounded-xl p-4">
-                    <div className="flex items-center gap-2 text-[#8B5CF6] mb-2">
-                      <Activity className="h-5 w-5" />
-                      <span className="font-semibold">AI Processing</span>
+                </motion.div>
+
+                {/* Redirect Message */}
+                <motion.div
+                  className="bg-[#F59E0B]/10 border border-[#F59E0B]/30 rounded-xl p-4"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.6 }}
+                >
+                  <div className="flex items-center justify-center gap-3">
+                    <FileText className="h-5 w-5 text-[#F59E0B]" />
+                    <div className="text-left">
+                      <p className="text-white font-semibold">📋 Sonuçlarınızı Görmek İçin</p>
+                      <p className="text-gray-400 text-sm">"Testlerim" sayfasına yönlendiriliyorsunuz...</p>
                     </div>
-                    <p className="text-sm text-gray-400">Running neural network</p>
                   </div>
-                  
-                  <div className="bg-[#0F172A] rounded-xl p-4">
-                    <div className="flex items-center gap-2 text-[#10B981] mb-2">
-                      <Award className="h-5 w-5" />
-                      <span className="font-semibold">Generating Report</span>
-                    </div>
-                    <p className="text-sm text-gray-400">Creating detailed analysis</p>
-                  </div>
-                </div>
+                </motion.div>
+
+                {/* Loading Animation */}
+                <motion.div
+                  className="mt-8 flex items-center justify-center gap-2"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.7 }}
+                >
+                  <motion.div
+                    className="w-3 h-3 rounded-full bg-[#0EA5E9]"
+                    animate={{ scale: [1, 1.5, 1], opacity: [1, 0.5, 1] }}
+                    transition={{ duration: 1, repeat: Infinity, delay: 0 }}
+                  />
+                  <motion.div
+                    className="w-3 h-3 rounded-full bg-[#8B5CF6]"
+                    animate={{ scale: [1, 1.5, 1], opacity: [1, 0.5, 1] }}
+                    transition={{ duration: 1, repeat: Infinity, delay: 0.2 }}
+                  />
+                  <motion.div
+                    className="w-3 h-3 rounded-full bg-[#10B981]"
+                    animate={{ scale: [1, 1.5, 1], opacity: [1, 0.5, 1] }}
+                    transition={{ duration: 1, repeat: Infinity, delay: 0.4 }}
+                  />
+                </motion.div>
               </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Success Popup - Mükemmel Tasarım */}
+        <AnimatePresence>
+          {showSuccessPopup && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+              onClick={() => {
+                setShowSuccessPopup(false)
+                router.push('/patient/tests')
+              }}
+            >
+              <motion.div
+                initial={{ scale: 0.9, opacity: 0, y: 20 }}
+                animate={{ scale: 1, opacity: 1, y: 0 }}
+                exit={{ scale: 0.9, opacity: 0, y: 20 }}
+                transition={{ type: "spring", duration: 0.5 }}
+                className="bg-gradient-to-br from-[#1E293B] to-[#0F172A] border-2 border-[#0EA5E9]/50 rounded-3xl p-8 sm:p-12 max-w-2xl w-full shadow-2xl shadow-[#0EA5E9]/20"
+                onClick={(e) => e.stopPropagation()}
+              >
+                {/* Success Icon */}
+                <motion.div
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
+                  className="w-24 h-24 mx-auto mb-6 rounded-full bg-gradient-to-r from-[#10B981] to-[#059669] flex items-center justify-center relative"
+                >
+                  <motion.div
+                    className="absolute inset-0 rounded-full bg-[#10B981]"
+                    animate={{ scale: [1, 1.3, 1], opacity: [0.5, 0, 0.5] }}
+                    transition={{ duration: 2, repeat: Infinity }}
+                  />
+                  <CheckCircle className="h-12 w-12 text-white relative z-10" />
+                </motion.div>
+
+                {/* Title */}
+                <motion.h2
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.3 }}
+                  className="text-3xl sm:text-4xl font-bold text-white text-center mb-4"
+                >
+                  🎉 Ses Kaydı Tamamlandı!
+                </motion.h2>
+
+                {/* Description */}
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.4 }}
+                  className="space-y-4 mb-8"
+                >
+                  <p className="text-lg text-gray-300 text-center leading-relaxed">
+                    Ses kaydınız başarıyla yüklendi ve analiz süreci başlatıldı.
+                  </p>
+                  
+                  <div className="bg-[#0EA5E9]/10 border border-[#0EA5E9]/30 rounded-xl p-6">
+                    <div className="flex items-start gap-3">
+                      <Activity className="h-6 w-6 text-[#0EA5E9] flex-shrink-0 mt-1 animate-pulse" />
+                      <div>
+                        <h3 className="text-white font-semibold mb-2 text-lg">Analiz Devam Ediyor</h3>
+                        <p className="text-gray-400 text-sm leading-relaxed">
+                          Yapay zeka modelimiz ses kaydınızı analiz ediyor. Bu işlem birkaç dakika sürebilir. 
+                          Sonuçlar hazır olduğunda <span className="text-[#0EA5E9] font-semibold">"Testlerim"</span> sayfasında görüntüleyebilirsiniz.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    <div className="bg-[#0F172A] border border-gray-700 rounded-lg p-4 text-center">
+                      <div className="flex items-center justify-center gap-2 text-[#0EA5E9] mb-2">
+                        <Upload className="h-5 w-5" />
+                        <span className="font-semibold">Yüklendi</span>
+                      </div>
+                      <p className="text-xs text-gray-400">Ses kaydı alındı</p>
+                    </div>
+                    
+                    <div className="bg-[#0F172A] border border-gray-700 rounded-lg p-4 text-center">
+                      <div className="flex items-center justify-center gap-2 text-[#F59E0B] mb-2">
+                        <Activity className="h-5 w-5 animate-pulse" />
+                        <span className="font-semibold">İşleniyor</span>
+                      </div>
+                      <p className="text-xs text-gray-400">AI analiz ediyor</p>
+                    </div>
+                    
+                    <div className="bg-[#0F172A] border border-gray-700 rounded-lg p-4 text-center">
+                      <div className="flex items-center justify-center gap-2 text-gray-500 mb-2">
+                        <Clock className="h-5 w-5" />
+                        <span className="font-semibold">Bekliyor</span>
+                      </div>
+                      <p className="text-xs text-gray-400">Sonuç hazırlanıyor</p>
+                    </div>
+                  </div>
+                </motion.div>
+
+                {/* Buttons */}
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.5 }}
+                  className="flex flex-col sm:flex-row gap-3"
+                >
+                  <motion.button
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={() => {
+                      setShowSuccessPopup(false)
+                      router.push('/patient/tests')
+                    }}
+                    className="flex-1 bg-gradient-to-r from-[#0EA5E9] to-[#06B6D4] text-white px-6 py-4 rounded-xl font-semibold flex items-center justify-center gap-2 shadow-lg shadow-[#0EA5E9]/30 text-lg"
+                  >
+                    <FileText className="h-5 w-5" />
+                    Testlerime Git
+                  </motion.button>
+                  
+                  <motion.button
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={() => {
+                      setShowSuccessPopup(false)
+                      router.push('/patient/dashboard')
+                    }}
+                    className="flex-1 bg-[#1E293B] border-2 border-gray-700 hover:border-[#0EA5E9] text-white px-6 py-4 rounded-xl font-semibold flex items-center justify-center gap-2 transition-colors text-lg"
+                  >
+                    <ChevronRight className="h-5 w-5" />
+                    Ana Sayfaya Dön
+                  </motion.button>
+                </motion.div>
+
+                {/* Info Note */}
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.6 }}
+                  className="mt-6 text-center"
+                >
+                  <p className="text-sm text-gray-500">
+                    💡 İpucu: Sonuçlar genellikle 2-5 dakika içinde hazır olur
+                  </p>
+                </motion.div>
+              </motion.div>
             </motion.div>
           )}
         </AnimatePresence>
