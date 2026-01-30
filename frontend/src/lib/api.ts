@@ -34,11 +34,16 @@ export const api = axios.create({
   withCredentials: true, // ✅ SECURITY: Send cookies with requests
 })
 
-// Request interceptor - Cookies are sent automatically
+// Request interceptor - Add Authorization header from localStorage
 api.interceptors.request.use(
   (config) => {
-    // ✅ SECURITY: Tokens are in httpOnly cookies, no localStorage needed
-    // Cookies are automatically sent by browser
+    // ✅ CROSS-DOMAIN FIX: Add Authorization header from localStorage
+    if (typeof window !== 'undefined') {
+      const token = localStorage.getItem('access_token')
+      if (token) {
+        config.headers.Authorization = `Bearer ${token}`
+      }
+    }
     return config
   },
   (error) => {
@@ -57,20 +62,40 @@ api.interceptors.response.use(
       originalRequest._retry = true
 
       try {
-        // ✅ SECURITY: Refresh token is in httpOnly cookie
-        // Backend will read it automatically
-        await axios.post(
+        // ✅ CROSS-DOMAIN FIX: Send refresh token in Authorization header
+        const refreshToken = typeof window !== 'undefined' ? localStorage.getItem('refresh_token') : null
+        
+        if (!refreshToken) {
+          throw new Error('No refresh token available')
+        }
+
+        const response = await axios.post(
           `${API_URL}/api/v1/auth/refresh`,
           {},
-          { withCredentials: true }
+          { 
+            headers: {
+              Authorization: `Bearer ${refreshToken}`
+            },
+            withCredentials: true 
+          }
         )
 
-        // Retry original request (new access token is in cookie)
+        // Store new access token
+        if (response.data.access_token && typeof window !== 'undefined') {
+          localStorage.setItem('access_token', response.data.access_token)
+        }
+
+        // Retry original request with new token
+        if (typeof window !== 'undefined') {
+          originalRequest.headers.Authorization = `Bearer ${localStorage.getItem('access_token')}`
+        }
         return api(originalRequest)
       } catch (refreshError) {
         // Refresh failed - logout
-        // Don't redirect if already on login pages
         if (typeof window !== 'undefined') {
+          localStorage.removeItem('access_token')
+          localStorage.removeItem('refresh_token')
+          
           const currentPath = window.location.pathname
           if (!currentPath.includes('/auth/login') && !currentPath.includes('/neural-control-center')) {
             window.location.href = '/auth/login'

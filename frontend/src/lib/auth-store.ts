@@ -51,8 +51,16 @@ export const useAuthStore = create<AuthState>()(
             loginData.role = role.toUpperCase()
           }
           
-          // ✅ SECURITY: Tokens are set in httpOnly cookies by backend
+          // ✅ CROSS-DOMAIN FIX: Get tokens from response body
           const response = await api.post('/api/v1/auth/login', loginData)
+          
+          // Store tokens in localStorage for cross-domain support
+          if (response.data.access_token) {
+            localStorage.setItem('access_token', response.data.access_token)
+          }
+          if (response.data.refresh_token) {
+            localStorage.setItem('refresh_token', response.data.refresh_token)
+          }
 
           // Fetch user data
           await get().fetchUser()
@@ -81,6 +89,9 @@ export const useAuthStore = create<AuthState>()(
         } catch (error) {
           console.error('Logout error:', error)
         }
+        // Clear localStorage tokens
+        localStorage.removeItem('access_token')
+        localStorage.removeItem('refresh_token')
         set({ user: null, isAuthenticated: false })
       },
 
