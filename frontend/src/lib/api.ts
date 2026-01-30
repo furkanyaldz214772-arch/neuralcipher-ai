@@ -31,15 +31,14 @@ export const api = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
+  withCredentials: true, // ✅ SECURITY: Send cookies with requests
 })
 
-// Request interceptor - Add auth token
+// Request interceptor - Cookies are sent automatically
 api.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('access_token')
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`
-    }
+    // ✅ SECURITY: Tokens are in httpOnly cookies, no localStorage needed
+    // Cookies are automatically sent by browser
     return config
   },
   (error) => {
@@ -58,27 +57,18 @@ api.interceptors.response.use(
       originalRequest._retry = true
 
       try {
-        const refreshToken = localStorage.getItem('refresh_token')
-        if (!refreshToken) {
-          throw new Error('No refresh token')
-        }
+        // ✅ SECURITY: Refresh token is in httpOnly cookie
+        // Backend will read it automatically
+        await axios.post(
+          `${API_URL}/api/v1/auth/refresh`,
+          {},
+          { withCredentials: true }
+        )
 
-        // Refresh token
-        const response = await axios.post(`${API_URL}/api/v1/auth/refresh`, {
-          refresh_token: refreshToken,
-        })
-
-        const { access_token } = response.data
-        localStorage.setItem('access_token', access_token)
-
-        // Retry original request
-        originalRequest.headers.Authorization = `Bearer ${access_token}`
+        // Retry original request (new access token is in cookie)
         return api(originalRequest)
       } catch (refreshError) {
         // Refresh failed - logout
-        localStorage.removeItem('access_token')
-        localStorage.removeItem('refresh_token')
-        
         // Don't redirect if already on login pages
         if (typeof window !== 'undefined') {
           const currentPath = window.location.pathname

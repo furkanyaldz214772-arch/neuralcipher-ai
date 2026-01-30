@@ -70,10 +70,21 @@ interface UserListResponse {
 
 class AdminAPI {
   private getAuthHeaders(): HeadersInit {
-    const token = localStorage.getItem('admin_token')
+    // ✅ SECURITY: Tokens are in httpOnly cookies, no localStorage needed
     return {
-      'Content-Type': 'application/json',
-      ...(token && { 'Authorization': `Bearer ${token}` })
+      'Content-Type': 'application/json'
+    }
+  }
+
+  private getFetchOptions(options: RequestInit = {}): RequestInit {
+    // ✅ SECURITY: Always include credentials for cookie-based auth
+    return {
+      ...options,
+      headers: {
+        ...this.getAuthHeaders(),
+        ...(options.headers || {})
+      },
+      credentials: 'include'
     }
   }
 
@@ -82,6 +93,7 @@ class AdminAPI {
     const response = await fetch(`${API_BASE_URL}/api/v1/admin/auth/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
+      credentials: 'include', // ✅ SECURITY: Send cookies
       body: JSON.stringify(credentials)
     })
 
@@ -92,9 +104,7 @@ class AdminAPI {
 
     const data = await response.json()
     
-    // Store token
-    localStorage.setItem('admin_token', data.access_token)
-    localStorage.setItem('admin_refresh_token', data.refresh_token)
+    // ✅ SECURITY: Tokens are in httpOnly cookies, only store user info
     localStorage.setItem('admin_user', JSON.stringify(data.user))
     
     return data
@@ -104,19 +114,19 @@ class AdminAPI {
     try {
       await fetch(`${API_BASE_URL}/api/v1/admin/auth/logout`, {
         method: 'POST',
-        headers: this.getAuthHeaders()
+        headers: this.getAuthHeaders(),
+        credentials: 'include' // ✅ SECURITY: Send cookies
       })
     } finally {
-      // Clear local storage regardless of API response
-      localStorage.removeItem('admin_token')
-      localStorage.removeItem('admin_refresh_token')
+      // Clear local storage
       localStorage.removeItem('admin_user')
     }
   }
 
   async getMe(): Promise<AdminLoginResponse['user']> {
     const response = await fetch(`${API_BASE_URL}/api/v1/admin/auth/me`, {
-      headers: this.getAuthHeaders()
+      headers: this.getAuthHeaders(),
+      credentials: 'include' // ✅ SECURITY: Send cookies
     })
 
     if (!response.ok) {
@@ -129,7 +139,8 @@ class AdminAPI {
   // Dashboard
   async getDashboardStats(): Promise<DashboardStats> {
     const response = await fetch(`${API_BASE_URL}/api/v1/admin/dashboard/stats`, {
-      headers: this.getAuthHeaders()
+      headers: this.getAuthHeaders(),
+      credentials: 'include' // ✅ SECURITY: Send cookies
     })
 
     if (!response.ok) {
@@ -142,7 +153,10 @@ class AdminAPI {
   async getRecentActivity(limit: number = 10): Promise<RecentActivity[]> {
     const response = await fetch(
       `${API_BASE_URL}/api/v1/admin/dashboard/recent-activity?limit=${limit}`,
-      { headers: this.getAuthHeaders() }
+      { 
+        headers: this.getAuthHeaders(),
+        credentials: 'include' // ✅ SECURITY: Send cookies
+      }
     )
 
     if (!response.ok) {
@@ -265,7 +279,8 @@ class AdminAPI {
 
   // Helper methods
   isAuthenticated(): boolean {
-    return !!localStorage.getItem('admin_token')
+    // ✅ SECURITY: Check if user info exists (tokens are in cookies)
+    return !!localStorage.getItem('admin_user')
   }
 
   getStoredUser(): AdminLoginResponse['user'] | null {

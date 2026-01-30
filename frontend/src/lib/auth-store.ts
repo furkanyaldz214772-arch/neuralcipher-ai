@@ -51,12 +51,8 @@ export const useAuthStore = create<AuthState>()(
             loginData.role = role.toUpperCase()
           }
           
+          // ✅ SECURITY: Tokens are set in httpOnly cookies by backend
           const response = await api.post('/api/v1/auth/login', loginData)
-
-          const { access_token, refresh_token } = response.data
-          
-          localStorage.setItem('access_token', access_token)
-          localStorage.setItem('refresh_token', refresh_token)
 
           // Fetch user data
           await get().fetchUser()
@@ -78,9 +74,13 @@ export const useAuthStore = create<AuthState>()(
         }
       },
 
-      logout: () => {
-        localStorage.removeItem('access_token')
-        localStorage.removeItem('refresh_token')
+      logout: async () => {
+        try {
+          // ✅ SECURITY: Clear httpOnly cookies on backend
+          await api.post('/api/v1/auth/logout')
+        } catch (error) {
+          console.error('Logout error:', error)
+        }
         set({ user: null, isAuthenticated: false })
       },
 
@@ -143,29 +143,26 @@ export const useAuthStore = create<AuthState>()(
       },
 
       initialize: async () => {
-        const token = localStorage.getItem('access_token')
-        if (token) {
-          try {
-            await get().fetchUser()
-          } catch (error) {
-            // Token invalid, clear it
-            get().logout()
-          }
+        // ✅ SECURITY: Check if user is authenticated via cookie
+        try {
+          await get().fetchUser()
+        } catch (error) {
+          // Not authenticated or token invalid
+          get().logout()
         }
       },
 
       setTokens: async (accessToken: string, refreshToken: string) => {
-        // Store tokens
-        localStorage.setItem('access_token', accessToken)
-        localStorage.setItem('refresh_token', refreshToken)
+        // ✅ SECURITY: Tokens are now in httpOnly cookies
+        // This method is deprecated but kept for backward compatibility
+        console.warn('setTokens is deprecated - tokens are now in httpOnly cookies')
         
         // Fetch user data
         try {
           await get().fetchUser()
           set({ isAuthenticated: true })
         } catch (error) {
-          // If fetch fails, still mark as authenticated (tokens are valid)
-          set({ isAuthenticated: true })
+          set({ isAuthenticated: false })
         }
       },
     }),
