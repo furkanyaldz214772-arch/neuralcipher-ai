@@ -8,12 +8,13 @@ import {
 } from 'lucide-react'
 import { useAuthStore } from '@/lib/auth-store'
 import { useRouter } from 'next/navigation'
-import api from '@/lib/api'
+import { patientAPI } from '@/lib/patient-api'
 
 export default function PatientDashboard() {
   const { user } = useAuthStore()
   const router = useRouter()
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
   const [stats, setStats] = useState({
     totalTests: 0,
     riskScore: 'Low',
@@ -29,45 +30,66 @@ export default function PatientDashboard() {
   const fetchDashboardData = async () => {
     try {
       setLoading(true)
+      setError(null)
       
-      // Fetch dashboard data
-      const dashboardRes = await api.get('/api/v1/patient/dashboard')
-      const dashboardData = dashboardRes.data
-      
-      // Fetch messages count
-      const messagesRes = await api.get('/api/v1/messages/conversations')
-      const unreadCount = messagesRes.data.reduce((sum: number, conv: any) => sum + conv.unread_count, 0)
+      // ✅ YENİ: Paralel API çağrıları ile yeni API client kullan
+      const [statsData, testsData, notificationsData] = await Promise.all([
+        patientAPI.dashboard.getStats(),
+        patientAPI.dashboard.getRecentTests(5),
+        patientAPI.dashboard.getNotifications(10)
+      ])
       
       // Update stats
       setStats({
-        totalTests: dashboardData.stats.totalTests || 0,
-        riskScore: dashboardData.stats.lastRiskLevel || 'Low',
-        unreadMessages: unreadCount,
+        totalTests: statsData.total_tests || 0,
+        riskScore: statsData.last_risk_level || 'Low',
+        unreadMessages: notificationsData.filter((n: any) => !n.is_read).length,
         nextAppointment: 'No appointments'
       })
       
       // Format recent tests
-      const formattedTests = dashboardData.recentTests.map((test: any) => ({
+      const formattedTests = testsData.map((test: any) => ({
         id: test.id,
-        date: new Date(test.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
-        riskScore: test.riskScore || 0,
-        status: test.riskLevel || 'Low'
+        date: new Date(test.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+        riskScore: test.risk_score || 0,
+        status: test.risk_level || 'Low'
       }))
       
       setRecentTests(formattedTests)
-    } catch (error) {
-      console.error('Failed to fetch dashboard data:', error)
+    } catch (err: any) {
+      console.error('Failed to fetch dashboard data:', err)
+      setError(err.message || 'Failed to load dashboard')
     } finally {
       setLoading(false)
     }
   }
 
+  // ✅ Loading state
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-[#0F172A] via-[#1E293B] to-[#0F172A] flex items-center justify-center">
         <div className="text-center">
           <div className="w-16 h-16 border-4 border-[#0EA5E9] border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
           <p className="text-gray-400">Loading dashboard...</p>
+        </div>
+      </div>
+    )
+  }
+
+  // ✅ Error state
+  if (error) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-[#0F172A] via-[#1E293B] to-[#0F172A] flex items-center justify-center">
+        <div className="text-center max-w-md">
+          <AlertCircle className="h-16 w-16 text-red-400 mx-auto mb-4" />
+          <h2 className="text-2xl font-bold text-white mb-2">Failed to Load Dashboard</h2>
+          <p className="text-gray-400 mb-6">{error}</p>
+          <button
+            onClick={fetchDashboardData}
+            className="bg-gradient-to-r from-[#0EA5E9] to-[#06B6D4] text-white px-6 py-3 rounded-xl font-semibold"
+          >
+            Try Again
+          </button>
         </div>
       </div>
     )

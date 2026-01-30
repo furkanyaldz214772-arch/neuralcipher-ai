@@ -14,6 +14,7 @@ import {
   Loader2
 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
+import { doctorAPI } from '@/lib/doctor-api'
 
 interface DoctorStats {
   total_patients: number
@@ -42,6 +43,7 @@ export default function DoctorDashboard() {
   })
   const [patients, setPatients] = useState<Patient[]>([])
   const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
   const [sortBy, setSortBy] = useState<'risk' | 'date' | 'name'>('risk')
 
   useEffect(() => {
@@ -51,41 +53,31 @@ export default function DoctorDashboard() {
   const fetchDashboardData = async () => {
     try {
       setIsLoading(true)
+      setError(null)
       
-      // Fetch real stats from API
-      const statsResponse = await fetch('/api/v1/doctor/dashboard/stats', {
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        }
-      })
+      // ✅ YENİ: Paralel API çağrıları ile yeni API client kullan
+      const [statsData, patientsData, alertsData] = await Promise.all([
+        doctorAPI.dashboard.getStats(),
+        doctorAPI.dashboard.getRecentPatients(10),
+        doctorAPI.dashboard.getHighRiskAlerts(5)
+      ])
       
-      if (statsResponse.ok) {
-        const statsData = await statsResponse.json()
-        setStats(statsData)
-      }
-
-      // Fetch recent patients
-      const patientsResponse = await fetch('/api/v1/doctor/patients?page=1&page_size=5', {
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        }
-      })
+      setStats(statsData)
       
-      if (patientsResponse.ok) {
-        const patientsData = await patientsResponse.json()
-        const formattedPatients = patientsData.map((p: any) => ({
-          id: p.id.toString(),
-          name: `${p.first_name || ''} ${p.last_name || ''}`.trim() || p.email,
-          email: p.email,
-          last_test_date: p.last_test_date,
-          test_count: p.total_tests || 0,
-          risk_score: p.last_risk_score,
-          status: p.last_risk_score >= 70 ? 'high' : p.last_risk_score >= 40 ? 'medium' : 'low'
-        }))
-        setPatients(formattedPatients)
-      }
-    } catch (error) {
-      console.error('Failed to fetch dashboard data:', error)
+      // Format patients
+      const formattedPatients = patientsData.map((p: any) => ({
+        id: p.id.toString(),
+        name: `${p.first_name || ''} ${p.last_name || ''}`.trim() || p.email,
+        email: p.email,
+        last_test_date: p.last_test_date,
+        test_count: p.total_tests || 0,
+        risk_score: p.last_risk_score,
+        status: p.last_risk_score >= 70 ? 'high' : p.last_risk_score >= 40 ? 'medium' : 'low'
+      }))
+      setPatients(formattedPatients)
+    } catch (err: any) {
+      console.error('Failed to fetch dashboard data:', err)
+      setError(err.message || 'Failed to load dashboard')
     } finally {
       setIsLoading(false)
     }
@@ -110,10 +102,33 @@ export default function DoctorDashboard() {
     }
   }
 
+  // ✅ Loading state
   if (isLoading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-[#0F172A] via-[#1E293B] to-[#0F172A] flex items-center justify-center">
-        <Loader2 className="h-12 w-12 text-[#0EA5E9] animate-spin" />
+        <div className="text-center">
+          <Loader2 className="h-12 w-12 text-[#0EA5E9] animate-spin mx-auto mb-4" />
+          <p className="text-gray-400">Loading dashboard...</p>
+        </div>
+      </div>
+    )
+  }
+
+  // ✅ Error state
+  if (error) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-[#0F172A] via-[#1E293B] to-[#0F172A] flex items-center justify-center">
+        <div className="text-center max-w-md">
+          <AlertTriangle className="h-16 w-16 text-red-400 mx-auto mb-4" />
+          <h2 className="text-2xl font-bold text-white mb-2">Failed to Load Dashboard</h2>
+          <p className="text-gray-400 mb-6">{error}</p>
+          <button
+            onClick={fetchDashboardData}
+            className="bg-gradient-to-r from-[#0EA5E9] to-[#06B6D4] text-white px-6 py-3 rounded-xl font-semibold"
+          >
+            Try Again
+          </button>
+        </div>
       </div>
     )
   }
