@@ -1,24 +1,22 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
+import { adminApi, isAdminAuthenticated } from '@/lib/admin-api'
 
 /**
  * Admin Panel - Users Management
- * List, filter, search, and manage all users
- * Updated: 28 Ocak 2026 - Dark Theme + Full CRUD
+ * List, filter, search, and manage all users with real API
+ * Updated: 30 Ocak 2026 - API Integration
  */
 
 export default function AdminUsersPage() {
   const router = useRouter()
-  const [users, setUsers] = useState([
-    { id: 1, name: 'John Doe', email: 'john@example.com', role: 'Patient', status: 'Active', country: 'USA', tests: 5, lastLogin: '2026-01-28' },
-    { id: 2, name: 'Dr. Sarah Smith', email: 'sarah@hospital.com', role: 'Doctor', status: 'Active', country: 'UK', tests: 45, lastLogin: '2026-01-28' },
-    { id: 3, name: 'City Hospital', email: 'info@cityhospital.com', role: 'Hospital', status: 'Active', country: 'Germany', tests: 234, lastLogin: '2026-01-27' },
-    { id: 4, name: 'Jane Wilson', email: 'jane@example.com', role: 'Patient', status: 'Inactive', country: 'Canada', tests: 2, lastLogin: '2026-01-25' },
-    { id: 5, name: 'Dr. Michael Brown', email: 'michael@clinic.com', role: 'Doctor', status: 'Active', country: 'USA', tests: 67, lastLogin: '2026-01-28' },
-  ])
-
+  const [loading, setLoading] = useState(true)
+  const [users, setUsers] = useState<any[]>([])
+  const [totalUsers, setTotalUsers] = useState(0)
+  const [currentPage, setCurrentPage] = useState(1)
+  const [totalPages, setTotalPages] = useState(1)
   const [searchTerm, setSearchTerm] = useState('')
   const [filterRole, setFilterRole] = useState('All')
   const [filterStatus, setFilterStatus] = useState('All')
@@ -26,14 +24,58 @@ export default function AdminUsersPage() {
   const [editingUser, setEditingUser] = useState<any>(null)
   const [showEditModal, setShowEditModal] = useState(false)
 
-  // Filter users
-  const filteredUsers = users.filter(user => {
-    const matchesSearch = user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         user.email.toLowerCase().includes(searchTerm.toLowerCase())
-    const matchesRole = filterRole === 'All' || user.role === filterRole
-    const matchesStatus = filterStatus === 'All' || user.status === filterStatus
-    return matchesSearch && matchesRole && matchesStatus
-  })
+  useEffect(() => {
+    // Check authentication
+    if (!isAdminAuthenticated()) {
+      router.push('/admin-panel')
+      return
+    }
+
+    // Load users
+    loadUsers()
+  }, [currentPage, searchTerm, filterRole, filterStatus])
+
+  const loadUsers = async () => {
+    try {
+      setLoading(true)
+      
+      const params: any = {
+        page: currentPage,
+        page_size: 20
+      }
+      
+      if (searchTerm) params.search = searchTerm
+      if (filterRole !== 'All') params.role = filterRole.toUpperCase()
+      if (filterStatus !== 'All') params.is_active = filterStatus === 'Active'
+      
+      const response = await adminApi.getUsers(params)
+      
+      setUsers(response.users.map(u => ({
+        id: u.id,
+        name: `${u.first_name || ''} ${u.last_name || ''}`.trim() || u.email.split('@')[0],
+        email: u.email,
+        role: u.role.charAt(0) + u.role.slice(1).toLowerCase(),
+        status: u.is_active ? 'Active' : 'Inactive',
+        country: 'N/A', // TODO: Add country field
+        tests: 0, // TODO: Get from tests table
+        lastLogin: u.last_login ? new Date(u.last_login).toLocaleDateString() : 'Never'
+      })))
+      
+      setTotalUsers(response.total)
+      setTotalPages(response.total_pages)
+      
+    } catch (error: any) {
+      console.error('Failed to load users:', error)
+      if (error.message.includes('401') || error.message.includes('403')) {
+        router.push('/admin-panel')
+      }
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  // Filter users (now done server-side, but keep for UI)
+  const filteredUsers = users
 
   // Toggle user selection
   const toggleUserSelection = (userId: number) => {
@@ -65,27 +107,61 @@ export default function AdminUsersPage() {
   }
 
   // Save edited user
-  const handleSaveEdit = () => {
-    if (editingUser) {
-      setUsers(users.map(u => u.id === editingUser.id ? editingUser : u))
+  const handleSaveEdit = async () => {
+    if (!editingUser) return
+    
+    try {
+      await adminApi.updateUser(editingUser.id, {
+        first_name: editingUser.name.split(' ')[0],
+        last_name: editingUser.name.split(' ').slice(1).join(' '),
+        is_active: editingUser.status === 'Active'
+      })
+      
       setShowEditModal(false)
       setEditingUser(null)
+      loadUsers() // Reload users
+    } catch (error) {
+      alert('Failed to update user')
     }
   }
 
   // Delete single user
-  const handleDeleteUser = (userId: number) => {
-    if (confirm('Are you sure you want to delete this user?')) {
-      setUsers(users.filter(u => u.id !== userId))
+  const handleDeleteUser = async (userId: number) => {
+    if (!confirm('Are you sure you want to delete this user?')) return
+    
+    try {
+      await adminApi.deleteUser(userId)
+      loadUsers() // Reload users
+    } catch (error) {
+      alert('Failed to delete user')
     }
   }
 
   // Delete multiple users
-  const handleBulkDelete = () => {
-    if (confirm(`Are you sure you want to delete ${selectedUsers.length} user(s)?`)) {
-      setUsers(users.filter(u => !selectedUsers.includes(u.id)))
+  const handleBulkDelete = async () => {
+    if (!confirm(`Are you sure you want to delete ${selectedUsers.length} user(s)?`)) return
+    
+    try {
+      await Promise.all(selectedUsers.map(id => adminApi.deleteUser(id)))
       setSelectedUsers([])
+      loadUsers() // Reload users
+    } catch (error) {
+      alert('Failed to delete users')
     }
+  }
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="text-center">
+          <svg className="animate-spin h-12 w-12 text-purple-500 mx-auto mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          </svg>
+          <p className="text-slate-400">Loading users...</p>
+        </div>
+      </div>
+    )
   }
 
   return (
@@ -291,22 +367,38 @@ export default function AdminUsersPage() {
         {/* Pagination */}
         <div className="px-6 py-4 border-t border-slate-800 flex items-center justify-between">
           <p className="text-sm text-slate-400">
-            Showing {filteredUsers.length} of {users.length} users
+            Showing {users.length} of {totalUsers} users
           </p>
           <div className="flex items-center gap-2">
-            <button className="px-4 py-2 border border-slate-700 text-slate-300 rounded-lg hover:bg-slate-800 transition-colors text-sm">
+            <button 
+              onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+              disabled={currentPage === 1}
+              className="px-4 py-2 border border-slate-700 text-slate-300 rounded-lg hover:bg-slate-800 transition-colors text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+            >
               Previous
             </button>
-            <button className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors text-sm">
-              1
-            </button>
-            <button className="px-4 py-2 border border-slate-700 text-slate-300 rounded-lg hover:bg-slate-800 transition-colors text-sm">
-              2
-            </button>
-            <button className="px-4 py-2 border border-slate-700 text-slate-300 rounded-lg hover:bg-slate-800 transition-colors text-sm">
-              3
-            </button>
-            <button className="px-4 py-2 border border-slate-700 text-slate-300 rounded-lg hover:bg-slate-800 transition-colors text-sm">
+            {[...Array(Math.min(5, totalPages))].map((_, i) => {
+              const page = i + 1
+              return (
+                <button
+                  key={page}
+                  onClick={() => setCurrentPage(page)}
+                  className={`px-4 py-2 rounded-lg transition-colors text-sm ${
+                    currentPage === page
+                      ? 'bg-purple-600 text-white'
+                      : 'border border-slate-700 text-slate-300 hover:bg-slate-800'
+                  }`}
+                >
+                  {page}
+                </button>
+              )
+            })}
+            {totalPages > 5 && <span className="text-slate-400">...</span>}
+            <button
+              onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
+              disabled={currentPage === totalPages}
+              className="px-4 py-2 border border-slate-700 text-slate-300 rounded-lg hover:bg-slate-800 transition-colors text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+            >
               Next
             </button>
           </div>

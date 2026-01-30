@@ -26,7 +26,7 @@ export default function RegisterPage() {
   const [dateOfBirth, setDateOfBirth] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
-  const [role, setRole] = useState<'patient' | 'doctor' | 'hospital' | 'authorized'>('patient')
+  const [role, setRole] = useState<'patient' | 'doctor' | 'hospital'>('patient')
   const [error, setError] = useState('')
   const [selectedCountry, setSelectedCountry] = useState({ code: '+1', flag: '🇺🇸', name: 'United States' })
   const [showCountryDropdown, setShowCountryDropdown] = useState(false)
@@ -335,9 +335,6 @@ export default function RegisterPage() {
             break
           case 'hospital':
             router.push('/hospital/dashboard')
-            break
-          case 'authorized':
-            router.push('/patient/dashboard')
             break
           default:
             router.push('/patient/dashboard')
@@ -814,23 +811,6 @@ export default function RegisterPage() {
                     Hospital
                   </div>
                   <div className="text-xs text-gray-400 mt-1">Institution account</div>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setRole('authorized')}
-                  className={`group p-4 rounded-xl text-center transition-all duration-300 ${
-                    role === 'authorized'
-                      ? 'bg-[#64FFDA]/10 border-2 border-[#64FFDA]/50'
-                      : 'bg-[#0A0E27]/50 border-2 border-[#64FFDA]/20 hover:border-[#64FFDA]/40'
-                  }`}
-                >
-                  <svg className={`w-8 h-8 mx-auto mb-2 ${role === 'authorized' ? 'text-[#64FFDA]' : 'text-gray-400'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                  </svg>
-                  <div className={`font-bold ${role === 'authorized' ? 'text-[#64FFDA]' : 'text-white'}`}>
-                    Authorized Personnel
-                  </div>
-                  <div className="text-xs text-gray-400 mt-1">Staff access</div>
                 </button>
               </div>
             </div>

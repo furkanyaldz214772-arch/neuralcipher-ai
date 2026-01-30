@@ -1,27 +1,35 @@
 'use client'
 
 import { useState } from 'react'
+import { adminApi } from '@/lib/admin-api'
 
 /**
  * Admin Panel - Login Page
- * Simple authentication with username and password
- * Updated: 28 Ocak 2026 - Fixed redirect to dashboard
+ * Real API authentication with JWT tokens
+ * Updated: 30 Ocak 2026 - API Integration Complete
  */
 
 export default function AdminLoginPage() {
-  const [username, setUsername] = useState('')
+  const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
+  const [loading, setLoading] = useState(false)
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
+    setError('')
+    setLoading(true)
     
-    // Simple authentication (username: admin, password: admin)
-    if (username === 'admin' && password === 'admin') {
+    try {
+      // Call real API
+      await adminApi.login({ email, password })
+      
       // Redirect to dashboard
       window.location.href = '/admin-panel/dashboard'
-    } else {
-      setError('Kullanıcı adı veya şifre hatalı / Invalid username or password')
+    } catch (err: any) {
+      setError(err.message || 'Giriş başarısız / Login failed')
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -60,19 +68,20 @@ export default function AdminLoginPage() {
 
           {/* Login Form */}
           <form onSubmit={handleLogin} className="space-y-4">
-            {/* Username */}
+            {/* Email */}
             <div>
-              <label htmlFor="username" className="block text-sm font-medium text-slate-200 mb-2">
-                Kullanıcı Adı / Username
+              <label htmlFor="email" className="block text-sm font-medium text-slate-200 mb-2">
+                E-posta / Email
               </label>
               <input
-                id="username"
-                type="text"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
+                id="email"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
-                placeholder="admin"
+                placeholder="admin@neuralcipher.ai"
                 required
+                disabled={loading}
               />
             </div>
 
@@ -89,6 +98,7 @@ export default function AdminLoginPage() {
                 className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
                 placeholder="••••••"
                 required
+                disabled={loading}
               />
             </div>
 
@@ -102,9 +112,20 @@ export default function AdminLoginPage() {
             {/* Login Button */}
             <button
               type="submit"
-              className="w-full py-3 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-semibold rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl"
+              disabled={loading}
+              className="w-full py-3 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-semibold rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
             >
-              Giriş Yap / Login
+              {loading ? (
+                <>
+                  <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                  Giriş yapılıyor...
+                </>
+              ) : (
+                'Giriş Yap / Login'
+              )}
             </button>
           </form>
 

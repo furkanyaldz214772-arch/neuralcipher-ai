@@ -1,36 +1,126 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { adminApi, isAdminAuthenticated } from '@/lib/admin-api'
+import { useRouter } from 'next/navigation'
 
 /**
  * Admin Dashboard - Main Page
- * Shows statistics, charts, and recent activities
- * Updated: 28 Ocak 2026
+ * Shows real statistics from API
+ * Updated: 30 Ocak 2026 - API Integration
  */
 
 export default function AdminDashboardPage() {
+  const router = useRouter()
+  const [loading, setLoading] = useState(true)
   const [stats, setStats] = useState({
-    totalUsers: 1247,
-    totalTests: 3892,
-    totalRevenue: 45678,
-    activeUsers: 342,
-    pendingActions: 23,
-    hospitals: 45,
-    doctors: 189,
-    systemAlerts: 5,
+    totalUsers: 0,
+    totalTests: 0,
+    totalRevenue: 0,
+    activeUsers: 0,
+    pendingActions: 0,
+    hospitals: 0,
+    doctors: 0,
+    systemAlerts: 0,
   })
 
-  const [recentUsers, setRecentUsers] = useState([
-    { id: 1, name: 'John Doe', email: 'john@example.com', role: 'Patient', date: '2026-01-28' },
-    { id: 2, name: 'Dr. Smith', email: 'smith@hospital.com', role: 'Doctor', date: '2026-01-28' },
-    { id: 3, name: 'City Hospital', email: 'info@cityhospital.com', role: 'Hospital', date: '2026-01-27' },
-  ])
+  const [recentUsers, setRecentUsers] = useState<any[]>([])
+  const [recentTests, setRecentTests] = useState<any[]>([])
+  const [userGrowthData, setUserGrowthData] = useState<number[]>([])
+  const [roleDistribution, setRoleDistribution] = useState<any[]>([])
 
-  const [recentTests, setRecentTests] = useState([
-    { id: 1, patient: 'John Doe', result: 'Low Risk', date: '2026-01-28 14:30' },
-    { id: 2, patient: 'Jane Smith', result: 'Medium Risk', date: '2026-01-28 13:15' },
-    { id: 3, patient: 'Bob Johnson', result: 'High Risk', date: '2026-01-28 11:45' },
-  ])
+  useEffect(() => {
+    // Check authentication
+    if (!isAdminAuthenticated()) {
+      router.push('/admin-panel')
+      return
+    }
+
+    // Load dashboard data
+    loadDashboardData()
+    
+    // Auto refresh every 30 seconds
+    const interval = setInterval(loadDashboardData, 30000)
+    return () => clearInterval(interval)
+  }, [])
+
+  const loadDashboardData = async () => {
+    try {
+      setLoading(true)
+      
+      // Load stats
+      const statsData = await adminApi.getDashboardStats()
+      setStats({
+        totalUsers: statsData.total_users,
+        totalTests: statsData.total_tests,
+        totalRevenue: statsData.revenue_monthly,
+        activeUsers: statsData.active_users,
+        pendingActions: 0, // TODO: Implement
+        hospitals: statsData.hospitals,
+        doctors: statsData.doctors,
+        systemAlerts: statsData.system_alerts,
+      })
+
+      // Load recent activity
+      const activities = await adminApi.getRecentActivity(5)
+      setRecentUsers(activities.map(a => ({
+        id: a.user_email,
+        name: a.user_name,
+        email: a.user_email,
+        role: a.user_role,
+        date: new Date(a.timestamp).toLocaleDateString()
+      })))
+
+      // Load user growth chart data
+      const growthData = await adminApi.getUserGrowthChart(30)
+      if (growthData && growthData.datasets && growthData.datasets[0]) {
+        setUserGrowthData(growthData.datasets[0].data)
+      }
+
+      // Load role distribution
+      const roleData = await adminApi.getRoleDistributionChart()
+      if (roleData && roleData.labels && roleData.datasets && roleData.datasets[0]) {
+        const distribution = roleData.labels.map((label: string, index: number) => ({
+          label,
+          count: roleData.datasets[0].data[index],
+          percentage: 0 // Will calculate below
+        }))
+        
+        // Calculate percentages
+        const total = distribution.reduce((sum: number, item: any) => sum + item.count, 0)
+        distribution.forEach((item: any) => {
+          item.percentage = total > 0 ? Math.round((item.count / total) * 100) : 0
+        })
+        
+        setRoleDistribution(distribution)
+      }
+
+      // TODO: Load recent tests when tests API is ready
+      setRecentTests([])
+      
+    } catch (error: any) {
+      console.error('Failed to load dashboard data:', error)
+      if (error.message.includes('401') || error.message.includes('403')) {
+        router.push('/admin-panel')
+      }
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="text-center">
+          <svg className="animate-spin h-12 w-12 text-purple-500 mx-auto mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          </svg>
+          <p className="text-slate-400">Loading dashboard...</p>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="space-y-6">
@@ -106,9 +196,25 @@ export default function AdminDashboardPage() {
         <div className="bg-slate-800 rounded-xl shadow-sm border border-slate-700 p-6">
           <h3 className="text-lg font-semibold text-white mb-4">User Growth (Last 30 Days)</h3>
           <div className="h-64 flex items-end justify-between gap-2">
-            {[40, 55, 45, 60, 70, 65, 80, 75, 90, 85, 95, 100].map((height, i) => (
-              <div key={i} className="flex-1 bg-gradient-to-t from-purple-500 to-pink-500 rounded-t-lg" style={{ height: `${height}%` }}></div>
-            ))}
+            {userGrowthData.length > 0 ? (
+              userGrowthData.map((value, i) => {
+                const maxValue = Math.max(...userGrowthData, 1)
+                const height = (value / maxValue) * 100
+                return (
+                  <div 
+                    key={i} 
+                    className="flex-1 bg-gradient-to-t from-purple-500 to-pink-500 rounded-t-lg transition-all hover:opacity-80" 
+                    style={{ height: `${height}%` }}
+                    title={`${value} users`}
+                  ></div>
+                )
+              })
+            ) : (
+              // Fallback demo data
+              [40, 55, 45, 60, 70, 65, 80, 75, 90, 85, 95, 100].map((height, i) => (
+                <div key={i} className="flex-1 bg-gradient-to-t from-purple-500/50 to-pink-500/50 rounded-t-lg" style={{ height: `${height}%` }}></div>
+              ))
+            )}
           </div>
         </div>
 
@@ -116,10 +222,28 @@ export default function AdminDashboardPage() {
         <div className="bg-slate-800 rounded-xl shadow-sm border border-slate-700 p-6">
           <h3 className="text-lg font-semibold text-white mb-4">User Distribution by Role</h3>
           <div className="space-y-4">
-            <RoleBar label="Patients" percentage={65} color="purple" count={810} />
-            <RoleBar label="Doctors" percentage={15} color="blue" count={189} />
-            <RoleBar label="Hospitals" percentage={4} color="green" count={45} />
-            <RoleBar label="Authorized" percentage={16} color="pink" count={203} />
+            {roleDistribution.length > 0 ? (
+              roleDistribution.map((role, index) => {
+                const colors = ['purple', 'blue', 'green', 'pink', 'indigo']
+                return (
+                  <RoleBar 
+                    key={index}
+                    label={role.label} 
+                    percentage={role.percentage} 
+                    color={colors[index % colors.length]} 
+                    count={role.count} 
+                  />
+                )
+              })
+            ) : (
+              // Fallback demo data
+              <>
+                <RoleBar label="Patients" percentage={65} color="purple" count={stats.totalUsers > 0 ? Math.round(stats.totalUsers * 0.65) : 0} />
+                <RoleBar label="Doctors" percentage={15} color="blue" count={stats.doctors} />
+                <RoleBar label="Hospitals" percentage={4} color="green" count={stats.hospitals} />
+                <RoleBar label="Others" percentage={16} color="pink" count={stats.totalUsers > 0 ? stats.totalUsers - stats.doctors - stats.hospitals - Math.round(stats.totalUsers * 0.65) : 0} />
+              </>
+            )}
           </div>
         </div>
       </div>
