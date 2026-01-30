@@ -35,7 +35,7 @@ export default function TestResultPage() {
   const loadTestResult = async () => {
     try {
       setLoading(true);
-      const result = await patientAPI.getTestDetail(parseInt(testId));
+      const result = await patientAPI.tests.getTestDetails(testId.toString());
       setTest(result);
     } catch (err: any) {
       console.error("Failed to load test:", err);
