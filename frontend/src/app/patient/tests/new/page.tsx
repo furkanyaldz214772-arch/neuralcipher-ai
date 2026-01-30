@@ -547,7 +547,7 @@ export default function NewTestPage() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.2 }}
                 >
-                  ✅ Ses Kaydı Başarılı!
+                  ✅ Recording Successful!
                 </motion.h2>
                 
                 <motion.p 
@@ -556,7 +556,7 @@ export default function NewTestPage() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.3 }}
                 >
-                  Sesiniz başarıyla yüklendi
+                  Your voice has been uploaded successfully
                 </motion.p>
 
                 {/* Progress Bar */}
@@ -581,22 +581,22 @@ export default function NewTestPage() {
                       <Activity className="h-6 w-6 text-[#10B981]" />
                     </div>
                     <div className="flex-1">
-                      <h3 className="text-white font-bold text-lg mb-2">🔬 Analiz Başlatıldı</h3>
+                      <h3 className="text-white font-bold text-lg mb-2">🔬 Analysis Started</h3>
                       <p className="text-gray-300 text-sm leading-relaxed mb-3">
-                        Ses kaydınız AI sistemimize gönderildi. Gelişmiş algoritmalarımız şu anda sesinizi analiz ediyor.
+                        Your voice recording has been sent to our AI system. Our advanced algorithms are now analyzing your voice.
                       </p>
                       <div className="space-y-2">
                         <div className="flex items-center gap-2 text-sm">
                           <div className="w-2 h-2 rounded-full bg-[#10B981] animate-pulse" />
-                          <span className="text-gray-400">59 ses özelliği çıkarılıyor</span>
+                          <span className="text-gray-400">Extracting 59 voice features</span>
                         </div>
                         <div className="flex items-center gap-2 text-sm">
                           <div className="w-2 h-2 rounded-full bg-[#8B5CF6] animate-pulse" />
-                          <span className="text-gray-400">Yapay zeka modeli çalışıyor</span>
+                          <span className="text-gray-400">AI model processing</span>
                         </div>
                         <div className="flex items-center gap-2 text-sm">
                           <div className="w-2 h-2 rounded-full bg-[#0EA5E9] animate-pulse" />
-                          <span className="text-gray-400">Detaylı rapor hazırlanıyor</span>
+                          <span className="text-gray-400">Preparing detailed report</span>
                         </div>
                       </div>
                     </div>
@@ -613,8 +613,8 @@ export default function NewTestPage() {
                   <div className="flex items-center justify-center gap-3">
                     <Clock className="h-5 w-5 text-[#0EA5E9]" />
                     <div className="text-left">
-                      <p className="text-white font-semibold">⏱️ Tahmini Süre: 2-5 dakika</p>
-                      <p className="text-gray-400 text-sm">Analiz tamamlanınca bildirim alacaksınız</p>
+                      <p className="text-white font-semibold">⏱️ Processing Time</p>
+                      <p className="text-gray-400 text-sm">Analysis will be completed shortly</p>
                     </div>
                   </div>
                 </motion.div>
@@ -629,8 +629,8 @@ export default function NewTestPage() {
                   <div className="flex items-center justify-center gap-3">
                     <FileText className="h-5 w-5 text-[#F59E0B]" />
                     <div className="text-left">
-                      <p className="text-white font-semibold">📋 Sonuçlarınızı Görmek İçin</p>
-                      <p className="text-gray-400 text-sm">"Testlerim" sayfasına yönlendiriliyorsunuz...</p>
+                      <p className="text-white font-semibold">📋 View Your Results</p>
+                      <p className="text-gray-400 text-sm">Check "My Tests" page for results...</p>
                     </div>
                   </div>
                 </motion.div>
@@ -706,7 +706,7 @@ export default function NewTestPage() {
                   transition={{ delay: 0.3 }}
                   className="text-3xl sm:text-4xl font-bold text-white text-center mb-4"
                 >
-                  🎉 Ses Kaydı Tamamlandı!
+                  🎉 Recording Complete!
                 </motion.h2>
 
                 {/* Description */}
@@ -717,17 +717,16 @@ export default function NewTestPage() {
                   className="space-y-4 mb-8"
                 >
                   <p className="text-lg text-gray-300 text-center leading-relaxed">
-                    Ses kaydınız başarıyla yüklendi ve analiz süreci başlatıldı.
+                    Your voice recording has been successfully uploaded and analysis has started.
                   </p>
                   
                   <div className="bg-[#0EA5E9]/10 border border-[#0EA5E9]/30 rounded-xl p-6">
                     <div className="flex items-start gap-3">
                       <Activity className="h-6 w-6 text-[#0EA5E9] flex-shrink-0 mt-1 animate-pulse" />
                       <div>
-                        <h3 className="text-white font-semibold mb-2 text-lg">Analiz Devam Ediyor</h3>
+                        <h3 className="text-white font-semibold mb-2 text-lg">Analysis in Progress</h3>
                         <p className="text-gray-400 text-sm leading-relaxed">
-                          Yapay zeka modelimiz ses kaydınızı analiz ediyor. Bu işlem birkaç dakika sürebilir. 
-                          Sonuçlar hazır olduğunda <span className="text-[#0EA5E9] font-semibold">"Testlerim"</span> sayfasında görüntüleyebilirsiniz.
+                          Our AI model is analyzing your voice recording. You can view the results on your <span className="text-[#0EA5E9] font-semibold">"My Tests"</span> page once they're ready.
                         </p>
                       </div>
                     </div>
@@ -737,25 +736,25 @@ export default function NewTestPage() {
                     <div className="bg-[#0F172A] border border-gray-700 rounded-lg p-4 text-center">
                       <div className="flex items-center justify-center gap-2 text-[#0EA5E9] mb-2">
                         <Upload className="h-5 w-5" />
-                        <span className="font-semibold">Yüklendi</span>
+                        <span className="font-semibold">Uploaded</span>
                       </div>
-                      <p className="text-xs text-gray-400">Ses kaydı alındı</p>
+                      <p className="text-xs text-gray-400">Recording received</p>
                     </div>
                     
                     <div className="bg-[#0F172A] border border-gray-700 rounded-lg p-4 text-center">
                       <div className="flex items-center justify-center gap-2 text-[#F59E0B] mb-2">
                         <Activity className="h-5 w-5 animate-pulse" />
-                        <span className="font-semibold">İşleniyor</span>
+                        <span className="font-semibold">Processing</span>
                       </div>
-                      <p className="text-xs text-gray-400">AI analiz ediyor</p>
+                      <p className="text-xs text-gray-400">AI analyzing</p>
                     </div>
                     
                     <div className="bg-[#0F172A] border border-gray-700 rounded-lg p-4 text-center">
                       <div className="flex items-center justify-center gap-2 text-gray-500 mb-2">
                         <Clock className="h-5 w-5" />
-                        <span className="font-semibold">Bekliyor</span>
+                        <span className="font-semibold">Pending</span>
                       </div>
-                      <p className="text-xs text-gray-400">Sonuç hazırlanıyor</p>
+                      <p className="text-xs text-gray-400">Results preparing</p>
                     </div>
                   </div>
                 </motion.div>
@@ -777,7 +776,7 @@ export default function NewTestPage() {
                     className="flex-1 bg-gradient-to-r from-[#0EA5E9] to-[#06B6D4] text-white px-6 py-4 rounded-xl font-semibold flex items-center justify-center gap-2 shadow-lg shadow-[#0EA5E9]/30 text-lg"
                   >
                     <FileText className="h-5 w-5" />
-                    Testlerime Git
+                    Go to My Tests
                   </motion.button>
                   
                   <motion.button
@@ -790,7 +789,7 @@ export default function NewTestPage() {
                     className="flex-1 bg-[#1E293B] border-2 border-gray-700 hover:border-[#0EA5E9] text-white px-6 py-4 rounded-xl font-semibold flex items-center justify-center gap-2 transition-colors text-lg"
                   >
                     <ChevronRight className="h-5 w-5" />
-                    Ana Sayfaya Dön
+                    Back to Dashboard
                   </motion.button>
                 </motion.div>
 
@@ -802,7 +801,7 @@ export default function NewTestPage() {
                   className="mt-6 text-center"
                 >
                   <p className="text-sm text-gray-500">
-                    💡 İpucu: Sonuçlar genellikle 2-5 dakika içinde hazır olur
+                    💡 Tip: Results will be available on your tests page
                   </p>
                 </motion.div>
               </motion.div>
