@@ -1,17 +1,11 @@
 {
-  "buildCommand": "cd frontend && rm -rf .next && rm -rf node_modules/.cache && rm -rf .turbo && npm ci --force && npm run build",
-  "outputDirectory": "frontend/.next",
-  "installCommand": "cd frontend && npm ci --force",
+  "buildCommand": "npm run build",
+  "outputDirectory": ".next",
+  "installCommand": "npm ci",
   "framework": "nextjs",
-  "rewrites": [
-    {
-      "source": "/(.*)",
-      "destination": "/frontend/$1"
-    }
-  ],
   "env": {
     "NEXT_PUBLIC_API_URL": "https://neuralcipher-ai-production.up.railway.app",
-    "CACHE_BUST": "2026-01-28-FORCE-REBUILD-v3",
+    "CACHE_BUST": "2026-01-31-ROOT-DIRECTORY-FIX",
     "NEXT_TELEMETRY_DISABLED": "1"
   }
 }
