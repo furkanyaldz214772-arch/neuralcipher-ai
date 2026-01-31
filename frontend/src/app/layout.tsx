@@ -1,4 +1,4 @@
-// Build: 31 Jan 2026 19:45 - RadialBar fix deployed
+// Build: 31 Jan 2026 20:00 - Simplified RadialBar, system ready
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
