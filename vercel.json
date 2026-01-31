@@ -1,11 +1,11 @@
 {
   "buildCommand": "npm run build",
   "outputDirectory": ".next",
-  "installCommand": "npm ci",
+  "installCommand": "npm install --legacy-peer-deps",
   "framework": "nextjs",
   "env": {
     "NEXT_PUBLIC_API_URL": "https://neuralcipher-ai-production.up.railway.app",
-    "CACHE_BUST": "2026-01-31-ROOT-DIRECTORY-FIX",
+    "CACHE_BUST": "2026-02-01-FINAL-FIX",
     "NEXT_TELEMETRY_DISABLED": "1"
   }
 }
