@@ -662,48 +662,30 @@ export default function PatientTestsPage() {
                       </div>
                     )}
 
-                    {/* Actions - Conditional based on processing status */}
+                    {/* Actions - Disabled (not clickable) */}
                     <div className="flex items-center gap-2">
                       {test.processingStatus === 'completed' ? (
                         <>
-                          <motion.button
-                            whileHover={{ scale: 1.1 }}
-                            whileTap={{ scale: 0.9 }}
-                            onClick={(e) => {
-                              e.stopPropagation()
-                              router.push(`/patient/tests/${test.id}`)
-                            }}
-                            className="p-3 bg-[#0EA5E9]/10 hover:bg-[#0EA5E9]/20 text-[#0EA5E9] rounded-xl transition-all group-hover:bg-[#0EA5E9]/20"
-                            title="View Detailed Analysis"
+                          <div
+                            className="p-3 bg-gray-700/30 text-gray-500 rounded-xl cursor-not-allowed opacity-50"
+                            title="Currently disabled"
                           >
                             <Eye className="h-5 w-5" />
-                          </motion.button>
-                          <motion.button
-                            whileHover={{ scale: 1.1 }}
-                            whileTap={{ scale: 0.9 }}
-                            onClick={(e) => {
-                              e.stopPropagation()
-                              handleDownloadPDF(test.id)
-                            }}
-                            className="p-3 bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 rounded-xl transition-all"
-                            title="Download Report"
+                          </div>
+                          <div
+                            className="p-3 bg-gray-700/30 text-gray-500 rounded-xl cursor-not-allowed opacity-50"
+                            title="Currently disabled"
                           >
                             <Download className="h-5 w-5" />
-                          </motion.button>
+                          </div>
                         </>
                       ) : (
-                        <motion.button
-                          whileHover={{ scale: 1.1 }}
-                          whileTap={{ scale: 0.9 }}
-                          onClick={(e) => {
-                            e.stopPropagation()
-                            handleDownloadPDF(test.id)
-                          }}
-                          className="p-3 bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 rounded-xl transition-all"
-                          title="Download Report (Primary Action)"
+                        <div
+                          className="p-3 bg-gray-700/30 text-gray-500 rounded-xl cursor-not-allowed opacity-50"
+                          title="Currently disabled"
                         >
                           <Download className="h-5 w-5" />
-                        </motion.button>
+                        </div>
                       )}
                     </div>
                   </div>
