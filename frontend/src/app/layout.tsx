@@ -1,4 +1,4 @@
-// Force clean build - 31 Jan 2026
+// Build: 31 Jan 2026 19:45 - RadialBar fix deployed
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
