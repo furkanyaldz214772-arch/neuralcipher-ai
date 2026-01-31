@@ -1,11 +1,12 @@
 "use client";
 
+// Fixed: TypeScript build errors - null safety and RadialBar props
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { patientAPI } from "@/lib/patient-api";
 import { ArrowLeft, Brain, Download, Activity, AlertCircle, BarChart2, FileText, TrendingUp, TrendingDown, Minus } from "lucide-react";
 import { motion } from "framer-motion";
-import { RadialBarChart, RadialBar, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Cell } from 'recharts';
+import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Cell } from 'recharts';
 
 interface TestResult {
   id: number;
@@ -96,7 +97,7 @@ export default function TestResultPage() {
   };
 
   const getBiomarkerChartData = () => {
-    if (!test?.biomarkers) return [];
+    if (!test?.biomarkers || typeof test.biomarkers !== 'object') return [];
     
     const biomarkerRanges: { [key: string]: { normal: [number, number], unit: string } } = {
       'HNR': { normal: [20, 30], unit: 'dB' },
@@ -105,16 +106,16 @@ export default function TestResultPage() {
       'CPP': { normal: [10, 20], unit: 'dB' }
     };
 
-    return Object.entries(test.biomarkers)
+    return Object.entries(test.biomarkers || {})
       .filter(([key]) => biomarkerRanges[key])
       .map(([key, value]: [string, any]) => {
         const range = biomarkerRanges[key];
         const numValue = typeof value === 'number' ? value : parseFloat(value);
-        const isNormal = numValue >= range.normal[0] && numValue <= range.normal[1];
+        const isNormal = !isNaN(numValue) && numValue >= range.normal[0] && numValue <= range.normal[1];
         
         return {
           name: key.replace(/([A-Z])/g, ' $1').trim(),
-          value: numValue,
+          value: isNaN(numValue) ? 0 : numValue,
           normalMin: range.normal[0],
           normalMax: range.normal[1],
           unit: range.unit,
@@ -122,16 +123,6 @@ export default function TestResultPage() {
           status: isNormal ? 'Normal' : 'Abnormal'
         };
       });
-  };
-
-  const getRiskScoreData = () => {
-    if (!test?.risk_score) return [];
-    
-    return [{
-      name: 'Risk Score',
-      value: test.risk_score,
-      fill: test.risk_level === 'low' ? '#10B981' : test.risk_level === 'moderate' ? '#F59E0B' : '#EF4444'
-    }];
   };
 
   if (loading) {
@@ -209,7 +200,7 @@ export default function TestResultPage() {
           </div>
 
           <div className="space-y-6">
-            {/* Risk Score Overview with Radial Chart */}
+            {/* Risk Score Overview */}
             <motion.div 
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -247,36 +238,23 @@ export default function TestResultPage() {
                   </div>
                 </div>
                 
-                {/* Radial Chart */}
+                {/* Simple Risk Display */}
                 <div className="flex items-center justify-center">
-                  <ResponsiveContainer width="100%" height={250}>
-                    <RadialBarChart 
-                      cx="50%" 
-                      cy="50%" 
-                      innerRadius="60%" 
-                      outerRadius="100%" 
-                      data={getRiskScoreData()}
-                      startAngle={180}
-                      endAngle={0}
-                    >
-                      <RadialBar
-                        minAngle={15}
-                        background
-                        clockWise
-                        dataKey="value"
-                        cornerRadius={10}
+                  <div className="text-center">
+                    <div className={`text-8xl font-bold mb-4 ${getRiskColor(test.risk_level)}`}>
+                      {test.risk_score?.toFixed(0)}%
+                    </div>
+                    <div className="w-full bg-gray-700 rounded-full h-4 overflow-hidden">
+                      <div 
+                        className={`h-full transition-all duration-500 ${
+                          test.risk_level === 'low' ? 'bg-green-500' : 
+                          test.risk_level === 'moderate' ? 'bg-yellow-500' : 
+                          'bg-red-500'
+                        }`}
+                        style={{ width: `${test.risk_score || 0}%` }}
                       />
-                      <text
-                        x="50%"
-                        y="50%"
-                        textAnchor="middle"
-                        dominantBaseline="middle"
-                        className="text-4xl font-bold fill-white"
-                      >
-                        {test.risk_score?.toFixed(0)}%
-                      </text>
-                    </RadialBarChart>
-                  </ResponsiveContainer>
+                    </div>
+                  </div>
                 </div>
               </div>
             </motion.div>
@@ -365,7 +343,7 @@ export default function TestResultPage() {
                           borderRadius: '8px'
                         }}
                         labelStyle={{ color: '#F3F4F6' }}
-                        formatter={(value: any, name: string, props: any) => [
+                        formatter={(value: any, _name: string, props: any) => [
                           `${value.toFixed(3)} ${props.payload.unit}`,
                           props.payload.status
                         ]}
@@ -427,7 +405,7 @@ export default function TestResultPage() {
                 <div className="mt-6">
                   <h3 className="text-lg font-semibold text-white mb-4">Complete Biomarker Data</h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-                    {Object.entries(test.biomarkers).map(([key, value]: [string, any]) => (
+                    {Object.entries(test.biomarkers || {}).map(([key, value]: [string, any]) => (
                       <div key={key} className="bg-[#1E293B] border border-gray-700/50 rounded-lg p-4">
                         <p className="text-gray-400 text-xs mb-1 capitalize">
                           {key.replace(/_/g, ' ').replace(/([A-Z])/g, ' $1').trim()}
