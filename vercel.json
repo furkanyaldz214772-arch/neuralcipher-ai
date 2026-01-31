@@ -1,11 +1,11 @@
 {
   "buildCommand": "cd frontend && npm run build",
   "outputDirectory": "frontend/.next",
-  "installCommand": "cd frontend && npm install --legacy-peer-deps",
+  "installCommand": "npm install --legacy-peer-deps",
   "framework": "nextjs",
   "env": {
     "NEXT_PUBLIC_API_URL": "https://neuralcipher-ai-production.up.railway.app",
-    "CACHE_BUST": "2026-02-01-ABSOLUTE-FINAL",
+    "CACHE_BUST": "2026-02-01-PACKAGE-JSON-ROOT",
     "NEXT_TELEMETRY_DISABLED": "1"
   }
 }
