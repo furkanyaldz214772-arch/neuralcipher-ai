@@ -655,22 +655,18 @@ export default function PatientTestsPage() {
                       </div>
                     )}
 
-                    {/* Actions - Active buttons */}
+                    {/* Actions - Eye icon passive, Download active */}
                     <div className="flex items-center gap-2 pointer-events-auto">
                       {test.processingStatus === 'completed' ? (
                         <>
-                          <motion.button
-                            whileHover={{ scale: 1.1 }}
-                            whileTap={{ scale: 0.95 }}
-                            onClick={(e) => {
-                              e.stopPropagation()
-                              router.push(`/patient/tests/${test.id}`)
-                            }}
-                            className="p-3 bg-blue-500/10 hover:bg-blue-500/20 text-blue-400 rounded-xl transition-all border border-blue-500/20"
+                          {/* Eye icon - Passive (not clickable) */}
+                          <div
+                            className="p-3 bg-blue-500/10 text-blue-400 rounded-xl border border-blue-500/20 cursor-default"
                             title="View Details"
                           >
                             <Eye className="h-5 w-5" />
-                          </motion.button>
+                          </div>
+                          {/* Download button - Active */}
                           <motion.button
                             whileHover={{ scale: 1.1 }}
                             whileTap={{ scale: 0.95 }}
