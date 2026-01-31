@@ -550,14 +550,7 @@ export default function PatientTestsPage() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.05 }}
                   whileHover={{ scale: 1.01 }}
-                  className="bg-gradient-to-br from-[#1E293B] to-[#0F172A] border border-gray-700/50 rounded-xl p-6 hover:border-[#0EA5E9]/50 transition-all cursor-pointer group relative"
-                  onClick={() => {
-                    if (compareMode) {
-                      toggleTestSelection(test.id)
-                    } else {
-                      router.push(`/patient/tests/${test.id}`)
-                    }
-                  }}
+                  className="bg-gradient-to-br from-[#1E293B] to-[#0F172A] border border-gray-700/50 rounded-xl p-6 hover:border-[#0EA5E9]/50 transition-all group relative"
                 >
                   {/* Compare Mode Checkbox */}
                   {compareMode && (
@@ -662,27 +655,39 @@ export default function PatientTestsPage() {
                       </div>
                     )}
 
-                    {/* Actions - Disabled (not clickable) */}
-                    <div className="flex items-center gap-2">
+                    {/* Actions - Active buttons */}
+                    <div className="flex items-center gap-2 pointer-events-auto">
                       {test.processingStatus === 'completed' ? (
                         <>
-                          <div
-                            className="p-3 bg-gray-700/30 text-gray-500 rounded-xl cursor-not-allowed opacity-50"
-                            title="Currently disabled"
+                          <motion.button
+                            whileHover={{ scale: 1.1 }}
+                            whileTap={{ scale: 0.95 }}
+                            onClick={(e) => {
+                              e.stopPropagation()
+                              router.push(`/patient/tests/${test.id}`)
+                            }}
+                            className="p-3 bg-blue-500/10 hover:bg-blue-500/20 text-blue-400 rounded-xl transition-all border border-blue-500/20"
+                            title="View Details"
                           >
                             <Eye className="h-5 w-5" />
-                          </div>
-                          <div
-                            className="p-3 bg-gray-700/30 text-gray-500 rounded-xl cursor-not-allowed opacity-50"
-                            title="Currently disabled"
+                          </motion.button>
+                          <motion.button
+                            whileHover={{ scale: 1.1 }}
+                            whileTap={{ scale: 0.95 }}
+                            onClick={(e) => {
+                              e.stopPropagation()
+                              handleDownloadPDF(test.id)
+                            }}
+                            className="p-3 bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 rounded-xl transition-all border border-emerald-500/20"
+                            title="Download PDF"
                           >
                             <Download className="h-5 w-5" />
-                          </div>
+                          </motion.button>
                         </>
                       ) : (
                         <div
                           className="p-3 bg-gray-700/30 text-gray-500 rounded-xl cursor-not-allowed opacity-50"
-                          title="Currently disabled"
+                          title="Processing - not available yet"
                         >
                           <Download className="h-5 w-5" />
                         </div>
