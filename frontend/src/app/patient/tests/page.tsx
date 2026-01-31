@@ -20,6 +20,8 @@ interface Test {
   riskScore: number
   status: 'Low' | 'Moderate' | 'High'
   analyzed: boolean
+  processingStatus?: 'processing' | 'completed' | 'failed'
+  progress?: number
   trend?: 'up' | 'down' | 'stable'
   biomarkers?: {
     jitter: number
@@ -70,21 +72,25 @@ export default function PatientTestsPage() {
       const formattedTests: Test[] = testsData.map((test: any, index: number) => {
         const testDate = new Date(test.created_at)
         const riskScore = test.risk_score || 0
+        const isProcessing = test.status === 'processing'
+        const isCompleted = test.status === 'completed'
         
         return {
           id: test.id,
           date: testDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
           time: testDate.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }),
           fullDate: testDate,
-          riskScore,
+          riskScore: isCompleted ? riskScore : 0,
           status: riskScore < 30 ? 'Low' : riskScore < 60 ? 'Moderate' : 'High',
-          analyzed: test.status === 'completed',
+          analyzed: isCompleted,
+          processingStatus: test.status,
+          progress: isProcessing ? (Math.random() * 40 + 30) : 100, // Simulated progress 30-70%
           trend: index > 0 ? (Math.random() > 0.5 ? 'down' : Math.random() > 0.5 ? 'up' : 'stable') : 'stable',
-          biomarkers: test.biomarkers || {
+          biomarkers: isCompleted ? (test.biomarkers || {
             jitter: 0,
             shimmer: 0,
             hnr: 0
-          }
+          }) : undefined
         }
       })
       
@@ -584,68 +590,126 @@ export default function PatientTestsPage() {
                       </div>
                     </div>
 
-                    {/* Risk Score */}
-                    <div className="flex-1">
-                      <div className="flex items-center justify-between mb-2">
-                        <span className="text-sm font-medium text-gray-400">Risk Assessment</span>
-                        <div className="flex items-center gap-2">
-                          <span className={`text-2xl font-bold ${colors.text}`}>{test.riskScore}%</span>
-                          {getTrendIcon(test.trend)}
+                    {/* Processing Status or Risk Score */}
+                    {test.processingStatus === 'processing' ? (
+                      <div className="flex-1">
+                        <div className="flex items-center justify-between mb-2">
+                          <span className="text-sm font-medium text-gray-400 flex items-center gap-2">
+                            <motion.div
+                              animate={{ rotate: 360 }}
+                              transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+                            >
+                              <Brain className="h-4 w-4 text-[#0EA5E9]" />
+                            </motion.div>
+                            AI Analysis in Progress
+                          </span>
+                          <span className="text-lg font-bold text-[#0EA5E9]">{Math.round(test.progress || 0)}%</span>
+                        </div>
+                        <div className="relative h-3 bg-gray-700/50 rounded-full overflow-hidden">
+                          <motion.div
+                            initial={{ width: 0 }}
+                            animate={{ width: `${test.progress || 0}%` }}
+                            transition={{ duration: 0.5 }}
+                            className="h-full bg-gradient-to-r from-[#0EA5E9] to-[#06B6D4] rounded-full relative overflow-hidden"
+                          >
+                            <motion.div
+                              className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent"
+                              animate={{ x: ['-100%', '200%'] }}
+                              transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
+                            />
+                          </motion.div>
+                        </div>
+                        <p className="text-xs text-gray-500 mt-2">Analyzing voice biomarkers and neural patterns...</p>
+                      </div>
+                    ) : (
+                      <div className="flex-1">
+                        <div className="flex items-center justify-between mb-2">
+                          <span className="text-sm font-medium text-gray-400">Risk Assessment</span>
+                          <div className="flex items-center gap-2">
+                            <span className={`text-2xl font-bold ${colors.text}`}>{test.riskScore}%</span>
+                            {getTrendIcon(test.trend)}
+                          </div>
+                        </div>
+                        <div className="relative h-3 bg-gray-700/50 rounded-full overflow-hidden">
+                          <motion.div
+                            initial={{ width: 0 }}
+                            animate={{ width: `${test.riskScore}%` }}
+                            transition={{ duration: 1, delay: index * 0.05 }}
+                            className={`h-full bg-gradient-to-r ${colors.gradient} rounded-full`}
+                          />
                         </div>
                       </div>
-                      <div className="relative h-3 bg-gray-700/50 rounded-full overflow-hidden">
-                        <motion.div
-                          initial={{ width: 0 }}
-                          animate={{ width: `${test.riskScore}%` }}
-                          transition={{ duration: 1, delay: index * 0.05 }}
-                          className={`h-full bg-gradient-to-r ${colors.gradient} rounded-full`}
-                        />
-                      </div>
-                    </div>
+                    )}
 
                     {/* Status Badge */}
-                    <div className="flex items-center gap-3">
-                      <div className={`px-4 py-2 rounded-xl ${colors.bg} border ${colors.border} flex items-center gap-2`}>
-                        {test.status === 'Low' ? (
-                          <CheckCircle className={`h-4 w-4 ${colors.text}`} />
-                        ) : (
-                          <AlertCircle className={`h-4 w-4 ${colors.text}`} />
-                        )}
-                        <span className={`font-semibold ${colors.text}`}>{test.status} Risk</span>
+                    {test.processingStatus === 'processing' ? (
+                      <div className="flex items-center gap-3">
+                        <div className="px-4 py-2 rounded-xl bg-[#0EA5E9]/20 border border-[#0EA5E9]/30 flex items-center gap-2">
+                          <Clock className="h-4 w-4 text-[#0EA5E9] animate-pulse" />
+                          <span className="font-semibold text-[#0EA5E9]">Processing</span>
+                        </div>
                       </div>
-                    </div>
+                    ) : (
+                      <div className="flex items-center gap-3">
+                        <div className={`px-4 py-2 rounded-xl ${colors.bg} border ${colors.border} flex items-center gap-2`}>
+                          {test.status === 'Low' ? (
+                            <CheckCircle className={`h-4 w-4 ${colors.text}`} />
+                          ) : (
+                            <AlertCircle className={`h-4 w-4 ${colors.text}`} />
+                          )}
+                          <span className={`font-semibold ${colors.text}`}>{test.status} Risk</span>
+                        </div>
+                      </div>
+                    )}
 
-                    {/* Actions */}
+                    {/* Actions - Conditional based on processing status */}
                     <div className="flex items-center gap-2">
-                      <motion.button
-                        whileHover={{ scale: 1.1 }}
-                        whileTap={{ scale: 0.9 }}
-                        onClick={(e) => {
-                          e.stopPropagation()
-                          router.push(`/patient/tests/${test.id}`)
-                        }}
-                        className="p-3 bg-[#0EA5E9]/10 hover:bg-[#0EA5E9]/20 text-[#0EA5E9] rounded-xl transition-all group-hover:bg-[#0EA5E9]/20"
-                        title="View Detailed Analysis"
-                      >
-                        <Eye className="h-5 w-5" />
-                      </motion.button>
-                      <motion.button
-                        whileHover={{ scale: 1.1 }}
-                        whileTap={{ scale: 0.9 }}
-                        onClick={(e) => {
-                          e.stopPropagation()
-                          handleDownloadPDF(test.id)
-                        }}
-                        className="p-3 bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 rounded-xl transition-all"
-                        title="Download Report"
-                      >
-                        <Download className="h-5 w-5" />
-                      </motion.button>
+                      {test.processingStatus === 'completed' ? (
+                        <>
+                          <motion.button
+                            whileHover={{ scale: 1.1 }}
+                            whileTap={{ scale: 0.9 }}
+                            onClick={(e) => {
+                              e.stopPropagation()
+                              router.push(`/patient/tests/${test.id}`)
+                            }}
+                            className="p-3 bg-[#0EA5E9]/10 hover:bg-[#0EA5E9]/20 text-[#0EA5E9] rounded-xl transition-all group-hover:bg-[#0EA5E9]/20"
+                            title="View Detailed Analysis"
+                          >
+                            <Eye className="h-5 w-5" />
+                          </motion.button>
+                          <motion.button
+                            whileHover={{ scale: 1.1 }}
+                            whileTap={{ scale: 0.9 }}
+                            onClick={(e) => {
+                              e.stopPropagation()
+                              handleDownloadPDF(test.id)
+                            }}
+                            className="p-3 bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 rounded-xl transition-all"
+                            title="Download Report"
+                          >
+                            <Download className="h-5 w-5" />
+                          </motion.button>
+                        </>
+                      ) : (
+                        <motion.button
+                          whileHover={{ scale: 1.1 }}
+                          whileTap={{ scale: 0.9 }}
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            handleDownloadPDF(test.id)
+                          }}
+                          className="p-3 bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 rounded-xl transition-all"
+                          title="Download Report (Primary Action)"
+                        >
+                          <Download className="h-5 w-5" />
+                        </motion.button>
+                      )}
                     </div>
                   </div>
 
-                  {/* Biomarkers Preview */}
-                  {test.biomarkers && (
+                  {/* Biomarkers Preview - Only show for completed tests */}
+                  {test.biomarkers && test.processingStatus === 'completed' && (
                     <div className="mt-4 pt-4 border-t border-gray-700/50">
                       <div className="grid grid-cols-3 gap-4">
                         <div className="text-center">
