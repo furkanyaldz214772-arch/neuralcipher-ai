@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { 
   FileText, Eye, Download, Calendar, TrendingUp, Filter, Search, 
   Activity, Brain, AlertCircle, CheckCircle, Clock, BarChart3,
-  ArrowUpRight, ArrowDownRight, Minus, ChevronDown, RefreshCw, X, GitCompare
+  ArrowUpRight, ArrowDownRight, Minus, ChevronDown, RefreshCw, GitCompare
 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import api from '@/lib/api'
