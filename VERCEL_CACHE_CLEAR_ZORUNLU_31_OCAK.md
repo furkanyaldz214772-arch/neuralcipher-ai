@@ -1,62 +1,62 @@
-# ⚠️ VERCEL CACHE CLEAR ZORUNLU
+# 🚨 VERCEL CACHE CLEAR ZORUNLU - 31 Ocak 2026
 
-## Durum
-- ✅ Kod tamamen doğru (commit 817b8d17)
-- ❌ Vercel eski commit'i (efa22ca3) kullanıyor
-- ❌ Otomatik rebuild çalışmıyor
+## Durum: Kod Doğru, Vercel Cache Eski
 
-## Sorun
-Eski commit'te (efa22ca3) gerçekten `minAngle` ve `clockWise` vardı:
-```tsx
-<RadialBar
-  minAngle={15}      // ❌ ESKI - GEÇERSİZ
-  background
-  clockWise          // ❌ ESKI - GEÇERSİZ
-  dataKey="value"
-  cornerRadius={10}
-/>
+### ✅ Kod Durumu (Commit: cdb619bb)
+- RadialBar chart tamamen kaldırıldı → Basit text + progress bar
+- `minAngle` ve `clockWise` props yok
+- Göz ikonu sadece completed testlerde
+- Progress bar processing testlerde aktif
+- PDF indirme her durumda çalışıyor
+
+### ❌ Vercel Durumu
+- Eski commit (efa22ca3) cache'de
+- Hatalı RadialBar kodu build'de
+- Root Directory yanlış (`.` yerine `frontend` olmalı)
+
+## Çözüm: Manuel Cache Clear
+
+### Adım 1: Root Directory Düzelt
+1. https://vercel.com/dashboard → Projeyi seç
+2. **Settings** → **General**
+3. **Root Directory** → `frontend` yaz
+4. **Save**
+
+### Adım 2: Cache Clear + Redeploy
+1. **Settings** → **General** → **Clear Build Cache**
+2. **Deployments** → Son deployment → ••• → **Redeploy**
+3. ❌ **"Use existing Build Cache"** checkbox'ını KALDIR
+4. **Redeploy**
+
+## Neden Bu Gerekli?
+
+**Vercel cache'i eski kodu tutuyor:**
+- Build log: "Line 263: minAngle error"
+- Gerçek kod: Line 263'te RadialBar yok
+- Sonuç: Cache'den eski kod build ediliyor
+
+**Root Directory hatası:**
 ```
-
-Şimdiki kod (817b8d17) tamamen doğru:
-```tsx
-<RadialBar
-  background         // ✅ GEÇERLİ
-  dataKey="value"    // ✅ GEÇERLİ
-  cornerRadius={10}  // ✅ GEÇERLİ
-  fill="#8884d8"     // ✅ GEÇERLİ
-/>
+Error: No Next.js version detected
 ```
+- Vercel root'ta `package.json` arıyor
+- Next.js `frontend/package.json` içinde
+- Root Directory `frontend` olmalı
 
-## Çözüm - MANUEL CACHE CLEAR
+## Doğrulama
 
-### Adım 1: Vercel Dashboard
-https://vercel.com/dashboard
+Build başarılı olunca:
+- ✅ "Next.js version detected"
+- ✅ No RadialBar errors
+- ✅ Build successful
+- ✅ Sistem production-ready
 
-### Adım 2: Settings
-Project seç → **Settings** → **General**
+## Alternatif: Deployment Sil
 
-### Adım 3: Clear Cache
-Aşağı scroll → **"Clear Build Cache"** butonuna tıkla
+Eğer cache clear yeterli olmazsa:
+1. Deployments → Hatalı deployment → Delete
+2. Git'te dummy commit: `git commit --allow-empty -m "Force rebuild"`
+3. `git push`
+4. Yeni deployment otomatik başlar
 
-### Adım 4: Redeploy
-**Deployments** tab → Son deployment → **3 nokta (•••)** → **"Redeploy"**
-
-### Adım 5: ÖNEMLI!
-Redeploy popup'ında:
-- ❌ **"Use existing Build Cache"** checkbox'ını KALDIR
-- ✅ Checkbox boş olmalı
-- Sonra **"Redeploy"** tıkla
-
-## Neden Otomatik Çalışmıyor?
-Vercel bazen aggressive caching yapıyor. Git commit değişse bile eski build artifact'leri kullanabiliyor. Manuel clear tek çözüm.
-
-## Commit History
-- `efa22ca3` - Eski kod (minAngle, clockWise var) ❌
-- `20f0609a` - İlk düzeltme
-- `9a3ab9b7` - Force rebuild #1
-- `0e03b9f2` - Force rebuild #2
-- `1638edfb` - Dokümantasyon
-- `817b8d17` - Force rebuild #3 (şimdiki) ✅
-
-## Sonuç
-Kod production-ready. Sadece Vercel cache temizlenmeli.
+**Kritik:** Cache clear olmadan kod değişiklikleri yansımaz!

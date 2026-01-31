@@ -36,21 +36,6 @@ https://vercel.com/dashboard → Projeyi seç
 4. ❌ **"Use existing Build Cache"** checkbox'ını KALDIR
 5. **"Redeploy"** tıkla
 
-## Alternatif: vercel.json Güncellemesi
-
-Eğer dashboard'dan değiştiremezsen, vercel.json'a ekle:
-
-```json
-{
-  "buildCommand": "npm run build",
-  "outputDirectory": ".next",
-  "installCommand": "npm ci --force",
-  "framework": "nextjs"
-}
-```
-
-**NOT:** Root Directory `frontend` olarak ayarlanırsa, vercel.json'daki `cd frontend` komutlarını kaldır.
-
 ## Proje Yapısı
 ```
 neuralcipher-ai/
