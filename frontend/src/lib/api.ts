@@ -20,8 +20,8 @@ const getApiUrl = () => {
     return 'http://localhost:8000'
   }
   
-  // Production fallback (Real Railway URL)
-  return 'https://web-production-c00b0.up.railway.app'
+  // Production fallback (Real Railway URL) - ✅ FIXED: Updated to correct URL (1 Feb 2026)
+  return 'https://neuralcipher-ai-production.up.railway.app'
 }
 
 const API_URL = getApiUrl()
