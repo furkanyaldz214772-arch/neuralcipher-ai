@@ -21,7 +21,7 @@ const getApiUrl = () => {
   }
   
   // Production fallback (Real Railway URL) - ✅ FIXED: Updated to correct URL (1 Feb 2026)
-  return 'https://neuralcipher-ai-production.up.railway.app'
+  return 'https://neuralcipher-ai-backend-production.up.railway.app'
 }
 
 const API_URL = getApiUrl()
